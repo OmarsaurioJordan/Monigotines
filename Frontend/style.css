@@ -1,0 +1,55 @@
+body {
+    background-color:rgb(59, 51, 33);
+    color: white;
+}
+
+input, button {
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+}
+button:hover {
+    background-color: rgb(236, 198, 109);
+}
+
+textarea {
+    resize: none;
+}
+textarea, .parrafin {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;  
+}
+.parrafin {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body, .precaja, .caja {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.caja {
+    background-color:rgb(116, 99, 59);
+    color: white;
+    margin: 10px;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.cabecera {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.camutxt {
+    color: rgb(59, 51, 33);
+}
