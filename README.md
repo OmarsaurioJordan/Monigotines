@@ -6,16 +6,16 @@ Página para crear avatares y ver los de los demás, se mueven por un mundo virt
 
 ## Estructura de Clases
 
-Visible
-   |--- Suelo
-   |--- Objeto
-          |--- Mobiliario
-          |--- Movil
-                 |--- Criatura
-                 |--- Avatar
-                        |--- Npc
-                        |--- Player
-                        |--- Otro
+.Visible
+.   |--- Suelo
+.   |--- Objeto
+.          |--- Mobiliario
+.          |--- Movil
+.                 |--- Criatura
+.                 |--- Avatar
+.                        |--- Npc
+.                        |--- Player
+.                        |--- Otro
 
 ## Licencia:
 
