@@ -49,7 +49,7 @@ class Sprites {
         let spr = this.sprite[piel];
         let sub = genero == 0 ? 0 : 6;
         if (anima != -1) {
-            posicion[1] += (-0.5 + anima) * this.osciCabeza;
+            posicion[1] -= anima * this.osciCabeza;
         }
         this.drawSprite(ctx, posicion, spr, sub);
     }
@@ -70,7 +70,7 @@ class Sprites {
     drawEmocion(ctx, posicion, emocion, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion[1] += (-0.5 + anima) * this.osciCabeza;
+            posicion[1] -= anima * this.osciCabeza;
         }
         this.drawSprite(ctx, posicion, this.sprite[5], emocion);
     }

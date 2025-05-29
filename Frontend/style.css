@@ -1,5 +1,6 @@
 body {
     background-color:rgb(59, 51, 33);
+    font-family: Georgia, 'Times New Roman', Times, serif;
     color: white;
 }
 
@@ -52,4 +53,8 @@ body, .precaja, .caja {
 
 .camutxt {
     color: rgb(59, 51, 33);
+}
+
+.myname {
+    font-size: 20px;
 }
