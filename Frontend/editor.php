@@ -59,7 +59,7 @@
             <input type="hidden" name="rol" id="rol" value=
                 "<?php echo $data['rol']; ?>">
             <!-- dibujado del avatar y sus opciones de personalizacion -->
-            <canvas id="lienzo" width="256" height="192"
+            <canvas id="lienzo" width="240" height="192"
                 style="border:1px solid black;"></canvas>
             <!-- en este contenedor se escribiran los textos y el boton submit -->
             <div class="caja">

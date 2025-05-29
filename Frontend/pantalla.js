@@ -9,7 +9,6 @@ function resizeCanvas() {
     const scale = Math.min(scaleX, scaleY);
     canvas.style.width = (width * scale) + "px";
     canvas.style.height = (height * scale) + "px";
-    canvas.style.imageRendering = "pixelated";
 }
 
 window.addEventListener("resize", resizeCanvas);

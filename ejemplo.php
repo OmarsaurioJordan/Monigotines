@@ -17,6 +17,39 @@ const objetos = [
     { x: 500, y: 400, color: 'green' }
 ];
 
+function tintImage(originalImage, color) {
+    const canvas = document.createElement('canvas');
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+    const ctxx = canvas.getContext('2d');
+    // Dibuja el sprite original (blanco con transparencia)
+    ctxx.drawImage(originalImage, 0, 0);
+    // Cambia el modo de mezcla para aplicar color solo donde hay píxeles
+    ctxx.globalCompositeOperation = 'multiply';
+    ctxx.fillStyle = color; // Ej: "#ff0000"
+    // Pinta encima con el color deseado
+    ctxx.fillRect(0, 0, canvas.width, canvas.height);
+    // resta fondo transparente
+    ctxx.globalCompositeOperation = 'destination-in';
+    ctxx.drawImage(originalImage, 0, 0);
+    // retorna a modo normal
+    ctxx.globalCompositeOperation = 'source-over';
+    // Crear nueva imagen a partir del canvas tintado
+    const tintedImage = new Image();
+    tintedImage.src = canvas.toDataURL();
+    return tintedImage;
+}
+let ready = false;
+let rojo = null;
+const blanco = new Image();
+blanco.src = 'Sprites/d_monigotin_pelom_strip16.png';
+blanco.onload = () => {
+    rojo = tintImage(blanco, "#ff0000");
+    rojo.onload = () => {
+        ready = true;
+    };
+};
+
 function draw() {
     // Limpiar canvas
     ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
@@ -32,6 +65,10 @@ function draw() {
         ctx.fillStyle = o.color;
         ctx.fillRect(o.x - 25, o.y - 25, 50, 50); // cuadrados de 50x50
     });
+
+    if (ready) {
+        ctx.drawImage(rojo, 100, 100);
+    }
 
     requestAnimationFrame(draw);
 }

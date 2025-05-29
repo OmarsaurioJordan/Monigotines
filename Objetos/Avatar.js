@@ -23,9 +23,15 @@ class Avatar extends Movil {
 
     draw(ctx, sprites) {
         sprites.drawCuerpo(ctx, this.pis, this.piel,
-            this.genero, -1, true);
+            this.genero, -1, this.cadera == 0);
+        sprites.drawCadera(ctx, this.pis, this.genero,
+            this.cadera, this.tela);
+        sprites.drawTorso(ctx, this.pis, this.genero,
+            this.torso, this.color);
         sprites.drawCabeza(ctx, this.pis, this.piel,
             this.genero, -1);
         sprites.drawEmocion(ctx, this.pis, this.emocion, -1);
+        sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
+            this.tinte, -1)
     }
 }
