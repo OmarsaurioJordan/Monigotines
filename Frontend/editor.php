@@ -81,6 +81,7 @@
 		<label id="output"></label>
     </body>
     <script src="../Backend/tool_master.js" defer></script>
+    <script src="../Objetos/tools.js" defer></script>
     <script src="../Objetos/Sprites.js" defer></script>
     <script src="../Objetos/Visible.js" defer></script>
     <script src="../Objetos/Objeto.js" defer></script>

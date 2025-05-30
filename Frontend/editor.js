@@ -1,3 +1,4 @@
+// para prevenir salida por error
 function btnVolver() {
     if (confirm("❗ Si sales perderás todos los cambios ¿Salir?")) {
         window.location.href = 'mundo.php';
@@ -11,7 +12,7 @@ const canvas = document.getElementById("lienzo");
 const ctx = canvas.getContext("2d");
 const width = canvas.width;
 const height = canvas.height;
-const sprites = new Sprites();
+resizeCanvasEsc(1.3);
 
 // crear el avatar asignandole datos precargados
 let usr = parseInt(document.getElementById("usr").value);
@@ -30,6 +31,10 @@ const avatar = new Avatar(
     torso, color, cadera, tela, rol, "", "", "", [96, 186]
 );
 
+// variables para interaccion con el canvas y avatar
+let estado = 0; // seleccion actual
+
+// el main loop del juego
 let lastTime = 0;
 function loop(currentTime) {
     let dlt = (currentTime - lastTime) / 1000;
@@ -41,21 +46,7 @@ function loop(currentTime) {
     requestAnimationFrame(loop);
 }
 
-// variables para interaccion con el canvas y avatar
-let estado = 0; // seleccion actual
-
-// pulsacion de mouse
-let mousPos = [0, 0, false]; // x, y, recientemente_pulsado
-canvas.addEventListener("mousedown", function(event) {
-    if (event.button !== 0) { return null; }
-    let rect = canvas.getBoundingClientRect();
-    let scaleX = width / rect.width;
-    let scaleY = height / rect.height;
-    let x = Math.round((event.clientX - rect.left) * scaleX);
-    let y = Math.round((event.clientY - rect.top) * scaleY);
-    mousPos = [x, y, true];
-});
-
+// se calcula la logica
 function step(dlt) {
     // verificar pulsacion de mouse
     if (mousPos[2]) {
@@ -142,29 +133,7 @@ function step(dlt) {
     }
 }
 
-function BarrelSprAva(valor, valMax) {
-    if (valor >= valMax) {
-        return valor - valMax;
-    }
-    else if (valor < 0) {
-        return valMax + valor;
-    }
-    return valor;
-}
-
-function pointInCircle(pos1, pos2, radio) {
-    let dif = [
-        Math.pow(pos1[0] - pos2[0], 2),
-        Math.pow(pos1[1] - pos2[1], 2),
-    ];
-    return Math.sqrt(dif[0] + dif[1]) < radio;
-}
-
-function pointInRectangle(pos, rec1, rec2) {
-    return pos[0] > rec1[0] && pos[0] < rec2[0] &&
-        pos[1] > rec1[1] && pos[1] < rec2[1];
-}
-
+// se dibuja todo
 const colorFondo = "rgb(180, 180, 150)";
 function draw() {
     // limpiar lienzo
@@ -242,7 +211,8 @@ function draw() {
     sprites.drawScroll(ctx, [192, 184], false);
 }
 
-// dibujar todo e iniciar el loop cuando los sprites carguen
+// iniciar el loop cuando los sprites carguen
+const sprites = new Sprites();
 setTimeout(arranque, 100);
 function arranque() {
     if (sprites.getReady()) {
@@ -252,10 +222,3 @@ function arranque() {
         setTimeout(arranque, 100);
     }
 }
-
-// escalar el canvas
-function resizeCanvas(scale) {
-    canvas.style.width = (width * scale) + "px";
-    canvas.style.height = (height * scale) + "px";
-}
-resizeCanvas(1.3);
