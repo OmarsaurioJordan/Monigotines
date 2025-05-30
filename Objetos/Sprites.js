@@ -217,7 +217,30 @@ class Sprites {
         this.drawSpriteEsc(ctx, posicion, spr, sub, escala);
         let indSpr = (genero == 0 ? this.dataImgCol[0][2] :
             this.dataImgCol[1][2]) + tinte;
-        this.drawSpriteEsc(ctx, posicion, this.sprite[indSpr], pelo, escala);
+        this.drawSpriteEsc(ctx, posicion, this.sprite[indSpr],
+            pelo, escala);
+    }
+
+    drawCarita(ctx, posicion, genero, piel, emocion, escala) {
+        let spr = this.sprite[piel];
+        let sub = genero == 0 ? 0 : 6;
+        this.drawSpriteEsc(ctx, posicion, spr, sub, escala);
+        this.drawSpriteEsc(ctx, posicion, this.sprite[5],
+            emocion, escala);
+    }
+
+    drawTorsito(ctx, posicion, genero, torso, color, escala) {
+        let indSpr = (genero == 0 ? this.dataImgCol[4][2] :
+            this.dataImgCol[5][2]) + color;
+        this.drawSpriteEsc(ctx, posicion, this.sprite[indSpr],
+            torso, escala);
+    }
+
+    drawCaderita(ctx, posicion, genero, cadera, tela, escala) {
+        let indSpr = (genero == 0 ? this.dataImgCol[2][2] :
+            this.dataImgCol[3][2]) + tela;
+        this.drawSpriteEsc(ctx, posicion, this.sprite[indSpr],
+            cadera, escala);
     }
 
     totEmocion() {

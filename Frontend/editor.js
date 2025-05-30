@@ -193,23 +193,39 @@ function draw() {
         }
     }
     // dibujar las cosas seleccionables
+    let aux;
     switch (estado) {
         case 0: // pelo
-            let p = BarrelSprAva(avatar.pelo - 2, sprites.totPelo());
+            aux = BarrelSprAva(avatar.pelo - 2, sprites.totPelo());
             for (let i = 0; i < 5; i++) {
                 sprites.drawPelambre(ctx, [192, 142 - (i - 2) * 32],
-                    avatar.genero, p, avatar.tinte, 0.5);
-                p = BarrelSprAva(p + 1, sprites.totPelo());
+                    avatar.genero, aux, avatar.tinte, 0.5);
+                aux = BarrelSprAva(aux + 1, sprites.totPelo());
             }
             break;
         case 1: // emocion
-
+            aux = BarrelSprAva(avatar.emocion - 2, sprites.totEmocion());
+            for (let i = 0; i < 5; i++) {
+                sprites.drawCarita(ctx, [192, 142 - (i - 2) * 32],
+                    avatar.genero, avatar.piel, aux, 0.5);
+                aux = BarrelSprAva(aux + 1, sprites.totEmocion());
+            }
             break;
         case 2: // torso
-
+            aux = BarrelSprAva(avatar.torso - 2, sprites.totTorso());
+            for (let i = 0; i < 5; i++) {
+                sprites.drawTorsito(ctx, [192, 124 - (i - 2) * 32],
+                    avatar.genero, aux, avatar.color, 0.5);
+                aux = BarrelSprAva(aux + 1, sprites.totTorso());
+            }
             break;
         case 3: // cadera
-
+            aux = BarrelSprAva(avatar.cadera - 2, sprites.totCadera());
+            for (let i = 0; i < 5; i++) {
+                sprites.drawCaderita(ctx, [192, 110 - (i - 2) * 32],
+                    avatar.genero, aux, avatar.tela, 0.5);
+                aux = BarrelSprAva(aux + 1, sprites.totCadera());
+            }
             break;
         case 4: // rol
 
