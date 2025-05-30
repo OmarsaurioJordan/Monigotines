@@ -101,7 +101,55 @@ function step(dlt) {
                 }
             }
         }
+        // verificar si selecciono un scroll
+        let sum = 0;
+        if (pointInRectangle(mousPos, [160, 176], [224, 192])) {
+            sum = 1;
+        }
+        else if (pointInRectangle(mousPos, [160, 0], [224, 16])) {
+            sum = -1;
+        }
+        if (sum != 0) {
+            switch (estado) {
+                case 0: // pelo
+                    avatar.pelo = BarrelSprAva(
+                        avatar.pelo + sum, sprites.totPelo());
+                    document.getElementById("pelo").value = avatar.pelo;
+                    break;
+                case 1: // emocion
+                    avatar.emocion = BarrelSprAva(
+                        avatar.emocion + sum, sprites.totEmocion());
+                    document.getElementById("emocion").value = avatar.emocion;
+                    break;
+                case 2: // torso
+                    avatar.torso = BarrelSprAva(
+                        avatar.torso + sum, sprites.totTorso());
+                    document.getElementById("torso").value = avatar.torso;
+                    break;
+                case 3: // cadera
+                    avatar.cadera = BarrelSprAva(
+                        avatar.cadera + sum, sprites.totCadera());
+                    document.getElementById("cadera").value = avatar.cadera;
+                    break;
+                case 4: // rol
+
+                    break;
+                case 5: // etc
+
+                    break;
+            }
+        }
     }
+}
+
+function BarrelSprAva(valor, valMax) {
+    if (valor >= valMax) {
+        return valor - valMax;
+    }
+    else if (valor < 0) {
+        return valMax + valor;
+    }
+    return valor;
 }
 
 function pointInCircle(pos1, pos2, radio) {
@@ -112,9 +160,15 @@ function pointInCircle(pos1, pos2, radio) {
     return Math.sqrt(dif[0] + dif[1]) < radio;
 }
 
+function pointInRectangle(pos, rec1, rec2) {
+    return pos[0] > rec1[0] && pos[0] < rec2[0] &&
+        pos[1] > rec1[1] && pos[1] < rec2[1];
+}
+
+const colorFondo = "rgb(180, 180, 150)";
 function draw() {
     // limpiar lienzo
-    ctx.fillStyle = "rgb(180, 180, 150)";
+    ctx.fillStyle = colorFondo;
     ctx.fillRect(0, 0, width, height);
     // dibujar avatar
     avatar.draw(ctx, sprites);
@@ -138,6 +192,38 @@ function draw() {
             sprites.drawColor(ctx, [232, 8 + i * 16], false, i);
         }
     }
+    // dibujar las cosas seleccionables
+    switch (estado) {
+        case 0: // pelo
+            let p = BarrelSprAva(avatar.pelo - 2, sprites.totPelo());
+            for (let i = 0; i < 5; i++) {
+                sprites.drawPelambre(ctx, [192, 142 - (i - 2) * 32],
+                    avatar.genero, p, avatar.tinte, 0.5);
+                p = BarrelSprAva(p + 1, sprites.totPelo());
+            }
+            break;
+        case 1: // emocion
+
+            break;
+        case 2: // torso
+
+            break;
+        case 3: // cadera
+
+            break;
+        case 4: // rol
+
+            break;
+        case 5: // etc
+
+            break;
+    }
+    // dibujar scroll vertical
+    ctx.fillStyle = colorFondo;
+    ctx.fillRect(160, 176, 64, 16);
+    ctx.fillRect(160, 0, 64, 16);
+    sprites.drawScroll(ctx, [192, 8], true);
+    sprites.drawScroll(ctx, [192, 184], false);
 }
 
 // dibujar todo e iniciar el loop cuando los sprites carguen

@@ -13,6 +13,7 @@ class Sprites {
             this.loadImg("d_monigotin5_strip13"), // 4
             this.loadImg("d_monigotin_emo_strip33"), // 5
             this.loadImg("d_monigotin_select_strip12"), // 6
+            this.loadImg("d_monigotin_scroll_strip2") // 7
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -120,44 +121,15 @@ class Sprites {
         return this.cargas == this.sprite.length;
     }
 
-    totPiel() {
-        return 5;
-    }
-
-    totEmocion() {
-        return this.sprite[5].width / 128;
-    }
-
-    totPelo() {
-        let sprInd = this.dataImgCol[0][2];
-        return this.sprite[sprInd].width / 128;
-    }
-
-    totTinte() {
-        return this.colorPelo.length;
-    }
-
-    totTorso() {
-        let sprInd = this.dataImgCol[4][2];
-        return this.sprite[sprInd].width / 128;
-    }
-
-    totColor() {
-        return this.colorRopa.length;
-    }
-
-    totCadera() {
-        let sprInd = this.dataImgCol[2][2];
-        return this.sprite[sprInd].width / 128;
-    }
-
-    totTela() {
-        return this.colorRopa.length;
-    }
-
     drawSprite(ctx, posicion, sprite, subimg) {
         ctx.drawImage(sprite, subimg * 128, 0, 128, 192,
             posicion[0] - 62, posicion[1] - 186, 128, 192);
+    }
+
+    drawSpriteEsc(ctx, posicion, sprite, subimg, escala) {
+        ctx.drawImage(sprite, subimg * 128, 0, 128, 192,
+            posicion[0] - 62 * escala, posicion[1] - 186 * escala,
+            128 * escala, 192 * escala);
     }
 
     drawCabeza(ctx, posicion, piel, genero, anima) {
@@ -231,5 +203,39 @@ class Sprites {
         let indSpr = this.dataImgCol[8][2] + piel;
         ctx.drawImage(this.sprite[indSpr], 0, 0, 16, 16,
             posicion[0] - 8, posicion[1] - 8, 16, 16);
+    }
+
+    drawScroll(ctx, posicion, isUp) {
+        let subImg = isUp ? 0 : 64;
+        ctx.drawImage(this.sprite[7], subImg, 0, 64, 16,
+            posicion[0] - 32, posicion[1] - 8, 64, 16);
+    }
+
+    drawPelambre(ctx, posicion, genero, pelo, tinte, escala) {
+        let spr = this.sprite[piel];
+        let sub = genero == 0 ? 0 : 6;
+        this.drawSpriteEsc(ctx, posicion, spr, sub, escala);
+        let indSpr = (genero == 0 ? this.dataImgCol[0][2] :
+            this.dataImgCol[1][2]) + tinte;
+        this.drawSpriteEsc(ctx, posicion, this.sprite[indSpr], pelo, escala);
+    }
+
+    totEmocion() {
+        return this.sprite[5].width / 128;
+    }
+
+    totPelo() {
+        let sprInd = this.dataImgCol[0][2];
+        return this.sprite[sprInd].width / 128;
+    }
+
+    totTorso() {
+        let sprInd = this.dataImgCol[4][2];
+        return this.sprite[sprInd].width / 128;
+    }
+
+    totCadera() {
+        let sprInd = this.dataImgCol[2][2];
+        return this.sprite[sprInd].width / 128;
     }
 }
