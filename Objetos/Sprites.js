@@ -12,7 +12,7 @@ class Sprites {
             this.loadImg("d_monigotin4_strip13"), // 3
             this.loadImg("d_monigotin5_strip13"), // 4
             this.loadImg("d_monigotin_emo_strip33"), // 5
-            this.loadImg("d_monigotin_select_strip12") // 6
+            this.loadImg("d_monigotin_select_strip12"), // 6
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -43,6 +43,13 @@ class Sprites {
             "rgb(140, 110, 90)",
             "rgb(180, 140, 40)"
         ];
+        this.colorPiel = [
+            "rgb(255, 210, 200)",
+            "rgb(255, 190, 190)",
+            "rgb(240, 170, 140)",
+            "rgb(210, 140, 110)",
+            "rgb(190, 130, 80)"
+        ];
         this.dataImgCol = [
             // el ind 2 es donde inician esas imagenes en sprite[]
             ["d_monigotin_pelof_strip16", this.colorPelo, -1], // 0
@@ -51,6 +58,9 @@ class Sprites {
             ["d_monigotin_caderasm_strip16", this.colorRopa, -1], // 3
             ["d_monigotin_torsof_strip16", this.colorRopa, -1], // 4
             ["d_monigotin_torsom_strip16", this.colorRopa, -1], // 5
+            ["d_monigotin_color", this.colorPelo, -1], // 6
+            ["d_monigotin_color", this.colorRopa, -1], // 7
+            ["d_monigotin_color", this.colorPiel, -1] // 8
         ];
         for (let i = 0; i < this.dataImgCol.length; i++) {
             this.dataImgCol[i][2] = this.sprite.length;
@@ -201,5 +211,25 @@ class Sprites {
         let indSpr = (genero == 0 ? this.dataImgCol[2][2] :
             this.dataImgCol[3][2]) + tela;
         this.drawSprite(ctx, posicion, this.sprite[indSpr], cadera);
+    }
+
+    drawSelect(ctx, posicion, subInd, isOk) {
+        let plusOk = isOk ? 0 : 1;
+        let subImg = subInd * 2 + plusOk;
+        ctx.drawImage(this.sprite[6], subImg * 32, 0, 32, 32,
+            posicion[0] - 16, posicion[1] - 16, 32, 32);
+    }
+
+    drawColor(ctx, posicion, isPelo, color) {
+        let indSpr = (isPelo ? this.dataImgCol[6][2] :
+            this.dataImgCol[7][2]) + color;
+        ctx.drawImage(this.sprite[indSpr], 0, 0, 16, 16,
+            posicion[0] - 8, posicion[1] - 8, 16, 16);
+    }
+
+    drawPiel(ctx, posicion, piel) {
+        let indSpr = this.dataImgCol[8][2] + piel;
+        ctx.drawImage(this.sprite[indSpr], 0, 0, 16, 16,
+            posicion[0] - 8, posicion[1] - 8, 16, 16);
     }
 }
