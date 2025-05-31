@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-05-2025 a las 04:55:07
+-- Tiempo de generación: 31-05-2025 a las 01:37:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -81,6 +81,7 @@ CREATE TABLE `ideologia` (
   `id` int(10) UNSIGNED NOT NULL,
   `avatar` int(10) UNSIGNED NOT NULL,
   `rol` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `ang_dem` tinyint(4) NOT NULL DEFAULT 0,
   `izq_der` tinyint(4) NOT NULL DEFAULT 0,
   `pol_lad` tinyint(4) NOT NULL DEFAULT 0,
@@ -107,7 +108,7 @@ CREATE TABLE `mail` (
   `receptor` int(10) UNSIGNED NOT NULL,
   `mensaje` varchar(400) NOT NULL,
   `visto` tinyint(4) NOT NULL DEFAULT 0,
-  `registro` timestamp NOT NULL DEFAULT current_timestamp()
+  `actualiza` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -123,7 +124,8 @@ CREATE TABLE `mobiliario` (
   `tipo` tinyint(3) UNSIGNED NOT NULL,
   `pos_x` int(11) NOT NULL,
   `pos_y` int(11) NOT NULL,
-  `publico` tinyint(3) UNSIGNED NOT NULL
+  `publico` tinyint(3) UNSIGNED NOT NULL,
+  `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -140,7 +142,7 @@ CREATE TABLE `mover` (
   `pos_y` int(11) NOT NULL DEFAULT 0,
   `mensaje` varchar(200) NOT NULL DEFAULT '',
   `silenciar` timestamp NOT NULL DEFAULT current_timestamp(),
-  `activo` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -168,7 +170,8 @@ CREATE TABLE `reaccion` (
   `id` int(10) UNSIGNED NOT NULL,
   `emisor` int(10) UNSIGNED NOT NULL,
   `receptor` int(10) UNSIGNED NOT NULL,
-  `tipo` tinyint(3) UNSIGNED NOT NULL
+  `tipo` tinyint(3) UNSIGNED NOT NULL,
+  `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

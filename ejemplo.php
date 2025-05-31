@@ -1,6 +1,9 @@
-<canvas id="gameCanvas" width="1000" height="700"
+<link rel="stylesheet" href="Frontend/style.css">
+<canvas id="gameCanvas" width="100" height="50"
     style="border:1px solid black;"></canvas>
-<script>
+<label id="output"></label>
+<script src="Objetos/Cargador.js"></script>
+<script>/*
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -84,5 +87,20 @@ window.addEventListener('keydown', e => {
     if (e.key === 'ArrowUp') cam.y -= speed;
     if (e.key === '+') cam.zoom *= 1.1;
     if (e.key === '-') cam.zoom /= 1.1;
-});
+});*/
+const out = document.getElementById("output");
+out.innerHTML = "";
+const crg = new Cargador("Backend/get_avatares.php");
+const ind = crg.newConsulta("avatar", "nombre,emocion");
+const ms = 200;
+let res = "";
+setInterval(() => {
+    crg.step(ms / 1000);
+    let ava = crg.popData(ind);
+    while (ava) {
+        res += "." + ava.nombre;
+        ava = crg.popData(ind);
+    }
+    out.innerHTML = res;
+}, ms);
 </script>

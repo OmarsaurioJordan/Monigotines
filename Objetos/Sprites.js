@@ -6,14 +6,15 @@ class Sprites {
         this.cargas = 0;
         // cargar imagenes sin color
         this.sprite = [
-            this.loadImg("d_monigotin1_strip13"), // 0
-            this.loadImg("d_monigotin2_strip13"), // 1
-            this.loadImg("d_monigotin3_strip13"), // 2
-            this.loadImg("d_monigotin4_strip13"), // 3
-            this.loadImg("d_monigotin5_strip13"), // 4
-            this.loadImg("d_monigotin_emo_strip33"), // 5
-            this.loadImg("d_monigotin_select_strip12"), // 6
-            this.loadImg("d_monigotin_scroll_strip2") // 7
+            this.loadImg("d_monigotin1"), // 0
+            this.loadImg("d_monigotin2"), // 1
+            this.loadImg("d_monigotin3"), // 2
+            this.loadImg("d_monigotin4"), // 3
+            this.loadImg("d_monigotin5"), // 4
+            this.loadImg("d_monigotin_emo"), // 5
+            this.loadImg("d_monigotin_select"), // 6
+            this.loadImg("d_monigotin_scroll"), // 7
+            this.loadImg("d_suelo") // 8
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -53,12 +54,12 @@ class Sprites {
         ];
         this.dataImgCol = [
             // el ind 2 es donde inician esas imagenes en sprite[]
-            ["d_monigotin_pelof_strip16", this.colorPelo, -1], // 0
-            ["d_monigotin_pelom_strip16", this.colorPelo, -1], // 1
-            ["d_monigotin_caderasf_strip16", this.colorRopa, -1], // 2
-            ["d_monigotin_caderasm_strip16", this.colorRopa, -1], // 3
-            ["d_monigotin_torsof_strip16", this.colorRopa, -1], // 4
-            ["d_monigotin_torsom_strip16", this.colorRopa, -1], // 5
+            ["d_monigotin_pelof", this.colorPelo, -1], // 0
+            ["d_monigotin_pelom", this.colorPelo, -1], // 1
+            ["d_monigotin_caderasf", this.colorRopa, -1], // 2
+            ["d_monigotin_caderasm", this.colorRopa, -1], // 3
+            ["d_monigotin_torsof", this.colorRopa, -1], // 4
+            ["d_monigotin_torsom", this.colorRopa, -1], // 5
             ["d_monigotin_color", this.colorPelo, -1], // 6
             ["d_monigotin_color", this.colorRopa, -1], // 7
             ["d_monigotin_color", this.colorPiel, -1] // 8
@@ -241,6 +242,18 @@ class Sprites {
             this.dataImgCol[3][2]) + tela;
         this.drawSpriteEsc(ctx, posicion, this.sprite[indSpr],
             cadera, escala);
+    }
+
+    drawSuelo(ctx, ancho, alto) {
+        let sw = this.sprite[8].width;
+        let sh = this.sprite[8].height;
+        let rw = Math.ceil(ancho / sw);
+        let rh = Math.ceil(alto / sh);
+        for (let w = 0; w < rw; w++) {
+            for (let h = 0; h < rh; h++) {
+                ctx.drawImage(this.sprite[8], w * sw, h * sh);
+            }
+        }
     }
 
     totEmocion() {

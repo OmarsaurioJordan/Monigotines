@@ -17,9 +17,8 @@
         <div class="cabecera">
             <div>
                 <?php if (isset($_SESSION['usr'])) { ?>
-                    <button onclick="window.open('editor.php', '_blank')">
-                        👤 <?php echo $_SESSION['nombre']; ?>
-                    </button>
+                    <button onclick="window.open('editor.php', '_blank')"
+                        >👤 <?php echo $_SESSION['nombre']; ?></button>
                 <?php } else { ?>
                     <label>👁️ Visitante</label>
                 <?php } ?>
@@ -29,8 +28,7 @@
             <label class="camutxt">............</label>
             <div>
                 <?php if (isset($_SESSION['usr'])) { ?>
-                    <button onclick="window.location.href=
-                        '../Backend/salir.php'">❌ Salir</button>
+                    <button onclick="btnVolver()">❌ Salir</button>
                 <?php } else { ?>
                     <button onclick="window.location.href=
                         'login.php'">👤 Entrar</button>
@@ -60,12 +58,10 @@
     <script src="../Backend/tool_master.js" defer></script>
     <script src="../Objetos/tools.js" defer></script>
     <script src="../Objetos/Sprites.js" defer></script>
+    <script src="../Objetos/Cargador.js" defer></script>
     <script src="../Objetos/Visible.js" defer></script>
     <script src="../Objetos/Objeto.js" defer></script>
     <script src="../Objetos/Movil.js" defer></script>
     <script src="../Objetos/Avatar.js" defer></script>
-    <script src="../Objetos/Npc.js" defer></script>
-    <script src="../Objetos/Player.js" defer></script>
-    <script src="../Objetos/Otro.js" defer></script>
     <script src="mundo.js" defer></script>
 </html>

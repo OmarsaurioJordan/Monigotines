@@ -5,6 +5,7 @@ function btnVolver() {
     }
 }
 
+// obtener informacion del lienzo
 // 240 x 192 = 32 opc + 128 ava + 64 obj + 16 col
 const out = document.getElementById("output");
 out.innerHTML = ""; // para ver debug
