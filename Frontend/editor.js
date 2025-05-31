@@ -13,6 +13,7 @@ const canvas = document.getElementById("lienzo");
 const ctx = canvas.getContext("2d");
 const width = canvas.width;
 const height = canvas.height;
+newMouseListener();
 resizeCanvasEsc(1.3);
 
 // crear el avatar asignandole datos precargados
@@ -124,7 +125,9 @@ function step(dlt) {
                     document.getElementById("cadera").value = avatar.cadera;
                     break;
                 case 4: // rol
-
+                    avatar.rol = BarrelSprAva(
+                        avatar.rol + sum, sprites.totRol());
+                    document.getElementById("rol").value = avatar.rol;
                     break;
                 case 5: // etc
 
@@ -141,7 +144,7 @@ function draw() {
     ctx.fillStyle = colorFondo;
     ctx.fillRect(0, 0, width, height);
     // dibujar avatar
-    avatar.draw(ctx, sprites);
+    avatar.drawAvatar(ctx, sprites);
     // dibujar los botones de la izquierda
     for (let i = 0; i < 6; i++) {
         sprites.drawSelect(ctx, [16, 16 + i * 32], i, estado == i);
@@ -198,7 +201,12 @@ function draw() {
             }
             break;
         case 4: // rol
-
+            aux = BarrelSprAva(avatar.rol - 2, sprites.totRol());
+            for (let i = 0; i < 5; i++) {
+                sprites.drawRolsito(ctx, [185, 120 - (i - 2) * 32],
+                    aux, 0.5);
+                aux = BarrelSprAva(aux + 1, sprites.totRol());
+            }
             break;
         case 5: // etc
 

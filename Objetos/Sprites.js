@@ -14,7 +14,8 @@ class Sprites {
             this.loadImg("d_monigotin_emo"), // 5
             this.loadImg("d_monigotin_select"), // 6
             this.loadImg("d_monigotin_scroll"), // 7
-            this.loadImg("d_suelo") // 8
+            this.loadImg("d_suelo"), // 8
+            this.loadImg("d_monigotin_rol"), // 9
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -122,6 +123,8 @@ class Sprites {
         return this.cargas == this.sprite.length;
     }
 
+    // dibujado general de sprites
+
     drawSprite(ctx, posicion, sprite, subimg) {
         ctx.drawImage(sprite, subimg * 128, 0, 128, 192,
             posicion[0] - 62, posicion[1] - 186, 128, 192);
@@ -132,6 +135,8 @@ class Sprites {
             posicion[0] - 62 * escala, posicion[1] - 186 * escala,
             128 * escala, 192 * escala);
     }
+
+    // dibujado de piezas de avatar
 
     drawCabeza(ctx, posicion, piel, genero, anima) {
         // anima: -1 quieto, 0 a 1 paso
@@ -186,6 +191,16 @@ class Sprites {
         this.drawSprite(ctx, posicion, this.sprite[indSpr], cadera);
     }
 
+    drawRol(ctx, posicion, rol, anima) {
+        // anima: -1 quieto, 0 a 1 paso
+        if (anima != -1) {
+            posicion[1] -= anima * this.osciCabeza * 2;
+        }
+        this.drawSprite(ctx, posicion, this.sprite[9], rol);
+    }
+
+    // dibujado de cosas de la GUI
+
     drawSelect(ctx, posicion, subInd, isOk) {
         let plusOk = isOk ? 0 : 1;
         let subImg = subInd * 2 + plusOk;
@@ -211,6 +226,8 @@ class Sprites {
         ctx.drawImage(this.sprite[7], subImg, 0, 64, 16,
             posicion[0] - 32, posicion[1] - 8, 64, 16);
     }
+
+    // dibujado de mini avatares piezas
 
     drawPelambre(ctx, posicion, genero, pelo, tinte, escala) {
         let spr = this.sprite[piel];
@@ -244,6 +261,13 @@ class Sprites {
             cadera, escala);
     }
 
+    drawRolsito(ctx, posicion, rol, escala) {
+        this.drawSpriteEsc(ctx, posicion, this.sprite[9],
+            rol, escala);
+    }
+
+    // dibujado de cosas del fondo del mundo
+
     drawSuelo(ctx, ancho, alto) {
         let sw = this.sprite[8].width;
         let sh = this.sprite[8].height;
@@ -255,6 +279,8 @@ class Sprites {
             }
         }
     }
+
+    // obtencion de valores maximos posibles
 
     totEmocion() {
         return this.sprite[5].width / 128;
@@ -273,5 +299,9 @@ class Sprites {
     totCadera() {
         let sprInd = this.dataImgCol[2][2];
         return this.sprite[sprInd].width / 128;
+    }
+
+    totRol() {
+        return this.sprite[9].width / 128;
     }
 }

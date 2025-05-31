@@ -14,6 +14,7 @@ const width = canvas.width;
 const height = canvas.height;
 const worldW = width * document.getElementById("escalaMundo").value;
 const worldH = height * document.getElementById("escalaMundo").value;
+newMouseListener();
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
@@ -67,7 +68,7 @@ function draw() {
     
     // dibujar todos los objetos
     for (let i = 0; i < avatares.length; i++) {
-        avatares[i].draw(ctx, sprites);
+        avatares[i].drawAvatar(ctx, sprites);
     }
     // dibujar la interfaz GUI
     

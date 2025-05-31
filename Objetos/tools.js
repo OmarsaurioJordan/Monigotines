@@ -1,14 +1,16 @@
 // pulsacion de mouse
 let mousPos = [0, 0, false]; // x, y, recientemente_pulsado
-canvas.addEventListener("mousedown", function(event) {
-    if (event.button !== 0) { return null; }
-    let rect = canvas.getBoundingClientRect();
-    let scaleX = width / rect.width;
-    let scaleY = height / rect.height;
-    let x = Math.round((event.clientX - rect.left) * scaleX);
-    let y = Math.round((event.clientY - rect.top) * scaleY);
-    mousPos = [x, y, true];
-});
+function newMouseListener() {
+    canvas.addEventListener("mousedown", function(event) {
+        if (event.button !== 0) { return null; }
+        let rect = canvas.getBoundingClientRect();
+        let scaleX = width / rect.width;
+        let scaleY = height / rect.height;
+        let x = Math.round((event.clientX - rect.left) * scaleX);
+        let y = Math.round((event.clientY - rect.top) * scaleY);
+        mousPos = [x, y, true];
+    });
+}
 
 // escalar el canvas
 function resizeCanvasEsc(scale) {

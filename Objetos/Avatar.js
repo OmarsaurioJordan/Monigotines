@@ -21,7 +21,7 @@ class Avatar extends Movil {
         this.link = link;
     }
 
-    draw(ctx, sprites) {
+    drawAvatar(ctx, sprites) {
         sprites.drawCuerpo(ctx, this.pis, this.piel,
             this.genero, -1, this.cadera == 0);
         sprites.drawCadera(ctx, this.pis, this.genero,
@@ -32,6 +32,7 @@ class Avatar extends Movil {
             this.genero, -1);
         sprites.drawEmocion(ctx, this.pis, this.emocion, -1);
         sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
-            this.tinte, -1)
+            this.tinte, -1);
+        sprites.drawRol(ctx, this.pis, this.rol, -1);
     }
 }
