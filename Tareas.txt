@@ -1,0 +1,59 @@
+TAREAS.........................
+.
+Mundo:
+-M dibujar sombras bajo los avatares
+-M zoom y movimiento de camara manual
+-E movimiento de camara tras vatar
+-M mostrar mapa con todos los avatares
+-M cargar mobiliario y baldozas
+-M dibujar avatares y mobiliario en orden
+-M seleccionar avatar con clic
+-M ver perfil del avatar seleccionado
+-M ir al link del avatar seleccionado
+-E poder reaccionar al avatar seleccionado
+-E ver reacciónes en el avatar seleccionado
+-E ver mensajes en el avatar seleccionado
+-E enviar mensaje al avatar seleccionado
+-S desconectar tiempo real si inactividad
+.
+Avatares:
+-M asignar roles con sus sprites
+-M animar cabeza, tool y pies
+-M dibujar cuadro de mensaje
+-M limitar movimiento a bordes de mundo
+-M movimiento azaroso errando
+-G asignar clases con sus sprites
+-G movimiento hacia punto pseudo busqueda
+-G perseguir avatar
+-G atacar avatar
+-G recibir ataque
+-S moverse con teclado
+-S enviar posición en tiempo real
+-S sincronizar otros en tiempo real
+-S escribir mensaje en tiempo real
+.
+Interfaces:
+-M crear perfil propio desde donde ir a edición
+-C página para editar los mobiliarios
+-E ver mensajes tipo chat en interfaz
+-E responder mensajes tipo chat en interfaz
+-M página de estadísticas globales
+-G seleccionar bandos ideológicos
+.
+HECHO.........................
+.
+Mundo:
+-M sistema de carga de DB por bloques
+-M sistema de carga y dibujado de sprites
+-M obtención de avatares por bloques
+.
+Avatares:
+-M dibujado de los avatares con sus configuraciónes
+.
+Interfacez:
+-M login con sesion y contraseña
+-M preregistro y registro de usuario usando email
+-M edición de avatar con forms y botónes en canvas
+-M página mundo, con main loop y opciónes
+-M prevención de cierre de sesión o edición accidental
+.

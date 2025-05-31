@@ -6,10 +6,10 @@ class Cargador {
         this.consultas = [];
         this.resultados = [];
         this.limite = 30; // bloques de datos
-        this.segMiniespera = 2; // entre bloques
-        this.segMacroespera = 9; // actualizaciones
-        this.segReintento = 4; // volver a hacer peticion
-        this.milisegTimeout = 7000; // esperar al servidor
+        this.segMiniespera = 3; // entre bloques
+        this.segMacroespera = 12; // actualizaciones
+        this.segReintento = 6; // volver a hacer peticion
+        this.milisegTimeout = 9000; // esperar al servidor
     }
 
     newConsulta(tabla, atributos) {

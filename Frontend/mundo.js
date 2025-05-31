@@ -31,6 +31,7 @@ let lastTime = 0;
 function loop(currentTime) {
     let dlt = (currentTime - lastTime) / 1000;
     lastTime = currentTime;
+    if (!Number.isFinite(dlt)) dlt = 0;
     // ejecutar todo usando el delta de tiempo
     step(dlt);
     draw();
@@ -41,7 +42,7 @@ function loop(currentTime) {
 // se calcula la logica
 function step(dlt) {
     // cargar o actualizar avatares
-    cargador.step(0.01);
+    cargador.step(dlt);
     let ava = cargador.popData(indAvaCrg);
     while (ava) {
         avatares.push(new Avatar(
@@ -54,7 +55,7 @@ function step(dlt) {
     }
 
     for (let i = 0; i < avatares.length; i++) {
-        avatares[i].pis[0] += 100 * dlt;
+        //avatares[i].pis[0] += 100 * dlt;
     }
 }
 

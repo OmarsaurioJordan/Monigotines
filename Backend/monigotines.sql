@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-05-2025 a las 01:37:16
+-- Tiempo de generación: 31-05-2025 a las 17:16:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -124,7 +124,6 @@ CREATE TABLE `mobiliario` (
   `tipo` tinyint(3) UNSIGNED NOT NULL,
   `pos_x` int(11) NOT NULL,
   `pos_y` int(11) NOT NULL,
-  `publico` tinyint(3) UNSIGNED NOT NULL,
   `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
