@@ -14,8 +14,8 @@
     $cadera = $_POST['cadera'];
     $tela = $_POST['tela'];
     $rol = $_POST['rol'];
-    $mensaje = $_POST['mensaje'];
-    $descripcion = $_POST['descripcion'];
+    $mensaje = okMensaje($_POST['mensaje']);
+    $descripcion = okMensaje($_POST['descripcion']);
     $link = $_POST['link'];
 
     $sql = "UPDATE avatar SET nombre=?, genero=?, piel=?, emocion=?,

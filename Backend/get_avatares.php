@@ -12,7 +12,7 @@
 
     if ($tabla != "" && $atributos != "") {
         $sql = "SELECT actualiza,$atributos FROM $tabla
-            WHERE actualiza < $cursor AND actualiza >= $freno
+            WHERE actualiza < $cursor AND actualiza > $freno
             ORDER BY actualiza DESC
             LIMIT $limite";
         $stmt = $pdo -> prepare($sql);

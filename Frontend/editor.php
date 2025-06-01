@@ -78,14 +78,10 @@
                 <button type="submit">💾 Guardar</button>
             </div>
         </form>
-		<label id="output"></label>
     </body>
     <script src="../Backend/tool_master.js" defer></script>
     <script src="../Objetos/tools.js" defer></script>
     <script src="../Objetos/Sprites.js" defer></script>
-    <script src="../Objetos/Visible.js" defer></script>
-    <script src="../Objetos/Objeto.js" defer></script>
-    <script src="../Objetos/Movil.js" defer></script>
     <script src="../Objetos/Avatar.js" defer></script>
     <script src="editor.js" defer></script>
 </html>

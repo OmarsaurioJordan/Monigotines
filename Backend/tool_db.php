@@ -63,17 +63,27 @@
         return $clave;
     }
 
-    function okNombre($nombre) {
+    function okTexto($texto, $mascara) {
         $res = "";
-        $msk = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ".
-            "0123456789áéíóúÁÉÍÓÚ";
-        for ($i = 0; $i < mb_strlen($nombre); $i++) {
-            $c = mb_substr($nombre, $i, 1);
-            if (mb_strpos($msk, $c) !== false) {
+        for ($i = 0; $i < mb_strlen($texto); $i++) {
+            $c = mb_substr($texto, $i, 1);
+            if (mb_strpos($mascara, $c) !== false) {
                 $res .= $c;
             }
         }
         return $res;
+    }
+
+    function okNombre($nombre) {
+        $msk = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ".
+            "0123456789áéíóúÁÉÍÓÚ";
+        return okTexto($nombre, $msk);
+    }
+
+    function okMensaje($mensaje) {
+        $msk = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ".
+            "0123456789áéíóúÁÉÍÓÚ _\n.:,;<>{}[]^+-*/~'\"¿?¡!\\=()&%$#|°";
+        return okTexto($mensaje, $msk);
     }
 
     function sendClave($mail_to, $clave) {

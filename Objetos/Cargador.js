@@ -23,7 +23,7 @@ class Cargador {
         // 5 isFree: true si no esta descargando fetch
         // 6 segReloj: espera para volver a pedir datos
         this.consultas.push([
-            tabla, atributos, -1, -1, -1, true, 0]);
+            tabla, atributos, "", "", "", true, 0]);
         // array de arrays, se van almacenando los datos del fetch
         this.resultados.push([]);
         return this.consultas.length - 1;
@@ -34,11 +34,11 @@ class Cargador {
             "?limite=" + this.limite +
             "&tabla=" + this.consultas[ind][0] +
             "&atributos=" + this.consultas[ind][1];
-        if (this.consultas[ind][2] != -1) {
-            url += "&cursor=" + this.consultas[ind][2];
+        if (this.consultas[ind][2] != "") {
+            url += "&cursor='" + this.consultas[ind][2] + "'";
         }
-        if (this.consultas[ind][3] != -1) {
-            url += "&freno=" + this.consultas[ind][3];
+        if (this.consultas[ind][3] != "") {
+            url += "&freno='" + this.consultas[ind][3] + "'";
         }
         this.consultas[ind][5] = false;
         this.fetchTimeout(url, this.milisegTimeout).
@@ -50,14 +50,13 @@ class Cargador {
         }).
         then(data => {
             if (data.length == 0) {
-                this.consultas[ind][2] = -1; // reiniciar cursor
+                this.consultas[ind][2] = ""; // reiniciar cursor
                 this.consultas[ind][3] = this.consultas[ind][4];
-                this.consultas[ind][4] = -1; // para nuevo freno
                 this.consultas[ind][6] = this.segMacroespera;
             }
             else {
                 this.resultados[ind].push(...data);
-                if (this.consultas[ind][2] == -1) {
+                if (this.consultas[ind][2] == "") {
                     this.consultas[ind][4] =
                         data[0].actualiza;
                 }
@@ -80,6 +79,11 @@ class Cargador {
             if (this.consultas[i][5]) {
                 this.consultas[i][6] -= dlt;
                 if (this.consultas[i][6] <= 0) {
+
+
+                    console.log("c:" + this.consultas[i][2] + " f:" + this.consultas[i][3]);
+
+
                     this.doConsulta(i);
                 }
             }

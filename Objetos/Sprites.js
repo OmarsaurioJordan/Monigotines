@@ -16,6 +16,7 @@ class Sprites {
             this.loadImg("d_monigotin_scroll"), // 7
             this.loadImg("d_suelo"), // 8
             this.loadImg("d_monigotin_rol"), // 9
+            this.loadImg("d_monigotin_sombra") // 10
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -136,6 +137,10 @@ class Sprites {
             128 * escala, 192 * escala);
     }
 
+    drawSombra(ctx, posicion) {
+        ctx.drawImage(this.sprite[10], posicion[0] - 41, posicion[1] - 23);
+    }
+
     // dibujado de piezas de avatar
 
     drawCabeza(ctx, posicion, piel, genero, anima) {
@@ -215,14 +220,14 @@ class Sprites {
     drawColor(ctx, posicion, isPelo, color) {
         let indSpr = (isPelo ? this.dataImgCol[6][2] :
             this.dataImgCol[7][2]) + color;
-        ctx.drawImage(this.sprite[indSpr], 0, 0, 16, 16,
-            posicion[0] - 8, posicion[1] - 8, 16, 16);
+        ctx.drawImage(this.sprite[indSpr],
+            posicion[0] - 8, posicion[1] - 8);
     }
 
     drawPiel(ctx, posicion, piel) {
         let indSpr = this.dataImgCol[8][2] + piel;
-        ctx.drawImage(this.sprite[indSpr], 0, 0, 16, 16,
-            posicion[0] - 8, posicion[1] - 8, 16, 16);
+        ctx.drawImage(this.sprite[indSpr],
+            posicion[0] - 8, posicion[1] - 8);
     }
 
     drawScroll(ctx, posicion, isUp) {
@@ -311,8 +316,9 @@ class Sprites {
 
     // manipulacion de texto
 
-    static getMsjFont() {
-        return "14px Georgia,'Times New Roman',Times, serif";
+    static getMsjFont(isTitle=false) {
+        return (isTitle ? "17" : "14") +
+            "px Georgia,'Times New Roman',Times, serif";
     }
 
     static drawMensaje(ctx, texto, posicion, font, lineY, borde) {

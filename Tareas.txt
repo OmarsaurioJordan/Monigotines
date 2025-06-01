@@ -1,11 +1,9 @@
 TAREAS.........................
 .
 Mundo:
--M dibujar sombras bajo los avatares
 -M zoom y movimiento de camara manual
 -M mostrar mapa con todos los avatares
 -M cargar mobiliario y baldozas
--M dibujar avatares y mobiliario en orden
 -M seleccionar avatar con clic
 -M ver perfil del avatar seleccionado
 -M ir al link del avatar seleccionado
@@ -17,8 +15,6 @@ Mundo:
 -S desconectar tiempo real si inactividad
 .
 Avatares:
--M dibujar cuadro de mensaje
--M dibujar nombre sobre sí
 -M limitar movimiento a bordes de mundo
 -M colisión con avatares y mobiliarios
 -M movimiento azaroso errando
@@ -27,7 +23,7 @@ Avatares:
 -G perseguir avatar
 -G atacar avatar
 -G recibir ataque
--S moverse con teclado
+-E moverse con teclado
 -S enviar posición en tiempo real
 -S sincronizar otros en tiempo real
 -S escribir mensaje en tiempo real
@@ -46,10 +42,15 @@ Mundo:
 -M sistema de carga de DB por bloques
 -M sistema de carga y dibujado de sprites
 -M obtención de avatares por bloques
+-M dibujar sombras bajo los avatares
+-M estructurar loop, step, draw en avatares y mundo
+-M dibujar avatares y mobiliario en orden
 .
 Avatares:
 -M dibujado de los avatares con sus configuraciónes
 -M animar cabeza, tool y pies
+-M dibujar cuadro de mensaje
+-M dibujar nombre sobre sí
 .
 Interfacez:
 -M login con sesion y contraseña

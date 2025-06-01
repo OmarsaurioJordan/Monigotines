@@ -1,12 +1,12 @@
-class Avatar extends Movil {
+class Avatar {
     static timeAnima = [1.2, 0.6, 0.85]; // pies, cabeza, tool
 
     constructor(id, nombre, genero, piel, emocion, pelo, tinte,
             torso, color, cadera, tela, rol, mensaje, descripcion,
             link, posicion) {
         // configuracion del avatar como tal
-        super(posicion);
         this.id = id;
+        this.pos = posicion;
         this.nombre = nombre;
         this.genero = genero;
         this.piel = piel;
@@ -18,9 +18,12 @@ class Avatar extends Movil {
         this.cadera = cadera;
         this.tela = tela;
         this.rol = rol;
-        this.mensaje = ""; this.setMensaje(mensaje);
+        this.mensaje = "";
+        this.setMensaje(mensaje);
         this.descripcion = descripcion;
         this.link = link;
+        // configuracion para funcionamiento
+        this.pis = this.pos; // interpolacion
         // configuracion para animaciones
         this.anima = []; // pies, cabeza, tool
         this.relojAnima = [];
@@ -30,10 +33,38 @@ class Avatar extends Movil {
         });
     }
 
+    // set de atributos
+
     setMensaje(mensaje) {
         this.mensaje = Sprites.prepareTextMsj(mensaje,
             200, 1000, Sprites.getMsjFont(), 20, 40);
     }
+
+    actualizar(nombre, genero, piel, emocion, pelo, tinte, torso,
+            color, cadera, tela, rol, mensaje, descripcion, link) {
+        this.nombre = nombre;
+        this.genero = genero;
+        this.piel = piel;
+        this.emocion = emocion;
+        this.pelo = pelo;
+        this.tinte = tinte;
+        this.torso = torso;
+        this.color = color;
+        this.cadera = cadera;
+        this.tela = tela;
+        this.rol = rol;
+        this.descripcion = descripcion;
+        this.link = link;
+        this.setMensaje(mensaje);
+    }
+
+    // loop de logica
+
+    step(dlt) {
+        this.stepAnima(dlt);
+    }
+
+    // animaciones
 
     stepAnima(dlt) {
         for (let i = 0; i < this.relojAnima.length; i++) {
@@ -49,6 +80,8 @@ class Avatar extends Movil {
             }
         }
     }
+
+    // dibujado
 
     drawAvatar(ctx, sprites, isWalk) {
         let wlk = isWalk ? this.relojAnima[0] : -1;
@@ -67,15 +100,22 @@ class Avatar extends Movil {
         sprites.drawRol(ctx, this.pis, this.rol, this.anima[2]);
     }
 
-    drawMensaje(ctx) {
-        let posMsj = [this.pis[0], this.pis[1] - 130];
-        Sprites.drawMensaje(
-            ctx, this.mensaje, posMsj,
-            Sprites.getMsjFont(), 20, 5
-        );
+    drawMensaje(ctx, conNombre, texto="") {
+        let posMsj = [this.pis[0], this.pis[1] - 120];
+        if (conNombre) {
+            Sprites.drawMensaje(
+                ctx, this.nombre, posMsj,
+                Sprites.getMsjFont(true), 18, 3);
+            posMsj[1] -= 26;
+        }
+        if (texto != "") {
+            Sprites.drawMensaje(
+                ctx, texto, posMsj, Sprites.getMsjFont(), 20, 5);
+        }
     }
 
     draw(ctx, sprites) {
         this.drawAvatar(ctx, sprites, true);
+        this.drawMensaje(ctx, true, this.mensaje);
     }
 }

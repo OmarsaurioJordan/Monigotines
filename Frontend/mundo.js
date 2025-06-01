@@ -6,8 +6,6 @@ function btnVolver() {
 }
 
 // obtener informacion del lienzo y el mundo
-const out = document.getElementById("output");
-out.innerHTML = ""; // para ver debug
 const canvas = document.getElementById("lienzo");
 const ctx = canvas.getContext("2d");
 const width = canvas.width;
@@ -19,7 +17,16 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 // estructura que guarda todos los objetos del juego
-let avatares = [];
+let objetos = [];
+function getObjId(id, isAvatar=true) {
+    let myClass = isAvatar ? Avatar : Mobiliario;
+    for (let i = 0; i < objetos.length; i++) {
+        if (objetos[i].id == id && objetos[i] instanceof myClass) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 // el sistema que descarga los avatares de la DB
 const cargador = new Cargador("../Backend/get_avatares.php");
@@ -44,33 +51,46 @@ function loop(currentTime) {
 function step(dlt) {
     // cargar o actualizar avatares
     cargador.step(dlt);
+    let oldAva = null;
     let ava = cargador.popData(indAvaCrg);
     while (ava) {
-        avatares.push(new Avatar(
-            ava.id, ava.nombre, ava.genero, ava.piel, ava.emocion,
-            ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
-            ava.tela, ava.rol, ava.mensaje, ava.descripcion,
-            ava.link, [Math.random() * width, Math.random() * height]
-        ));
+        oldAva = getObjId(ava.id);
+
+
+        console.log("ava: " + oldAva);
+
+
+        if (oldAva != -1) {
+            objetos[oldAva].actualizar(
+                ava.nombre, ava.genero, ava.piel, ava.emocion,
+                ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
+                ava.tela, ava.rol, ava.mensaje, ava.descripcion, ava.link
+            );
+        }
+        else {
+            objetos.push(new Avatar(
+                ava.id, ava.nombre, ava.genero, ava.piel, ava.emocion,
+                ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
+                ava.tela, ava.rol, ava.mensaje, ava.descripcion,
+                ava.link, [Math.random() * width, Math.random() * height]
+            ));
+        }
         ava = cargador.popData(indAvaCrg);
     }
-
-    for (let i = 0; i < avatares.length; i++) {
-        //avatares[i].pis[0] += 100 * dlt;
-    }
+    // ejecutar el loop de los objetos
+    objetos.forEach(obj => obj.step(dlt));
 }
 
 // se dibuja todo
 function draw() {
     // dibujar todo el suelo
     sprites.drawSuelo(ctx, worldW, worldH);
+    // ordenar en Y todos los objetos
+    objetos.sort((a, b) => a.pis[1] - b.pis[1]);
     // dibujar sombras
-    
+    objetos.forEach(obj => sprites.drawSombra(ctx, obj.pis));
     // dibujar todos los objetos
-    for (let i = 0; i < avatares.length; i++) {
-        avatares[i].drawAvatar(ctx, sprites, false);
-        avatares[i].drawMensaje(ctx);
-    }
+    objetos.forEach(obj => obj.draw(ctx, sprites));
     // dibujar la interfaz GUI
     
 }

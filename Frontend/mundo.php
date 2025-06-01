@@ -53,15 +53,11 @@
         </div>
 		<canvas id="lienzo" width="1000" height="700"
 			style="border:1px solid black;"></canvas>
-		<label id="output"></label>
     </body>
     <script src="../Backend/tool_master.js" defer></script>
     <script src="../Objetos/tools.js" defer></script>
     <script src="../Objetos/Sprites.js" defer></script>
     <script src="../Objetos/Cargador.js" defer></script>
-    <script src="../Objetos/Visible.js" defer></script>
-    <script src="../Objetos/Objeto.js" defer></script>
-    <script src="../Objetos/Movil.js" defer></script>
     <script src="../Objetos/Avatar.js" defer></script>
     <script src="mundo.js" defer></script>
 </html>
