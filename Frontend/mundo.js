@@ -68,7 +68,8 @@ function draw() {
     
     // dibujar todos los objetos
     for (let i = 0; i < avatares.length; i++) {
-        avatares[i].drawAvatar(ctx, sprites);
+        avatares[i].drawAvatar(ctx, sprites, false);
+        avatares[i].drawMensaje(ctx);
     }
     // dibujar la interfaz GUI
     

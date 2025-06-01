@@ -41,6 +41,7 @@ let lastTime = 0;
 function loop(currentTime) {
     let dlt = (currentTime - lastTime) / 1000;
     lastTime = currentTime;
+    if (!Number.isFinite(dlt)) dlt = 0;
     // ejecutar todo usando el delta de tiempo
     step(dlt);
     draw();
@@ -50,6 +51,8 @@ function loop(currentTime) {
 
 // se calcula la logica
 function step(dlt) {
+    // animar al avatar
+    avatar.stepAnima(dlt);
     // verificar pulsacion de mouse
     if (mousPos[2]) {
         mousPos[2] = false;
@@ -144,7 +147,7 @@ function draw() {
     ctx.fillStyle = colorFondo;
     ctx.fillRect(0, 0, width, height);
     // dibujar avatar
-    avatar.drawAvatar(ctx, sprites);
+    avatar.drawAvatar(ctx, sprites, false);
     // dibujar los botones de la izquierda
     for (let i = 0; i < 6; i++) {
         sprites.drawSelect(ctx, [16, 16 + i * 32], i, estado == i);

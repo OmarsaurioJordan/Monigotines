@@ -1,12 +1,12 @@
 <link rel="stylesheet" href="Frontend/style.css">
-<canvas id="gameCanvas" width="100" height="50"
+<canvas id="gameCanvas" width="500" height="300"
     style="border:1px solid black;"></canvas>
 <label id="output"></label>
-<script src="Objetos/Cargador.js"></script>
-<script>/*
+<script src="Objetos/Sprites.js"></script>
+<script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-
+/*
 // Cámara
 let cam = {
     x: 0, y: 0,
@@ -90,17 +90,16 @@ window.addEventListener('keydown', e => {
 });*/
 const out = document.getElementById("output");
 out.innerHTML = "";
-const crg = new Cargador("Backend/get_avatares.php");
-const ind = crg.newConsulta("avatar", "nombre,emocion");
-const ms = 200;
-let res = "";
-setInterval(() => {
-    crg.step(ms / 1000);
-    let ava = crg.popData(ind);
-    while (ava) {
-        res += "." + ava.nombre;
-        ava = crg.popData(ind);
-    }
-    out.innerHTML = res;
-}, ms);
+// texto, anchoPx, altoPx, font, lineY, bordeX
+const texto = "Un año antes, en 1147, se había producido la conquista de Lisboa por los cruzados. La operación se enmarcó en la bula de la cruzada promulgada por el pontífice Eugenio III.\n[1]" +
+"Ramón IV contó con el apoyo de la República de Génova,[2] un contingente anglo-normando,[3] la Orden del Temple,[4] y los caballeros hospitalarios.\n[5] Durante el asedio a la ciudad tuvo lugar un bloqueo naval por parte de los genoveses que cerraba el río Ebro.[4]\n" +
+"Tras la conquista, Ramón Berenguer IV restableció la sede de la diócesis de Tortosa.[6]";
+const reTexto = Sprites.prepareTextMsj(
+    texto, 400, 100, Sprites.getMsjFont(), 24, 40
+);
+out.innerHTML = "<br>" + reTexto + "<br><br>" + texto;
+// ctx, texto, posicion, font, lineY, borde
+Sprites.drawMensaje(ctx, reTexto, [250, 200],
+    Sprites.getMsjFont(), 24, 5
+);
 </script>

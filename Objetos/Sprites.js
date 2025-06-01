@@ -143,7 +143,8 @@ class Sprites {
         let spr = this.sprite[piel];
         let sub = genero == 0 ? 0 : 6;
         if (anima != -1) {
-            posicion[1] -= anima * this.osciCabeza;
+            posicion = [posicion[0],
+                posicion[1] - anima * this.osciCabeza];
         }
         this.drawSprite(ctx, posicion, spr, sub);
     }
@@ -164,7 +165,8 @@ class Sprites {
     drawEmocion(ctx, posicion, emocion, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion[1] -= anima * this.osciCabeza;
+            posicion = [posicion[0],
+                posicion[1] - anima * this.osciCabeza];
         }
         this.drawSprite(ctx, posicion, this.sprite[5], emocion);
     }
@@ -174,7 +176,8 @@ class Sprites {
         let indSpr = (genero == 0 ? this.dataImgCol[0][2] :
             this.dataImgCol[1][2]) + tinte;
         if (anima != -1) {
-            posicion[1] -= anima * this.osciCabeza;
+            posicion = [posicion[0],
+                posicion[1] - anima * this.osciCabeza];
         }
         this.drawSprite(ctx, posicion, this.sprite[indSpr], pelo);
     }
@@ -194,7 +197,8 @@ class Sprites {
     drawRol(ctx, posicion, rol, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion[1] -= anima * this.osciCabeza * 2;
+            posicion = [posicion[0],
+                posicion[1] - anima * this.osciCabeza * 2];
         }
         this.drawSprite(ctx, posicion, this.sprite[9], rol);
     }
@@ -303,5 +307,137 @@ class Sprites {
 
     totRol() {
         return this.sprite[9].width / 128;
+    }
+
+    // manipulacion de texto
+
+    static getMsjFont() {
+        return "14px Georgia,'Times New Roman',Times, serif";
+    }
+
+    static drawMensaje(ctx, texto, posicion, font, lineY, borde) {
+        // configurar las cosas
+        ctx.font = font;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        let lineas = texto.split("\n");
+        // obtener informacion general
+        let ancho = ctx.measureText("Hola").width;
+        lineas.forEach(li => {
+            ancho = Math.max(ancho, ctx.measureText(li).width);
+        });
+        let alto = posicion[1] - (lineas.length - 1) * lineY;
+        // dibujar fondo
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.fillRect(
+            posicion[0] - ancho / 2 - borde,
+            alto - lineY - borde,
+            ancho + 2 * borde,
+            lineas.length * lineY + 2 * borde
+            //posicion[0] + ancho / 2 + borde,
+            //posicion[1] + borde
+        );
+        // dibujar texto
+        ctx.fillStyle = "black";
+        lineas.forEach(li => {
+            ctx.fillText(li, posicion[0], alto);
+            alto += lineY;
+        });
+    }
+
+    static prepareTextMsj(texto, anchoPx, altoPx, font, lineY, bordeX) {
+        // el texto cabra en el rectangulo anchoPx x altoPx
+        // font: "16px Arial"
+        // lineY: espacio vertical entre lineas
+        // bordeX: espacio px maximo vacio a la derecha, romper palabras
+        let myCanva = document.createElement('canvas');
+        let myCtx = myCanva.getContext('2d');
+        myCtx.font = font;
+        let result = "";
+        // preparar el texto quitando espacios o saltos duplicados
+        texto = Sprites.prepareTextJump(texto);
+        // comenzar el ciclo que analiza cada palabra para ver si cabe
+        let palabras = texto.split(" ");
+        let antLine = "";
+        let cursorY = 0;
+        while (palabras.length != 0) {
+            // obtiene la palabra y calcula la talla del texto acumulado
+            let pal = palabras.shift();
+            let newLine = antLine + pal + " ";
+            let newAncho = myCtx.measureText(newLine).width;
+            // cupo perfectamente
+            if (newAncho <= anchoPx) {
+                result += pal + " ";
+                antLine = newLine;
+            }
+            else {
+                // obtener informacion de longitud de palabra y espacio
+                let palAncho = myCtx.measureText(pal).width;
+                let libre = anchoPx - (newAncho - palAncho);
+                // devolver la palabra para procesarla en linea nueva
+                if (libre <= bordeX) {
+                    palabras.unshift(pal);
+                }
+                // partir la palabra
+                else {
+                    // primero hallar la particion optima
+                    let opc1 = Sprites.getTextTramo(
+                        myCtx, pal, libre - bordeX);
+                    let min1 = Math.min(opc1[1], palAncho - opc1[1]);
+                    let opc2 = Sprites.getTextTramo(
+                        myCtx, Sprites.getTextReverse(pal), newAncho - anchoPx);
+                    let min2 = Math.min(opc2[1], palAncho - opc2[1]);
+                    let prts = min1 > min2 ?
+                        [opc1[0], opc1[2]] :
+                        [Sprites.getTextReverse(opc2[2]),
+                        Sprites.getTextReverse(opc2[0])];
+                    // agregar el tramo y devolver el otro a la lista
+                    result += prts[0] + "-";
+                    palabras.unshift(prts[1]);
+                }
+                // verificar si ha llegado al limite vertical
+                cursorY += lineY;
+                if (cursorY > altoPx - lineY) {
+                    return result;
+                }
+                else {
+                    result += "\n";
+                    antLine = "";
+                }
+            }
+        }
+        return result;
+    }
+
+    static prepareTextJump(texto) {
+        let antTexto = texto;
+        texto = texto.replaceAll("  ", " ").replaceAll("\n\n", "\n");
+        while (texto != antTexto) {
+            antTexto = texto;
+            texto = texto.replaceAll("  ", " ").replaceAll("\n\n", "\n");
+        }
+        texto = texto.replaceAll(" \n", "\n");
+        texto = texto.replaceAll("\n ", "\n");
+        texto = texto.replaceAll("\n", " ");
+        return texto;
+    }
+
+    static getTextTramo(myCtx, texto, anchoObj) {
+        // dado un contexto, aumenta gradualmente a texto hasta anchoObj
+        // return: [tramo_de_texto, talla_del_tramo, segunda_parte_del_texto]
+        let subTxt = "";
+        let palAncho = 0;
+        for (let c = 0; c < texto.length; c++) {
+            subTxt += texto.charAt(c);
+            palAncho = myCtx.measureText(subTxt).width;
+            if (palAncho >= anchoObj) {
+                return [subTxt, palAncho, texto.substring(subTxt.length)];
+            }
+        }
+        return [subTxt, palAncho, ""];
+    }
+
+    static getTextReverse(texto) {
+        return texto.split("").reverse().join("");
     }
 }

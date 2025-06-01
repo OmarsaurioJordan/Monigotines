@@ -17,7 +17,6 @@ Mundo:
 -S desconectar tiempo real si inactividad
 .
 Avatares:
--M animar cabeza, tool y pies
 -M dibujar cuadro de mensaje
 -M dibujar nombre sobre sí
 -M limitar movimiento a bordes de mundo
@@ -50,6 +49,7 @@ Mundo:
 .
 Avatares:
 -M dibujado de los avatares con sus configuraciónes
+-M animar cabeza, tool y pies
 .
 Interfacez:
 -M login con sesion y contraseña
