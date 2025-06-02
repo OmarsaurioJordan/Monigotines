@@ -6,6 +6,7 @@ Mundo:
 -M seleccionar avatar con clic
 -M ver perfil del avatar seleccionado
 -M ir al link del avatar seleccionado
+-M moto todos los mensajes vs visibles con mouse
 -E poder reaccionar al avatar seleccionado
 -E ver reacciónes en el avatar seleccionado
 -E ver mensajes en el avatar seleccionado
@@ -22,17 +23,20 @@ Avatares:
 -G perseguir avatar
 -G atacar avatar
 -G recibir ataque
+-G morir andar como fantasma
 -E moverse con teclado
+-E ver mensajes de cercano
 -S enviar posición en tiempo real
 -S sincronizar otros en tiempo real
 -S escribir mensaje en tiempo real
 .
 Interfaces:
 -C página para editar los mobiliarios
--M crear perfil propio desde donde ir a edición
+-M página perfil propio desde donde ir a edición
 -M página de estadísticas globales
 -G seleccionar bandos ideológicos
--E ver mensajes tipo chat en interfaz
+-E ver todos los mensajes tipo chat en interfaz
+-E ver un chat con sus mensajes en interfaz
 -E responder mensajes tipo chat en interfaz
 .
 HECHO.........................
