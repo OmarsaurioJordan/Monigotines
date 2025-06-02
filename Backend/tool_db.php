@@ -4,6 +4,8 @@
     $password = '';
     $dbname = 'monigotines';
     $serverMail = ""; // vacio debug
+    $claveMd5 = "unaCADENAsssekreta906090"; // algo random
+    // nota: claveMd5 si es cambiada, todas las password de la DB quedan obsoletas
 
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
@@ -51,7 +53,8 @@
     }
 
     function setClave($clave) {
-        return md5($clave. "unaCADENAsssekreta906090");
+        global $claveMd5;
+        return md5($clave. $claveMd5);
     }
 
     function newClave($tot=6) {

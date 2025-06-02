@@ -60,7 +60,7 @@ class Avatar {
 
     // loop de logica
 
-    step(dlt) {
+    step(dlt, estado, usuario) {
         this.stepAnima(dlt);
     }
 
@@ -112,6 +112,10 @@ class Avatar {
             Sprites.drawMensaje(
                 ctx, texto, posMsj, Sprites.getMsjFont(), 20, 5);
         }
+    }
+
+    drawSombra(ctx, sprites) {
+        sprites.drawSombra(ctx, this.pis);
     }
 
     draw(ctx, sprites) {

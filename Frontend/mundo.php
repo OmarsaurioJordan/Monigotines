@@ -14,6 +14,8 @@
     </head>
     <body>
         <input type="hidden" id="escalaMundo" value="<?php echo $escalaMundo; ?>">
+        <input type="hidden" id="usuario" value=
+            "<?php echo (isset($_SESSION['usr']) ? $_SESSION['usr'] : -1); ?>">
         <div class="cabecera">
             <div>
                 <?php if (isset($_SESSION['usr'])) { ?>

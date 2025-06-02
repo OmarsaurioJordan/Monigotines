@@ -13,17 +13,16 @@ class Cargador {
     }
 
     newConsulta(tabla, atributos) {
-        // [tabla, atributos, cursor, antFreno, newFreno]
-        // 0 tabla: "avatar"
-        // 1 atributos: "id,nombre,genero" actualiza es automatico
-        // 2 cursor: timestamp del ultimo dato del tramo
-        // 3 antFreno: freno a poner en las consultas
-        // 4 newFreno: freno cuando cursor -1, maximo timestamp
-        //       de primer dato, al finalizar ant=new
-        // 5 isFree: true si no esta descargando fetch
-        // 6 segReloj: espera para volver a pedir datos
-        this.consultas.push([
-            tabla, atributos, "", "", "", true, 0]);
+        this.consultas.push({
+            tabla: tabla, // ej: "avatar"
+            atributos: atributos, // "id,nombre,genero" actualiza es automatico
+            cursor: "", // timestamp del ultimo dato del tramo
+            antFreno: "", // freno a poner en las consultas
+            newFreno: "", // freno cuando cursor -1, maximo timestamp
+                            // de primer dato, al finalizar ant=new
+            free: true, // true si no esta descargando fetch
+            reloj: 0 // espera para volver a pedir datos
+        });
         // array de arrays, se van almacenando los datos del fetch
         this.resultados.push([]);
         return this.consultas.length - 1;
@@ -32,15 +31,15 @@ class Cargador {
     doConsulta(ind) {
         let url = this.apiFile +
             "?limite=" + this.limite +
-            "&tabla=" + this.consultas[ind][0] +
-            "&atributos=" + this.consultas[ind][1];
-        if (this.consultas[ind][2] != "") {
-            url += "&cursor='" + this.consultas[ind][2] + "'";
+            "&tabla=" + this.consultas[ind].tabla +
+            "&atributos=" + this.consultas[ind].atributos;
+        if (this.consultas[ind].cursor != "") {
+            url += "&cursor='" + this.consultas[ind].cursor + "'";
         }
-        if (this.consultas[ind][3] != "") {
-            url += "&freno='" + this.consultas[ind][3] + "'";
+        if (this.consultas[ind].antFreno != "") {
+            url += "&freno='" + this.consultas[ind].antFreno + "'";
         }
-        this.consultas[ind][5] = false;
+        this.consultas[ind].free = false;
         this.fetchTimeout(url, this.milisegTimeout).
         then(res => {
             if (!res.ok) {
@@ -50,40 +49,35 @@ class Cargador {
         }).
         then(data => {
             if (data.length == 0) {
-                this.consultas[ind][2] = ""; // reiniciar cursor
-                this.consultas[ind][3] = this.consultas[ind][4];
-                this.consultas[ind][6] = this.segMacroespera;
+                this.consultas[ind].cursor = ""; // reiniciar cursor
+                this.consultas[ind].antFreno = this.consultas[ind].newFreno;
+                this.consultas[ind].reloj = this.segMacroespera;
             }
             else {
                 this.resultados[ind].push(...data);
-                if (this.consultas[ind][2] == "") {
-                    this.consultas[ind][4] =
+                if (this.consultas[ind].cursor == "") {
+                    this.consultas[ind].newFreno =
                         data[0].actualiza;
                 }
-                this.consultas[ind][2] =
+                this.consultas[ind].cursor =
                     data[data.length - 1].actualiza;
-                this.consultas[ind][6] = this.segMiniespera;
+                this.consultas[ind].reloj = this.segMiniespera;
             }
-            this.consultas[ind][5] = true;
+            this.consultas[ind].free = true;
             return true;
         }).
         catch(err => {
-            this.consultas[ind][5] = true;
-            this.consultas[ind][6] = this.segReintento;
+            this.consultas[ind].free = true;
+            this.consultas[ind].reloj = this.segReintento;
             return false;
         });
     }
 
     step(dlt) {
         for (let i = 0; i < this.consultas.length; i++) {
-            if (this.consultas[i][5]) {
-                this.consultas[i][6] -= dlt;
-                if (this.consultas[i][6] <= 0) {
-
-
-                    console.log("c:" + this.consultas[i][2] + " f:" + this.consultas[i][3]);
-
-
+            if (this.consultas[i].free) {
+                this.consultas[i].reloj -= dlt;
+                if (this.consultas[i].reloj <= 0) {
                     this.doConsulta(i);
                 }
             }

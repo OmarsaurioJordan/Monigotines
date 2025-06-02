@@ -52,11 +52,12 @@ function step(dlt) {
     // animar al avatar
     avatar.stepAnima(dlt);
     // verificar pulsacion de mouse
-    if (mousPos[2]) {
-        mousPos[2] = false;
+    if (mousPos.pulsado) {
+        mousPos.pulsado = false;
+        let mPos = [mousPos.x, mousPos.y];
         // verificar si selecciono un estado
         for (let i = 0; i < 6; i++) {
-            if (pointInCircle(mousPos, [16, 16 + i * 32], 14)) {
+            if (pointInCircle(mPos, [16, 16 + i * 32], 14)) {
                 estado = i;
                 break;
             }
@@ -64,7 +65,7 @@ function step(dlt) {
         // verificar si selecciono un color
         if (estado == 0) {
             for (let i = 0; i < 12; i++) {
-                if (pointInCircle(mousPos, [232, 8 + i * 16], 7)) {
+                if (pointInCircle(mPos, [232, 8 + i * 16], 7)) {
                     document.getElementById("tinte").value = i;
                     avatar.tinte = i;
                     break;
@@ -73,7 +74,7 @@ function step(dlt) {
         }
         else if (estado == 1) {
             for (let i = 0; i < 5; i++) {
-                if (pointInCircle(mousPos, [232, 8 + i * 16], 7)) {
+                if (pointInCircle(mPos, [232, 8 + i * 16], 7)) {
                     document.getElementById("piel").value = i;
                     avatar.piel = i;
                     break;
@@ -82,7 +83,7 @@ function step(dlt) {
         }
         else if (estado == 2 || estado == 3) {
             for (let i = 0; i < 12; i++) {
-                if (pointInCircle(mousPos, [232, 8 + i * 16], 7)) {
+                if (pointInCircle(mPos, [232, 8 + i * 16], 7)) {
                     if (estado == 2) {
                         document.getElementById("color").value = i;
                         avatar.color = i;
@@ -97,10 +98,10 @@ function step(dlt) {
         }
         // verificar si selecciono un scroll
         let sum = 0;
-        if (pointInRectangle(mousPos, [160, 176], [224, 192])) {
+        if (pointInRectangle(mPos, [160, 176], [224, 192])) {
             sum = 1;
         }
-        else if (pointInRectangle(mousPos, [160, 0], [224, 16])) {
+        else if (pointInRectangle(mPos, [160, 0], [224, 16])) {
             sum = -1;
         }
         if (sum != 0) {

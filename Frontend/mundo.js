@@ -12,9 +12,11 @@ const width = canvas.width;
 const height = canvas.height;
 const worldW = width * document.getElementById("escalaMundo").value;
 const worldH = height * document.getElementById("escalaMundo").value;
+const usuario = parseInt(document.getElementById("usuario").value);
 newMouseListener();
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
+iniCamara();
 
 // estructura que guarda todos los objetos del juego
 let objetos = [];
@@ -34,6 +36,17 @@ const indAvaCrg = cargador.newConsulta("avatar",
     "id,nombre,genero,piel,emocion,pelo,tinte,torso,color," +
     "cadera,tela,rol,mensaje,descripcion,link");
 
+// variables para interaccion en el mundo
+let estado = 0; // seleccion actual
+
+// cambiar estado con los radio botnes
+document.querySelectorAll("input[name='estado']").forEach(radio => {
+    radio.addEventListener("change", () => {
+        let seleccionado = document.querySelector("input[name='estado']:checked");
+        estado = parseInt(seleccionado.value);
+    });
+});
+
 // el main loop del juego
 let lastTime = 0;
 function loop(currentTime) {
@@ -49,17 +62,14 @@ function loop(currentTime) {
 
 // se calcula la logica
 function step(dlt) {
+    // ajustar la camara
+    stepCamara(dlt);
     // cargar o actualizar avatares
     cargador.step(dlt);
     let oldAva = null;
     let ava = cargador.popData(indAvaCrg);
     while (ava) {
         oldAva = getObjId(ava.id);
-
-
-        console.log("ava: " + oldAva);
-
-
         if (oldAva != -1) {
             objetos[oldAva].actualizar(
                 ava.nombre, ava.genero, ava.piel, ava.emocion,
@@ -78,21 +88,28 @@ function step(dlt) {
         ava = cargador.popData(indAvaCrg);
     }
     // ejecutar el loop de los objetos
-    objetos.forEach(obj => obj.step(dlt));
+    objetos.forEach(obj => obj.step(dlt, estado, usuario));
+    // actualizar el mouse
+    stepMouse(dlt);
 }
 
 // se dibuja todo
 function draw() {
+    // efectuar transformada de camara
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.translate(width / 2, height / 2); // centrar
+    ctx.scale(camara.zoom, camara.zoom);
+    ctx.translate(-camara.x, -camara.y);
     // dibujar todo el suelo
     sprites.drawSuelo(ctx, worldW, worldH);
     // ordenar en Y todos los objetos
     objetos.sort((a, b) => a.pis[1] - b.pis[1]);
     // dibujar sombras
-    objetos.forEach(obj => sprites.drawSombra(ctx, obj.pis));
+    objetos.forEach(obj => obj.drawSombra(ctx, sprites));
     // dibujar todos los objetos
     objetos.forEach(obj => obj.draw(ctx, sprites));
     // dibujar la interfaz GUI
-    
+    //
 }
 
 // iniciar el loop cuando los sprites carguen
