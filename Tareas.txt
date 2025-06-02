@@ -1,7 +1,6 @@
 TAREAS.........................
 .
 Mundo:
--M zoom y movimiento de camara manual
 -M mostrar mapa con todos los avatares
 -M cargar mobiliario y baldozas
 -M seleccionar avatar con clic
@@ -45,6 +44,7 @@ Mundo:
 -M dibujar sombras bajo los avatares
 -M estructurar loop, step, draw en avatares y mundo
 -M dibujar avatares y mobiliario en orden
+-M zoom y movimiento de camara manual
 .
 Avatares:
 -M dibujado de los avatares con sus configuraciónes

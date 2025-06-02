@@ -1,11 +1,14 @@
 // pulsacion de mouse
 
 let mousPos = {
-    x: 0,
+    x: 0, // posicion en el lienzo, sin afectarse por escalamiento ni mov
     y: 0,
-    pulsado: false,
-    sostenido: 0,
-    clic: false
+    wX: 0, // posicion del mouse en el mundo, independiente de la camara
+    wY: 0,
+    rueda: 0, // -1 +1 cuando se mueve el scroll
+    pulsado: false, // true el clic izquierdo esta apretado
+    sostenido: 0, // segundos que lleva apretado el clic
+    clic: false // si se solto rapido queda en true, asi pulsado este en false
 };
 
 function stepMouse(dlt) {
@@ -25,6 +28,10 @@ function newMouseListener() {
         let scaleY = height / rect.height;
 		mousPos.x = Math.round((event.clientX - rect.left) * scaleX);
 		mousPos.y = Math.round((event.clientY - rect.top) * scaleY);
+        let camW = width / camara.zoom;
+        let camH = height / camara.zoom;
+        mousPos.wX = camara.x + camW * (mousPos.x / width - 0.5);
+        mousPos.wY = camara.y + camH * (mousPos.y / height - 0.5);
 	});
     canvas.addEventListener("mousedown", function(event) {
         if (event.button != 0) { return null; }
@@ -38,6 +45,10 @@ function newMouseListener() {
         if (mousPos.sostenido < 0.333) { // seg clic
             mousPos.clic = true;
         }
+    });
+    canvas.addEventListener("wheel", function(event) {
+        mousPos.rueda = Math.sign(event.deltaY);
+        event.preventDefault(); // no contar navegador scroll
     });
 }
 
@@ -121,9 +132,11 @@ window.addEventListener('keyup', e => {
 // movimiento de camara
 
 let camara = {
-    x: 0,
+    x: 0, // centro de la camara
     y: 0,
-    zoom: 1
+    zoom: 1, // acercamiento, >1 cerca, <1 lejos
+    pulsoX: -1, // donde el mouse hace clic para guardarlo al arrastrar
+    pulsoY: -1
 };
 
 function iniCamara() {
@@ -133,6 +146,7 @@ function iniCamara() {
 }
 
 function stepCamara(dlt) {
+    // movimiento con teclas
     let speed = (200 / camara.zoom) * dlt;
     let vel = [0, 0];
     if (teclas['ArrowRight']) { vel[0] += 1; }
@@ -144,8 +158,38 @@ function stepCamara(dlt) {
     }
     camara.x += vel[0] * speed;
     camara.y += vel[1] * speed;
-    if (teclas['+'] || teclas['Home']) { camara.zoom *= 1 + 0.5 * dlt; }
-    if (teclas['-'] || teclas['End']) { camara.zoom /= 1 + 0.5 * dlt; }
+    if (teclas['+'] || teclas['Home']) {
+        camara.zoom *= 1 + 0.5 * dlt;
+    }
+    if (teclas['-'] || teclas['End']) {
+        camara.zoom *= 1 - 0.5 * dlt;
+    }
+    // movimiento con mouse
+    if (mousPos.pulsado) {
+        if (camara.pulsoX == -1 && camara.pulsoY == -1) {
+            console.log(Math.floor(mousPos.wX) + "," + Math.floor(mousPos.wY));
+            camara.pulsoX = mousPos.wX;
+            camara.pulsoY = mousPos.wY;
+        }
+        else {
+            camara.x += camara.pulsoX - mousPos.wX;
+            camara.y += camara.pulsoY - mousPos.wY;
+        }
+    }
+    else if (camara.pulsoX != -1 || camara.pulsoY != -1) {
+        camara.pulsoX = -1;
+        camara.pulsoY = -1;
+    }
+    // hacer scroll con mouse
+    if (mousPos.rueda != 0) {
+        camara.zoom *= 1 - mousPos.rueda * 0.1;
+        mousPos.rueda = 0;
+        let cx = mousPos.x / camara.zoom;
+        let cy = mousPos.y / camara.zoom;
+        camara.x = mousPos.wX - cx + (width / camara.zoom) / 2;
+        camara.y = mousPos.wY - cy + (height / camara.zoom) / 2;
+    }
+    // limites
     limitesCamara();
 }
 
