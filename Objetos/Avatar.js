@@ -4,9 +4,9 @@ class Avatar {
     static mensajeW = 200; // anchura del texto
     static radio = 16; // para colisiones
     // parametros de movimiento
-    static velocidad = 1.5;
-    static probContinuarMove = 0.75;
-    static probContinuarQuieto = 0.75;
+    static velocidad = 100;
+    static probContinuarMove = 0.7;
+    static probContinuarQuieto = 0.8;
     static medArcoCambioDir = 0.4 * Math.PI;
     static relojErrarMinSeg = 0.5;
     static relojErrarMaxSeg = 3;
@@ -78,10 +78,13 @@ class Avatar {
     step(dlt, estado, usuario) {
         this.stepAnima(dlt);
         this.stepRelojErrar(dlt);
+        if (Math.random() < 0.5) {
+            this.colisionar(dlt);
+        }
         switch (estado) {
             case 0: // Mundo
                 this.moverseDir(this.moveDir,
-                    (this.isMove ? Avatar.velocidad : 0));
+                    (this.isMove ? Avatar.velocidad * dlt : 0));
                 break;
             case 1: // Explore
 
@@ -112,6 +115,43 @@ class Avatar {
 				this.isMove = Math.random() > Avatar.probContinuarQuieto;
 				this.moveDir = Math.random() * 2 * Math.PI;
 			}
+		}
+    }
+
+    colisionar(dlt) {
+        let coli = [0, 0];
+        // hallar colision con mobiliarios
+        for (let i = 0; i < objetos.length; i++) {
+            if (!(objetos[i] instanceof Avatar)) {
+                if (pointInCircle(this.pos, objetos[i].pos,
+                        Avatar.radio + Mobiliario.radio)) {
+                    coli[0] += this.pos[0] - objetos[i].pos[0];
+                    coli[1] += this.pos[1] - objetos[i].pos[1];
+                }
+            }
+        }
+        // hallar colision con avatares
+        if (coli[0] == 0 && coli[1] == 0) {
+            for (let i = 0; i < objetos.length; i++) {
+                if (objetos[i] instanceof Avatar) {
+                    if (objetos[i].id == this.id) {
+                        continue;
+                    }
+                    if (pointInCircle(this.pos, objetos[i].pos,
+                            Avatar.radio * 2)) {
+                        coli[0] += this.pos[0] - objetos[i].pos[0];
+                        coli[1] += this.pos[1] - objetos[i].pos[1];
+                    }
+                }
+            }
+        }
+		// ejecutar movimiento de colision
+		if (coli[0] != 0 || coli[1] != 0) {
+			let mag = Math.sqrt(
+                Math.pow(coli[0], 2) + Math.pow(coli[1], 2)
+            );
+			this.pos[0] += (coli[0] / mag) * Avatar.velocidad * 2 * dlt;
+			this.pos[1] += (coli[1] / mag) * Avatar.velocidad * 2 * dlt;
 		}
     }
 

@@ -25,7 +25,7 @@
             <input type="text" name="nombre" placeholder="🏷️ Nombre" maxlength="24"
                 value="<?php echo $nombre; ?>" required>
             <input type="password" name="clave" placeholder="🔒 Contraseña"
-                maxlength="128" required>
+                maxlength="128" minlength="6" required>
             <input type="text" name="mailc" placeholder="💳 Clave Pre-Registro"
                 value="<?php echo $mailc; ?>" maxlength="12" required>
             <div>

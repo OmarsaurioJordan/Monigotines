@@ -15,8 +15,6 @@ Mundo:
 -S desconectar tiempo real si inactividad
 .
 Avatares:
--M colisión con avatares y mobiliarios
--M movimiento azaroso errando
 -G asignar clases con sus sprites
 -G movimiento hacia punto pseudo busqueda
 -G perseguir avatar
@@ -55,6 +53,8 @@ Avatares:
 -M dibujar cuadro de mensaje
 -M dibujar nombre sobre sí
 -M limitar movimiento a bordes de mundo
+-M colisión con avatares y mobiliarios
+-M movimiento azaroso errando
 .
 Interfacez:
 -M login con sesion y contraseña

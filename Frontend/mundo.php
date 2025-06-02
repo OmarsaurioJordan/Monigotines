@@ -61,5 +61,6 @@
     <script src="../Objetos/Sprites.js" defer></script>
     <script src="../Objetos/Cargador.js" defer></script>
     <script src="../Objetos/Avatar.js" defer></script>
+    <script src="../Objetos/Mobiliario.js" defer></script>
     <script src="mundo.js" defer></script>
 </html>
