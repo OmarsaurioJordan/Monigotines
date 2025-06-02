@@ -404,7 +404,7 @@ class Sprites {
                 // verificar si ha llegado al limite vertical
                 cursorY += lineY;
                 if (cursorY > altoPx - lineY) {
-                    return result;
+                    return result.trimEnd();
                 }
                 else {
                     result += "\n";
@@ -412,7 +412,7 @@ class Sprites {
                 }
             }
         }
-        return result;
+        return result.trimEnd();
     }
 
     static prepareTextJump(texto) {

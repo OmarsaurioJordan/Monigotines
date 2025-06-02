@@ -238,7 +238,21 @@ class Avatar {
     }
 
     draw(ctx, sprites, estado) {
-        this.drawAvatar(ctx, sprites, this.isWalk);
-        this.drawMensaje(ctx, true, this.mensaje);
+        switch (estado) {
+            case 0: // Mundo
+                this.drawAvatar(ctx, sprites, this.isWalk);
+                this.drawMensaje(ctx, true, this.mensaje);
+                break;
+            case 1: // Explore
+                this.drawAvatar(ctx, sprites, this.isWalk);
+                this.drawMensaje(ctx, true, this.mensaje);
+                break;
+            case 2: // Guerra
+
+                break;
+            case 3: // Social
+
+                break;
+        }
     }
 }

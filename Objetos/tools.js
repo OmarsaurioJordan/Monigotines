@@ -41,10 +41,13 @@ function newMouseListener() {
     });
     canvas.addEventListener("mouseup", function(event) {
         if (event.button != 0) { return null; }
-        mousPos.pulsado = false;
         if (mousPos.sostenido < 0.333) { // seg clic
             mousPos.clic = true;
         }
+    });
+    document.addEventListener("mouseup", function(event) {
+        if (event.button != 0) { return null; }
+        mousPos.pulsado = false;
     });
     canvas.addEventListener("wheel", function(event) {
         mousPos.rueda = Math.sign(event.deltaY);
