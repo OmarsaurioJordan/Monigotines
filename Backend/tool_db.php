@@ -95,11 +95,11 @@
             return [true, "mtc:". $clave];
         }
         else {
-            if (mail($mail_to, "Clave User Exam",
-                    "Hola, este e-mail proviene de:\n\nhttps://www.omwekiatl.xyz".
+            if (mail($mail_to, "Clave Monigotines",
+                    "Hola, este e-mail proviene de:\n\nhttps://omwekiatl.xyz/Monigotines".
                     "\n\nUna página web interactiva para crear avatares ".
                     "con funciónes sociales, con un fín académico, creada por ".
-                    "Omar Jordán Jordán, del ADSO24 del SENA en 2025\n\n".
+                    "Omwekiatl, ing. electrónico y desarrollador de videojuegos\n\n".
                     "Aquí tiene su clave de acceso: ". $clave.
                     "\n\nSi tiene inquietudes, comuníquese a: ojorcio@gmail.com",
                     "From: $serverMail")) {

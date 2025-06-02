@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-05-2025 a las 17:16:33
+-- Tiempo de generación: 02-06-2025 a las 18:12:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,14 +34,14 @@ CREATE TABLE `avatar` (
   `clave` varchar(48) NOT NULL,
   `nombre` varchar(24) NOT NULL,
   `genero` tinyint(3) UNSIGNED NOT NULL,
-  `piel` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `piel` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
   `emocion` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `pelo` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `tinte` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `torso` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `color` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `cadera` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `tela` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `pelo` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `tinte` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `torso` tinyint(3) UNSIGNED NOT NULL DEFAULT 3,
+  `color` tinyint(3) UNSIGNED NOT NULL DEFAULT 2,
+  `cadera` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `tela` tinyint(3) UNSIGNED NOT NULL DEFAULT 2,
   `rol` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `mensaje` varchar(200) NOT NULL DEFAULT '',
   `descripcion` varchar(600) NOT NULL DEFAULT '',
