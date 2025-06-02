@@ -1,5 +1,6 @@
 <?php
     require "tool_db.php";
+    require "tool_mail.php";
 
     $correo = $_POST['correo'];
     $clave = newClave();

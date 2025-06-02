@@ -3,7 +3,6 @@
     $user = 'root';
     $password = '';
     $dbname = 'monigotines';
-    $serverMail = ""; // vacio debug
     $claveMd5 = "unaCADENAsssekreta906090"; // algo random
     // nota: claveMd5 si es cambiada, todas las password de la DB quedan obsoletas
 
@@ -87,27 +86,5 @@
         $msk = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ".
             "0123456789áéíóúÁÉÍÓÚ _\n.:,;<>{}[]^+-*/~'\"¿?¡!\\=()&%$#|°";
         return okTexto($mensaje, $msk);
-    }
-
-    function sendClave($mail_to, $clave) {
-        global $serverMail;
-        if ($serverMail == "") {
-            return [true, "mtc:". $clave];
-        }
-        else {
-            if (mail($mail_to, "Clave Monigotines",
-                    "Hola, este e-mail proviene de:\n\nhttps://omwekiatl.xyz/Monigotines".
-                    "\n\nUna página web interactiva para crear avatares ".
-                    "con funciónes sociales, con un fín académico, creada por ".
-                    "Omwekiatl, ing. electrónico y desarrollador de videojuegos\n\n".
-                    "Aquí tiene su clave de acceso: ". $clave.
-                    "\n\nSi tiene inquietudes, comuníquese a: ojorcio@gmail.com",
-                    "From: $serverMail")) {
-                return [true, "msc:". $mail_to];
-            }
-            else {
-                return [false, "nsem..."];
-            }
-        }
     }
 ?>
