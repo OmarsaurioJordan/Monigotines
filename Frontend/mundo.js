@@ -82,7 +82,7 @@ function step(dlt) {
                 ava.id, ava.nombre, ava.genero, ava.piel, ava.emocion,
                 ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
                 ava.tela, ava.rol, ava.mensaje, ava.descripcion,
-                ava.link, [Math.random() * width, Math.random() * height]
+                ava.link, [Math.random() * worldW, Math.random() * worldH]
             ));
         }
         ava = cargador.popData(indAvaCrg);
@@ -107,7 +107,7 @@ function draw() {
     // dibujar sombras
     objetos.forEach(obj => obj.drawSombra(ctx, sprites));
     // dibujar todos los objetos
-    objetos.forEach(obj => obj.draw(ctx, sprites));
+    objetos.forEach(obj => obj.draw(ctx, sprites, estado));
     // dibujar la interfaz GUI
     //
 }

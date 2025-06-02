@@ -1,5 +1,7 @@
 class Mobiliario {
 
+    static radio = 24; // para colisiones
+
     constructor(id, creador, tipo, posicion) {
         this.id = id;
         this.creador = creador;
@@ -12,7 +14,7 @@ class Mobiliario {
 
     drawSombra(ctx, sprites) {} // vacio, evita error en mundo.js
 
-    draw(ctx, sprites) {
+    draw(ctx, sprites, estado) {
 
     }
 }

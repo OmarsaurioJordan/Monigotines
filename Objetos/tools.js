@@ -167,7 +167,6 @@ function stepCamara(dlt) {
     // movimiento con mouse
     if (mousPos.pulsado) {
         if (camara.pulsoX == -1 && camara.pulsoY == -1) {
-            console.log(Math.floor(mousPos.wX) + "," + Math.floor(mousPos.wY));
             camara.pulsoX = mousPos.wX;
             camara.pulsoY = mousPos.wY;
         }
