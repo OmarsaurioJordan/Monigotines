@@ -8,9 +8,9 @@
         header("Location:no_perfil.php");
     }
 
-    $sql = "SELECT nombre, piel, emocion, pelo, tinte, torso,
+    $sql = "SELECT nombre, genero, piel, emocion, pelo, tinte, torso,
         color, cadera, tela, rol, mensaje, descripcion,
-        link FROM avatar WHERE id=?";
+        link, musica FROM avatar WHERE id=?";
     $res = doQuery($sql, [$avaId]);
     $data = [];
     if ($res[0]) {
@@ -31,20 +31,31 @@
     </head>
     <body>
         <div class="cabecera">
-            <button onclick="btnVolver()">👁️ Ver Mundo</button>
+            <button onclick="window.open('mundo.php', '_blank')"
+                >👁️ Ver Mundo</button>
             <label class="camutxt">............</label>
             <h3>Monigotines</h3>
             <label class="camutxt">............</label>
-            <label>📋 Perfil Avatar</label>
+            <?php if ($usr != -1) {
+                if ($usr == $avaId) { ?>
+                    <button onclick="btnSalir()">❌ Salir</button>
+                <?php } else {
+                    echo "<button onclick=\"window.open('perfil.php?id=$usr',
+                        '_blank')\">👤 ". $_SESSION['nombre']. "</button>";
+            }} else { ?>
+                <label>📋 Perfil Avatar</label>
+            <?php } ?>
         </div>
         <div class="precaja">
             <!-- campos que contienen toda la info del avatar -->
-            <input type="hidden" id="usr" value="<?php echo $usr; ?>">
-            <input type="hidden" id="avaId" value="<?php $avaId; ?>">
+            <input type="hidden" id="usr" value=
+                "<?php echo $usr; ?>">
+            <input type="hidden" id="avaId" value=
+                "<?php echo $avaId; ?>">
             <input type="hidden" id="nombre" value=
-                "<?php echo $_SESSION['nombre']; ?>">
+                "<?php echo $data['nombre']; ?>">
             <input type="hidden" id="genero" value=
-                "<?php echo $_SESSION['genero']; ?>">
+                "<?php echo $data['genero']; ?>">
             <input type="hidden" id="piel" value=
                 "<?php echo $data['piel']; ?>">
             <input type="hidden" id="emocion" value=
@@ -66,6 +77,24 @@
             <!-- dibujado del avatar y sus opciones de personalizacion -->
             <canvas id="lienzo" width="128" height="192"
                 style="border:1px solid black;"></canvas>
+            <!-- botones para interaccion -->
+            <?php if($usr != -1 && $avaId == $usr) { ?>
+                <div class="botonera">
+                    <button>🎁<br>Más</button>
+                    <button>📦<br>Construir</button>
+                    <button>💌<br>Cartas</button>
+                    <button>🚫<br>Bloqueos</button>
+                    <button>📝<br>Test</button>
+                    <button onclick="window.location.href=
+                        'editor.php'">✏️<br>Editar</button>
+                </div>
+            <?php } else if ($usr != -1) { ?>
+                <div class="botonera">
+                    <button>🚫<br>Bloquear</button>
+                    <button>🎲<br>Desafiar</button>
+                    <button>💌<br>Escribir</button>
+                </div>
+            <?php } ?>
             <!-- en este contenedor se escribiran los textos y el boton submit -->
             <div class="caja">
                 <div>
@@ -73,13 +102,27 @@
                     <label class="myname"><?php echo $data['nombre']; ?></label>
                 </div>
                 <?php if ($data['mensaje'] != "") { ?>
-                    <textarea rows="4" cols="40" readonly><?php
-                        echo $data['mensaje']; ?></textarea>
+                    <p class="parrafon"><?php
+                        echo $data['mensaje']; ?></p>
+                    <?php if ($data['descripcion'] != "") { ?>
+                        <label>....................................</label>
+                    <?php } ?>
                 <?php } if ($data['descripcion'] != "") { ?>
-                    <textarea rows="10" cols="40" readonly><?php
-                        echo $data['descripcion']; ?></textarea>
-                <?php } if ($data['link'] != "") { ?>
-                    <a href="<?php echo $data['link']; ?>">🌐 Abrir Link</a>
+                    <p class="parrafon"><?php
+                        echo $data['descripcion']; ?></p>
+                <?php } ?>
+                <?php if ($data['link'] != "" || $data['musica'] != "") { ?>
+                    <div class="cabecera">
+                        <?php if ($data['link'] != "") { ?>
+                            <a href="<?php echo $data['link']; ?>" target="_blank"
+                                >🌐 Link Social</a>
+                        <?php } if ($data['link'] != "" && $data['musica'] != "") { ?>
+                            <label class="subcamutxt">............</label>
+                        <?php } if ($data['musica'] != "") { ?>
+                            <a href="<?php echo $data['musica']; ?>" target="_blank"
+                                >🎵 Link Musical</a>
+                        <?php } ?>
+                    </div>
                 <?php } ?>
             </div>
         </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-06-2025 a las 18:12:59
+-- Tiempo de generación: 03-06-2025 a las 02:52:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,6 +46,7 @@ CREATE TABLE `avatar` (
   `mensaje` varchar(200) NOT NULL DEFAULT '',
   `descripcion` varchar(600) NOT NULL DEFAULT '',
   `link` varchar(128) NOT NULL DEFAULT '',
+  `musica` varchar(128) NOT NULL DEFAULT '',
   `registro` timestamp NOT NULL DEFAULT current_timestamp(),
   `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -73,6 +74,19 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `bloqueo`
+--
+
+DROP TABLE IF EXISTS `bloqueo`;
+CREATE TABLE `bloqueo` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `bloqueador` int(10) UNSIGNED NOT NULL,
+  `bloqueado` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ideologia`
 --
 
@@ -80,19 +94,23 @@ DROP TABLE IF EXISTS `ideologia`;
 CREATE TABLE `ideologia` (
   `id` int(10) UNSIGNED NOT NULL,
   `avatar` int(10) UNSIGNED NOT NULL,
-  `rol` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `clase` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `nacimiento` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `zodiaco` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `elemento` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `ang_dem` tinyint(4) NOT NULL DEFAULT 0,
   `izq_der` tinyint(4) NOT NULL DEFAULT 0,
   `pol_lad` tinyint(4) NOT NULL DEFAULT 0,
-  `hom_muj` tinyint(4) NOT NULL DEFAULT 0,
   `rel_cie` tinyint(4) NOT NULL DEFAULT 0,
   `mon_pol` tinyint(4) NOT NULL DEFAULT 0,
   `car_veg` tinyint(4) NOT NULL DEFAULT 0,
   `ext_int` tinyint(4) NOT NULL DEFAULT 0,
   `azu_roj` tinyint(4) NOT NULL DEFAULT 0,
   `pas_fut` tinyint(4) NOT NULL DEFAULT 0,
-  `urb_cam` tinyint(4) NOT NULL DEFAULT 0
+  `urb_cam` tinyint(4) NOT NULL DEFAULT 0,
+  `art_ing` tinyint(4) NOT NULL DEFAULT 0,
+  `fie_est` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -186,6 +204,14 @@ ALTER TABLE `avatar`
   ADD KEY `avatar_correo` (`correo`);
 
 --
+-- Indices de la tabla `bloqueo`
+--
+ALTER TABLE `bloqueo`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bloqueos_bloqueado` (`bloqueado`),
+  ADD KEY `bloqueos_bloqueador` (`bloqueador`);
+
+--
 -- Indices de la tabla `ideologia`
 --
 ALTER TABLE `ideologia`
@@ -240,6 +266,12 @@ ALTER TABLE `avatar`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `bloqueo`
+--
+ALTER TABLE `bloqueo`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `ideologia`
 --
 ALTER TABLE `ideologia`
@@ -284,6 +316,13 @@ ALTER TABLE `reaccion`
 --
 ALTER TABLE `avatar`
   ADD CONSTRAINT `avatar_correo` FOREIGN KEY (`correo`) REFERENCES `preregistro` (`id`);
+
+--
+-- Filtros para la tabla `bloqueo`
+--
+ALTER TABLE `bloqueo`
+  ADD CONSTRAINT `bloqueos_bloqueado` FOREIGN KEY (`bloqueado`) REFERENCES `avatar` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `bloqueos_bloqueador` FOREIGN KEY (`bloqueador`) REFERENCES `avatar` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ideologia`

@@ -3,6 +3,8 @@
     sacarlo();
 
     $msjok = isset($_GET['msjok']) ? $_GET['msjok'] : "0";
+
+    $btnPerfil = "window.location.href='perfil.php?id=". $_SESSION['usr']. "'";
 ?>
 
 <!DOCTYPE html>
@@ -31,10 +33,9 @@
         <?php } ?>
         <div class="cabecera">
             <button onclick="window.location.href=
-                'editor.php'">✏️ Re-Editar</button>
-            <label class="camutxt">...</label>
-            <button onclick="window.location.href=
                 'mundo.php'">👁️ Ver Mundo</button>
+            <label class="camutxt">...</label>
+            <button onclick="<?php echo $btnPerfil; ?>">👤 Ver Perfil</button>
         </div>
     </body>
     <script src="../Backend/tool_master.js" defer></script>

@@ -6,12 +6,13 @@ Mundo:
 -M seleccionar avatar con clic
 -M ver perfil del avatar seleccionado
 -M ir al link del avatar seleccionado
--M moto todos los mensajes vs visibles con mouse
+-M modo todos los mensajes vs visibles con mouse
 -E poder reaccionar al avatar seleccionado
 -E ver reacciónes en el avatar seleccionado
 -E ver mensajes en el avatar seleccionado
 -E enviar mensaje al avatar seleccionado
--E movimiento de camara tras vatar
+-E movimiento de camara tras avatar
+-E poder bloquear usuarios
 -S desconectar tiempo real si inactividad
 .
 Avatares:
@@ -29,12 +30,12 @@ Avatares:
 .
 Interfaces:
 -C página para editar los mobiliarios
--M página perfil propio desde donde ir a edición
 -M página de estadísticas globales
 -G seleccionar bandos ideológicos
 -E ver todos los mensajes tipo chat en interfaz
 -E ver un chat con sus mensajes en interfaz
 -E responder mensajes tipo chat en interfaz
+-E ver interfaz de bloqueados
 .
 HECHO.........................
 .
@@ -59,6 +60,7 @@ Avatares:
 Interfacez:
 -M login con sesion y contraseña
 -M preregistro y registro de usuario usando email
+-M página perfil propio desde donde ir a edición
 -M edición de avatar con forms y botónes en canvas
 -M página mundo, con main loop y opciónes
 -M prevención de cierre de sesión o edición accidental

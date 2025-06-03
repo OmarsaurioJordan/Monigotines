@@ -1,7 +1,8 @@
-// para prevenir salida por error
-function btnVolver() {
+// para prevenir salida por error cuando se edita
+let usr = parseInt(document.getElementById("usr").value);
+function btnCancelar() {
     if (confirm("❗ Si sales perderás todos los cambios ¿Salir?")) {
-        window.location.href = 'mundo.php';
+        window.location.href = "perfil.php?id=" + usr;
     }
 }
 
@@ -15,7 +16,6 @@ newMouseListener();
 resizeCanvasEsc(1.3);
 
 // crear el avatar asignandole datos precargados
-let usr = parseInt(document.getElementById("usr").value);
 let genero = parseInt(document.getElementById("genero").value);
 let piel = parseInt(document.getElementById("piel").value);
 let emocion = parseInt(document.getElementById("emocion").value);

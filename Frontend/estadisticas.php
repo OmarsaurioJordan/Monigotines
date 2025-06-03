@@ -1,3 +1,7 @@
+<?php
+    require "../Backend/tool_master.php";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -7,15 +11,15 @@
         <title>Monigotines</title>
     </head>
     <body>
-        <h3>Monigotines</h3>
-        <label class="camutxt">......</label>
-        <p class="parrafin">
-            ⛔ No se ha encontrado el perfil del avatar buscado, 
-            puede ser que no exista o deberse a un fallo de conexión
-        </p>
         <div class="cabecera">
+            <a href="https://omwekiatl.itch.io/" target="_blank"
+                >Omwekiatl</a>
+            <label class="camutxt">............</label>
+            <h3>Monigotines</h3>
+            <label class="camutxt">............</label>
             <button onclick="window.location.href=
                 'mundo.php'">👁️ Ver Mundo</button>
         </div>
     </body>
+    <script src="../Backend/tool_master.js" defer></script>
 </html>

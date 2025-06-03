@@ -2,6 +2,11 @@
     require "../Backend/tool_master.php";
 
     $escalaMundo = 4; // mundo = lienzo x escala
+
+    $btnPerfil = "window.open('perfil.php?id=$$$', '_blank')";
+    if (isset($_SESSION['usr'])) {
+        $btnPerfil = str_replace("$$$", $_SESSION['usr'], $btnPerfil);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -19,22 +24,19 @@
         <div class="cabecera">
             <div>
                 <?php if (isset($_SESSION['usr'])) { ?>
-                    <button onclick="window.open('editor.php', '_blank')"
+                    <button onclick="<?php echo $btnPerfil; ?>"
                         >👤 <?php echo $_SESSION['nombre']; ?></button>
                 <?php } else { ?>
-                    <label>👁️ Visitante</label>
+                    <button onclick="window.location.href=
+                        'login.php'">🔑 Entrar</button>
                 <?php } ?>
             </div>
             <label class="camutxt">............</label>
             <h3>Monigotines</h3>
             <label class="camutxt">............</label>
             <div>
-                <?php if (isset($_SESSION['usr'])) { ?>
-                    <button onclick="btnVolver()">❌ Salir</button>
-                <?php } else { ?>
-                    <button onclick="window.location.href=
-                        'login.php'">👤 Entrar</button>
-                <?php } ?>
+                <button onclick="window.open('estadisticas.php', '_blank')"
+                    >📊 Info.</button>
                 <button onclick="activarFullscreen()">📽️ Full</button>
             </div>
         </div>

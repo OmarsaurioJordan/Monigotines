@@ -5,7 +5,7 @@
 
     $sql = "SELECT piel, emocion, pelo, tinte, torso,
         color, cadera, tela, rol, mensaje, descripcion,
-        link FROM avatar WHERE id=?";
+        link, musica FROM avatar WHERE id=?";
     $res = doQuery($sql, [$_SESSION['usr']]);
     $data = [];
     if ($res[0]) {
@@ -26,7 +26,7 @@
     </head>
     <body>
         <div class="cabecera">
-            <button onclick="btnVolver()">👁️ Ver Mundo</button>
+            <button onclick="btnCancelar()">❌ Cancelar</button>
             <label class="camutxt">............</label>
             <h3>Monigotines</h3>
             <label class="camutxt">............</label>
@@ -73,8 +73,10 @@
                 <textarea name="descripcion" rows="10" cols="40"
                     placeholder="📙 Descripción (opcional)" maxlength="600"><?php
                     echo $data['descripcion']; ?></textarea>
-                <input type="url" name="link" placeholder="🌐 Link (opcional)"
-                    maxlength="128" value="<?php echo $data['link']; ?>">
+                <div>🌐 <input type="url" name="link" placeholder="🌐 Link Social"
+                        maxlength="128" value="<?php echo $data['link']; ?>"></div>
+                <div>🎵 <input type="url" name="musica" placeholder="🎵 Link Musical"
+                    maxlength="128" value="<?php echo $data['musica']; ?>"></div>
                 <button type="submit">💾 Guardar</button>
             </div>
         </form>

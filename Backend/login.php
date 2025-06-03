@@ -18,7 +18,7 @@
             $_SESSION['usr'] = $res[1][0]['id'];
             $_SESSION['nombre'] = $res[1][0]['nombre'];
             $_SESSION['genero'] = $res[1][0]['genero'];
-            header("Location:../Frontend/mundo.php");
+            header("Location:../Frontend/perfil.php?id=". $_SESSION['usr']);
         }
     }
     else {

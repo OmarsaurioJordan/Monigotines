@@ -16,17 +16,20 @@ button:hover {
 textarea {
     resize: none;
 }
-textarea, .parrafin {
+textarea, .parrafin, .parrafon {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     text-align: justify;
     text-justify: inter-word;
     hyphens: auto;  
 }
-.parrafin {
+.parrafin, .parrafon {
     width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.parrafon {
+    width: 300px;
 }
 
 body, .precaja, .caja {
@@ -35,13 +38,18 @@ body, .precaja, .caja {
     justify-content: center;
     align-items: center;
 }
-.caja {
+.caja, .botonera {
     background-color:rgb(116, 99, 59);
     color: white;
     margin: 10px;
     padding: 10px;
     gap: 10px;
     border-radius: 10px;
+}
+.botonera {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 250px;
 }
 
 .cabecera {
@@ -54,7 +62,19 @@ body, .precaja, .caja {
 .camutxt {
     color: rgb(59, 51, 33);
 }
+.subcamutxt {
+    color: rgb(116, 99, 59);
+}
 
 .myname {
     font-size: 20px;
+}
+
+a {
+    color: #FFD700;
+    text-decoration: none;
+}
+a:hover {
+    color: #FFF176;
+    text-decoration: underline;
 }
