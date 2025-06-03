@@ -2,6 +2,7 @@ class Avatar {
     
     static timeAnima = [1.73, 0.61, 0.85]; // pies, cabeza, tool
     static mensajeW = 200; // anchura del texto
+    static descripcionW = 200; // anchura texto en GUI
     static radio = 16; // para colisiones
     // parametros de movimiento
     static velocidad = 100;
@@ -13,7 +14,7 @@ class Avatar {
 
     constructor(id, nombre, genero, piel, emocion, pelo, tinte,
             torso, color, cadera, tela, rol, mensaje, descripcion,
-            link, posicion) {
+            link, musica, posicion) {
         // configuracion del avatar como tal
         this.id = id;
         this.pos = posicion;
@@ -30,8 +31,10 @@ class Avatar {
         this.rol = rol;
         this.mensaje = "";
         this.setMensaje(mensaje);
-        this.descripcion = descripcion;
+        this.descripcion = "";
+        this.setDescripcion(descripcion);
         this.link = link;
+        this.musica = musica;
         // configuracion para funcionamiento
         this.pis = [...this.pos]; // interpolacion
         this.relojErrar = Math.random() * (Avatar.relojErrarMinSeg +
@@ -52,11 +55,16 @@ class Avatar {
 
     setMensaje(mensaje) {
         this.mensaje = Sprites.prepareTextMsj(mensaje,
-            Avatar.mensajeW, 1000, Sprites.getMsjFont(), 20, 40);
+            Avatar.mensajeW, 10000, Sprites.getMsjFont(), 20, 40);
+    }
+
+    setDescripcion(descripcion) {
+        this.descripcion = Sprites.prepareTextMsj(descripcion,
+            Avatar.descripcionW, 10000, Sprites.getMsjFont(), 20, 40);
     }
 
     actualizar(nombre, genero, piel, emocion, pelo, tinte, torso,
-            color, cadera, tela, rol, mensaje, descripcion, link) {
+            color, cadera, tela, rol, mensaje, descripcion, link, musica) {
         this.nombre = nombre;
         this.genero = genero;
         this.piel = piel;
@@ -68,9 +76,10 @@ class Avatar {
         this.cadera = cadera;
         this.tela = tela;
         this.rol = rol;
-        this.descripcion = descripcion;
         this.link = link;
+        this.musica = musica;
         this.setMensaje(mensaje);
+        this.setDescripcion(descripcion);
     }
 
     // loop de logica

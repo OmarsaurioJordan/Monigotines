@@ -3,9 +3,6 @@ TAREAS.........................
 Mundo:
 -M mostrar mapa con todos los avatares
 -M cargar mobiliario y baldozas
--M seleccionar avatar con clic
--M ver perfil del avatar seleccionado
--M ir al link del avatar seleccionado
 -M modo todos los mensajes vs visibles con mouse
 -E poder reaccionar al avatar seleccionado
 -E ver reacciónes en el avatar seleccionado
@@ -47,6 +44,9 @@ Mundo:
 -M estructurar loop, step, draw en avatares y mundo
 -M dibujar avatares y mobiliario en orden
 -M zoom y movimiento de camara manual
+-M seleccionar avatar con clic
+-M ver perfil del avatar seleccionado
+-M ir al link del avatar seleccionado
 .
 Avatares:
 -M dibujado de los avatares con sus configuraciónes
@@ -64,4 +64,10 @@ Interfacez:
 -M edición de avatar con forms y botónes en canvas
 -M página mundo, con main loop y opciónes
 -M prevención de cierre de sesión o edición accidental
+.
+EXTRA.........................
+.
+-G desafiar a un usuario, resultado pseudo azar, intentos / dia
+-E hacer test exámen de temas diversos, una vez, conocimiento
+-S poder enviar reacciónes sonoras, con teclado numérico manos
 .

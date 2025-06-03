@@ -28,7 +28,7 @@ let tela = parseInt(document.getElementById("tela").value);
 let rol = parseInt(document.getElementById("rol").value);
 const avatar = new Avatar(
     usr, "", genero, piel, emocion, pelo, tinte,
-    torso, color, cadera, tela, rol, "", "", "", [96, 186]
+    torso, color, cadera, tela, rol, "", "", "", "", [96, 186]
 );
 
 // variables para interaccion con el canvas y avatar

@@ -16,7 +16,8 @@ class Sprites {
             this.loadImg("d_monigotin_scroll"), // 7
             this.loadImg("d_suelo"), // 8
             this.loadImg("d_monigotin_rol"), // 9
-            this.loadImg("d_monigotin_sombra") // 10
+            this.loadImg("d_monigotin_sombra"), // 10
+            this.loadImg("d_monigotin_aro") // 11
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -139,6 +140,10 @@ class Sprites {
 
     drawSombra(ctx, posicion) {
         ctx.drawImage(this.sprite[10], posicion[0] - 41, posicion[1] - 23);
+    }
+
+    drawAro(ctx, posicion) {
+        ctx.drawImage(this.sprite[11], posicion[0] - 41, posicion[1] - 23);
     }
 
     // dibujado de piezas de avatar
@@ -340,13 +345,35 @@ class Sprites {
             alto - lineY - borde,
             ancho + 2 * borde,
             lineas.length * lineY + 2 * borde
-            //posicion[0] + ancho / 2 + borde,
-            //posicion[1] + borde
         );
         // dibujar texto
         ctx.fillStyle = "black";
         lineas.forEach(li => {
             ctx.fillText(li, posicion[0], alto);
+            alto += lineY;
+        });
+    }
+
+    static drawDescripcion(ctx, texto, posicion, font, lineY, borde, ancho) {
+        // configurar las cosas
+        ctx.font = font;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        let lineas = texto.split("\n");
+        // obtener informacion general
+        let alto = posicion[1] - (lineas.length - 1) * lineY - borde;
+        // dibujar fondo
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.fillRect(
+            posicion[0],
+            alto - lineY - borde,
+            posicion[0] + ancho + 2 * borde,
+            lineas.length * lineY + 2 * borde
+        );
+        // dibujar texto
+        ctx.fillStyle = "black";
+        lineas.forEach(li => {
+            ctx.fillText(li, posicion[0] + borde + ancho / 2, alto);
             alto += lineY;
         });
     }
