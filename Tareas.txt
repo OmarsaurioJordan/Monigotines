@@ -1,11 +1,9 @@
 TAREAS.........................
 .
 Mundo:
--M mostrar mapa con todos los avatares
+-M mostrar minimapa con todos los avatares
 -M cargar mobiliario y baldozas
 -M modo todos los mensajes vs visibles con mouse
--E poder reaccionar al avatar seleccionado
--E ver reacciónes en el avatar seleccionado
 -E ver mensajes en el avatar seleccionado
 -E enviar mensaje al avatar seleccionado
 -E movimiento de camara tras avatar
@@ -33,6 +31,10 @@ Interfaces:
 -E ver un chat con sus mensajes en interfaz
 -E responder mensajes tipo chat en interfaz
 -E ver interfaz de bloqueados
+.
+Mantenimiento:
+.
+- 
 .
 HECHO.........................
 .
@@ -64,6 +66,8 @@ Interfacez:
 -M edición de avatar con forms y botónes en canvas
 -M página mundo, con main loop y opciónes
 -M prevención de cierre de sesión o edición accidental
+-E poder reaccionar al avatar seleccionado
+-E ver reacciónes en el avatar seleccionado
 .
 EXTRA.........................
 .

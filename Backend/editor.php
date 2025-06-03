@@ -1,5 +1,6 @@
 <?php
     require "tool_master.php";
+    sacarlo();
     require "tool_db.php";
 
     $usr = $_POST['usr'];
@@ -18,6 +19,10 @@
     $descripcion = okMensaje($_POST['descripcion']);
     $link = $_POST['link'];
     $musica = $_POST['musica'];
+
+    if ($usr != $_SESSION['usr']) {
+        header("Location:../Frontend/editor.php");
+    }
 
     $sql = "UPDATE avatar SET nombre=?, genero=?, piel=?, emocion=?,
         pelo=?, tinte=?, torso=?, color=?, cadera=?, tela=?, rol=?,

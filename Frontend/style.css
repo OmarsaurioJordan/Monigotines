@@ -38,18 +38,31 @@ body, .precaja, .caja {
     justify-content: center;
     align-items: center;
 }
-.caja, .botonera {
+.caja, .botonera, .larguicaja {
     background-color:rgb(116, 99, 59);
     color: white;
+    border-radius: 10px;
+}
+.caja {
     margin: 10px;
     padding: 10px;
     gap: 10px;
-    border-radius: 10px;
+}
+.botonera, .larguicaja {
+    margin: 5px;
+    padding: 5px;
+    gap: 5px;
 }
 .botonera {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     max-width: 250px;
+}
+.larguicaja {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .cabecera {
@@ -73,8 +86,15 @@ body, .precaja, .caja {
 a {
     color: #FFD700;
     text-decoration: none;
+    cursor: pointer;
 }
 a:hover {
     color: #FFF176;
     text-decoration: underline;
+}
+.carita:hover {
+    text-decoration: none;
+}
+.cariselect {
+    font-size: 24px;
 }

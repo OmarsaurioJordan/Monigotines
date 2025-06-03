@@ -8,6 +8,7 @@
         header("Location:no_perfil.php");
     }
 
+    // obtener datos del avatar
     $sql = "SELECT nombre, genero, piel, emocion, pelo, tinte, torso,
         color, cadera, tela, rol, mensaje, descripcion,
         link, musica FROM avatar WHERE id=?";
@@ -18,6 +19,38 @@
     }
     else {
         header("Location:no_perfil.php");
+    }
+
+    // obtener datos de sus reacciones
+    $sql = "SELECT tipo, COUNT(id) AS total, (emisor=?) AS usr
+        FROM reaccion WHERE receptor=? GROUP BY tipo";
+    $res = doQuery($sql, [$usr, $avaId]);
+    $caritas = ["🙂", "😍", "😆", "😮", "😢", "😡"];
+    $reacts = [0, 0, 0, 0, 0, 0];
+    $tipoUsr = -1;
+    if ($res[0]) {
+        for ($i = 0; $i < count($res[1]); $i++) {
+            $t = $res[1][$i]['tipo'];
+            if ($t >= count($reacts)) { continue; }
+            $reacts[$t] = $res[1][$i]['total'];
+            if ($res[1][$i]['usr'] != 0) {
+                $tipoUsr = $t;
+            }
+        }
+    }
+
+    function setCarita($ind) {
+        global $caritas, $reacts, $usr, $avaId, $tipoUsr;
+        echo "<div>";
+        if ($usr != -1 && $usr != $avaId) {
+            $t = $tipoUsr == $ind ? " cariselect" : "";
+            echo "<a class='carita$t' href='../Backend/reaccionar.php?".
+                "usr=$usr&id=$avaId&tipo=$ind'>" .$caritas[$ind]. "</a>";
+        }
+        else {
+            echo "<label>" .$caritas[$ind]. "</label>";
+        }
+        echo "<label>" .$reacts[$ind]. "</label></div>";
     }
 ?>
 
@@ -43,7 +76,8 @@
                     echo "<button onclick=\"window.open('perfil.php?id=$usr',
                         '_blank')\">👤 ". $_SESSION['nombre']. "</button>";
             }} else { ?>
-                <label>📋 Perfil Avatar</label>
+                <button onclick="window.location.href=
+                    'login.php'">🔑 Entrar</button>
             <?php } ?>
         </div>
         <div class="precaja">
@@ -77,6 +111,15 @@
             <!-- dibujado del avatar y sus opciones de personalizacion -->
             <canvas id="lienzo" width="128" height="192"
                 style="border:1px solid black;"></canvas>
+            <!-- reacciones y botones para reaccionar -->
+            <div class="larguicaja">
+                <?php setCarita(0); ?>
+                <?php setCarita(1); ?>
+                <?php setCarita(2); ?>
+                <?php setCarita(3); ?>
+                <?php setCarita(4); ?>
+                <?php setCarita(5); ?>
+            </div>
             <!-- botones para interaccion -->
             <?php if($usr != -1 && $avaId == $usr) { ?>
                 <div class="botonera">

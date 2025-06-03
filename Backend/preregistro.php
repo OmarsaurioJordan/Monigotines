@@ -1,4 +1,6 @@
 <?php
+    require "tool_master.php";
+    meterlo();
     require "tool_db.php";
     require "tool_mail.php";
 
