@@ -16,11 +16,13 @@
                 return "⛔ Posiblemente el e-mail esté ya en el sistema...";
             case "existe_nombre": // OK
                 return "⛔ Posiblemente el nombre esté ya en el sistema...";
+            case "dominio_feo": //OK
+                return "⛔ Debe usar un mail con otro dominio, uno válido...";
             case "mal_nombre": // OK
                 return "⛔ Debe escribir un nombre con caracteres válidos...";
             case "mal_registro": // OK
                 return "Problemas con el pre-registro, ingrese sus datos ".
-                    "bien, pre-registrese, la clave sirve 1 hora";
+                    "bien, pre-registrese, la clave sirve 1 hora...";
             case "void": //
                 return "⛔ No se obtuvieron datos...";
             default:

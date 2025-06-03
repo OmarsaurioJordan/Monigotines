@@ -6,6 +6,10 @@
     $clave = newClave();
     $msjr = "&correo=$correo";
 
+    if (!dominioValido($correo)) {
+        header("Location:../Frontend/preregistro.php?msj=dominio_feo". $msjr);
+    }
+
     $sql = "SELECT id FROM preregistro WHERE correo=?";
     $res = doQuery($sql, [$correo]);
     if ($res[0]) {
