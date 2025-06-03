@@ -183,12 +183,18 @@ class Avatar {
     }
 
     interpola(dlt) {
+        if (pointDistance(this.pos, this.pis) > 30) {
+            this.pis[0] = this.pos[0];
+            this.pis[1] = this.pos[1];
+            this.isWalk = false;
+            return null;
+        }
         let dif = [
             this.pos[0] - this.pis[0],
             this.pos[1] - this.pis[1]
         ];
-        this.pis[0] += dif[0] * dlt * 2;
-        this.pis[1] += dif[1] * dlt * 2;
+        this.pis[0] += dif[0] * dlt * 6;
+        this.pis[1] += dif[1] * dlt * 6;
         this.isWalk = Math.pow(dif[0], 2) + Math.pow(dif[1], 2) > 10;
     }
 
@@ -244,6 +250,8 @@ class Avatar {
 
     drawSombra(ctx, sprites) {
         sprites.drawSombra(ctx, this.pis);
+        // debug para ver donde esta el punto real
+        //ctx.fillRect(this.pos[0] - 2, this.pos[1] - 2, 4, 4);
     }
 
     draw(ctx, sprites, estado) {

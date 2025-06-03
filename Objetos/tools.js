@@ -94,13 +94,18 @@ function BarrelSprAva(valor, valMax) {
     return valor;
 }
 
-// true si el punto esta en el circulo
-function pointInCircle(pos1, pos2, radio) {
+function pointDistance(pos1, pos2) {
     let dif = [
         Math.pow(pos1[0] - pos2[0], 2),
         Math.pow(pos1[1] - pos2[1], 2),
     ];
-    return Math.sqrt(dif[0] + dif[1]) < radio;
+    return Math.sqrt(dif[0] + dif[1]);
+}
+
+// true si el punto esta en el circulo
+function pointInCircle(pos1, pos2, radio) {
+    let dist = pointDistance(pos1, pos2);
+    return dist < radio;
 }
 
 // true si el punto esta en el rectangulo
