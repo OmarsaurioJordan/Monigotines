@@ -9,9 +9,18 @@
     }
 
     // obtener datos del avatar
-    $sql = "SELECT nombre, genero, piel, emocion, pelo, tinte, torso,
-        color, cadera, tela, rol, clase, mensaje, descripcion,
-        link, musica FROM avatar WHERE id=?";
+    $sql = "SELECT a.nombre AS nombre, a.genero AS genero, a.piel AS piel,
+        a.emocion AS emocion, a.pelo AS pelo, a.tinte AS tinte,
+        a.torso AS torso, a.color AS color, a.cadera AS cadera,
+        a.tela AS tela, a.rol AS rol, a.clase AS clase, a.mensaje AS mensaje,
+        a.descripcion AS descripcion, a.link AS link, a.musica AS musica,
+        i.nacimiento AS nacimiento, i.zodiaco AS zodiaco, i.elemento AS elemento,
+        i.ang_dem AS ang_dem, i.izq_der AS izq_der, i.pol_lad AS pol_lad,
+        i.rel_cie AS rel_cie, i.mon_pol AS mon_pol, i.car_veg AS car_veg,
+        i.ext_int AS ext_int, i.azu_roj AS azu_roj, i.pas_fut AS pas_fut,
+        i.urb_cam AS urb_cam, i.art_ing AS art_ing, i.fie_est AS fie_est
+        FROM avatar a LEFT JOIN ideologia i ON a.id = i.avatar
+        WHERE a.id=?";
     $res = doQuery($sql, [$avaId]);
     $data = [];
     if ($res[0]) {
@@ -51,6 +60,36 @@
             echo "<label>" .$caritas[$ind]. "</label>";
         }
         echo "<label>" .$reacts[$ind]. "</label></div>";
+    }
+
+    function drawIdeology() {
+        global $data;
+        echo "<div class='lateral'>";
+        $ideas = getIdeologias();
+        for ($i = 0; $i < count($ideas); $i++) {
+            $ilg = $data[$ideas[$i][0]];
+            if ($ilg != 0) {
+                echo "<label>" .$ideas[$i][1 + max(0, $ilg)]. "</label>";
+            }
+        }
+        echo "</div>";
+    }
+
+    function drawExtra() {
+        global $data;
+        echo "<div class='laterald'>";
+        if ($data['zodiaco'] != 0) {
+            $zodi = getZodiaco();
+            echo "<label>" .textJump($zodi[$data['zodiaco'] - 1]). "</label>";
+        }
+        if ($data['nacimiento'] != 0) {
+            echo "<label>📅<br>" .(date("Y") - $data['nacimiento']). " Años</label>";
+        }
+        if ($data['elemento'] != 0) {
+            $elem = getElementos();
+            echo "<label>" .textJump($elem[$data['elemento'] - 1]). "</label>";
+        }
+        echo "</div>";
     }
 ?>
 
@@ -110,9 +149,15 @@
                 "<?php echo $data['rol']; ?>">
             <input type="hidden" id="clase" value=
                 "<?php echo $data['clase']; ?>">
-            <!-- dibujado del avatar y sus opciones de personalizacion -->
-            <canvas id="lienzo" width="128" height="192"
-                style="border:1px solid black;"></canvas>
+            <!-- dibujado del avatar y sus ideologias -->
+            <div class="cabecera">
+                <?php drawExtra(); ?>
+                <label class="camutxt">...</label>
+                <canvas id="lienzo" width="128" height="192"
+                    style="border:1px solid black;"></canvas>
+                <label class="camutxt">...</label>
+                <?php drawIdeology(); ?>
+            </div>
             <!-- reacciones y botones para reaccionar -->
             <div class="larguicaja">
                 <?php setCarita(0); ?>

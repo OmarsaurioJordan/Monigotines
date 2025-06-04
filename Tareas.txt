@@ -25,7 +25,6 @@ Avatares:
 .
 Interfaces:
 -C página para editar los mobiliarios
--M clic cambia ropa agarra grandes zonas, no solo botón.
 -M página de estadísticas globales
 -E ver todos los mensajes tipo chat en interfaz
 -E ver un chat con sus mensajes en interfaz
@@ -70,5 +69,6 @@ EXTRA.........................
 .
 -G desafiar a un usuario, resultado pseudo azar, intentos / dia
 -E hacer test exámen de temas diversos, una vez, conocimiento
+-E ver en el perfil nivel de compatibilidad con usuario sesion
 -S poder enviar reacciónes sonoras, con teclado numérico manos
 .

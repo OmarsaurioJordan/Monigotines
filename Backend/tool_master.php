@@ -104,4 +104,8 @@
         $partes = explode(" ", $texto);
         return $partes[1] ." ". $partes[0];
     }
+
+    function textJump($texto) {
+        return str_replace(" ", "<br>", $texto);
+    }
 ?>

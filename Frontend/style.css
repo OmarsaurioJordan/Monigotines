@@ -68,6 +68,20 @@ body, .precaja, .caja {
     align-items: center;
 }
 
+.lateral {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.laterald {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .cabecera {
     display: flex;
     flex-direction: row;

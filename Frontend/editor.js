@@ -92,10 +92,10 @@ function step(dlt) {
         }
         // verificar si selecciono un scroll
         let sum = 0;
-        if (pointInRectangle(mPos, [160, 176], [224, 192])) {
+        if (pointInRectangle(mPos, [160, 192 - 16 * 5], [224, 192])) {
             sum = 1;
         }
-        else if (pointInRectangle(mPos, [160, 0], [224, 16])) {
+        else if (pointInRectangle(mPos, [160, 0], [224, 16 * 5])) {
             sum = -1;
         }
         if (sum != 0) {
