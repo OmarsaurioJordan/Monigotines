@@ -13,7 +13,7 @@ class Avatar {
     static relojErrarMaxSeg = 3;
 
     constructor(id, nombre, genero, piel, emocion, pelo, tinte,
-            torso, color, cadera, tela, rol, mensaje, descripcion,
+            torso, color, cadera, tela, rol, clase, mensaje, descripcion,
             link, musica, posicion) {
         // configuracion del avatar como tal
         this.id = id;
@@ -29,6 +29,7 @@ class Avatar {
         this.cadera = cadera;
         this.tela = tela;
         this.rol = rol;
+        this.clase = clase;
         this.mensaje = "";
         this.setMensaje(mensaje);
         this.descripcion = "";
@@ -64,7 +65,7 @@ class Avatar {
     }
 
     actualizar(nombre, genero, piel, emocion, pelo, tinte, torso,
-            color, cadera, tela, rol, mensaje, descripcion, link, musica) {
+            color, cadera, tela, rol, clase, mensaje, descripcion, link, musica) {
         this.nombre = nombre;
         this.genero = genero;
         this.piel = piel;
@@ -76,6 +77,7 @@ class Avatar {
         this.cadera = cadera;
         this.tela = tela;
         this.rol = rol;
+        this.clase = clase;
         this.link = link;
         this.musica = musica;
         this.setMensaje(mensaje);
@@ -232,6 +234,7 @@ class Avatar {
         sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
             this.tinte, ani);
         sprites.drawRol(ctx, this.pis, this.rol, this.anima[2]);
+        // Tarea clase
     }
 
     drawMensaje(ctx, conNombre, texto="") {

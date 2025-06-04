@@ -56,4 +56,52 @@
         session_unset();
         header("Location:../Frontend/login.php");
     }
+
+    function getZodiaco() {
+        return [
+            "♈ Aries",
+            "♉ Tauro",
+            "♊ Géminis",
+            "♋ Cáncer",
+            "♌ Leo",
+            "♍ Virgo",
+            "♎ Libra",
+            "♏ Escorpio",
+            "♐ Sagitario",
+            "♑ Capricornio",
+            "♒ Acuario",
+            "♓ Piscis"
+        ];
+    }
+
+    function getElementos() {
+        return [
+            "🍀 Tierra",
+            "💧 Agua",
+            "🌪️ Aire",
+            "🔥 Fuego"
+        ];
+    }
+
+    function getIdeologias() {
+        return [
+            ["ang_dem", "👽 Ángel", "😈 Demon"],
+            ["izq_der", "⚒️ Comun", "💰 Capital"],
+            ["pol_lad", "🔰 Poli", "🔪 Lacra"],
+            ["rel_cie", "🔮 Alma", "📊 Materia"],
+            ["mon_pol", "🌞 Dios", "🐍 Magia"],
+            ["car_veg", "🍗 Carnív", "🍏 Hervív"],
+            ["ext_int", "😁 Extrov", "😶 Introv"],
+            ["art_ing", "🎨 Arte", "📐 Inge"],
+            ["urb_cam", "⚙️ Ciudad", "🐴 Campo"],
+            ["fie_est", "🍷 Fiesta", "📚 Cultura"],
+            ["pas_fut", "🛕 Pasado", "🚀 Futuro"],
+            ["azu_roj", "💙 Azul", "❤️ Rojo"]
+        ];
+    }
+
+    function girarEmoji($texto) {
+        $partes = explode(" ", $texto);
+        return $partes[1] ." ". $partes[0];
+    }
 ?>

@@ -10,7 +10,7 @@
 
     // obtener datos del avatar
     $sql = "SELECT nombre, genero, piel, emocion, pelo, tinte, torso,
-        color, cadera, tela, rol, mensaje, descripcion,
+        color, cadera, tela, rol, clase, mensaje, descripcion,
         link, musica FROM avatar WHERE id=?";
     $res = doQuery($sql, [$avaId]);
     $data = [];
@@ -108,6 +108,8 @@
                 "<?php echo $data['tela']; ?>">
             <input type="hidden" id="rol" value=
                 "<?php echo $data['rol']; ?>">
+            <input type="hidden" id="clase" value=
+                "<?php echo $data['clase']; ?>">
             <!-- dibujado del avatar y sus opciones de personalizacion -->
             <canvas id="lienzo" width="128" height="192"
                 style="border:1px solid black;"></canvas>
@@ -127,7 +129,8 @@
                     <button>📦<br>Construir</button>
                     <button>💌<br>Cartas</button>
                     <button>🚫<br>Bloqueos</button>
-                    <button>📝<br>Test</button>
+                    <button onclick="window.location.href=
+                        'ideology.php'">📝<br>Test</button>
                     <button onclick="window.location.href=
                         'editor.php'">✏️<br>Editar</button>
                 </div>

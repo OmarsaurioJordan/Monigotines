@@ -15,6 +15,7 @@
     $cadera = $_POST['cadera'];
     $tela = $_POST['tela'];
     $rol = $_POST['rol'];
+    $clase = $_POST['clase'];
     $mensaje = okMensaje($_POST['mensaje']);
     $descripcion = okMensaje($_POST['descripcion']);
     $link = $_POST['link'];
@@ -26,10 +27,11 @@
 
     $sql = "UPDATE avatar SET nombre=?, genero=?, piel=?, emocion=?,
         pelo=?, tinte=?, torso=?, color=?, cadera=?, tela=?, rol=?,
-        mensaje=?, descripcion=?, link=?, musica=? WHERE id=?";
+        clase=?, mensaje=?, descripcion=?, link=?, musica=?
+        WHERE id=?";
     $res = doQuery($sql, [$nombre, $genero, $piel, $emocion,
         $pelo, $tinte, $torso, $color, $cadera, $tela, $rol,
-        $mensaje, $descripcion, $link, $musica, $usr]);
+        $clase, $mensaje, $descripcion, $link, $musica, $usr]);
     if ($res[0]) {
         header("Location:../Frontend/postedicion.php?msjok=1");
     }

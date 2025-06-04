@@ -213,6 +213,8 @@ class Sprites {
         this.drawSprite(ctx, posicion, this.sprite[9], rol);
     }
 
+    // Tarea clase
+
     // dibujado de cosas de la GUI
 
     drawSelect(ctx, posicion, subInd, isOk) {
@@ -318,6 +320,8 @@ class Sprites {
     totRol() {
         return this.sprite[9].width / 128;
     }
+
+    // Tarea clase
 
     // manipulacion de texto
 

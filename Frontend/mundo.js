@@ -34,7 +34,7 @@ function getObjId(id, isAvatar=true) {
 const cargador = new Cargador("../Backend/get_avatares.php");
 const indAvaCrg = cargador.newConsulta("avatar",
     "id,nombre,genero,piel,emocion,pelo,tinte,torso,color," +
-    "cadera,tela,rol,mensaje,descripcion,link,musica");
+    "cadera,tela,rol,clase,mensaje,descripcion,link,musica");
 
 // variables para interaccion en el mundo
 let estado = 0; // seleccion actual
@@ -112,14 +112,15 @@ function step(dlt) {
             objetos[oldAva].actualizar(
                 ava.nombre, ava.genero, ava.piel, ava.emocion,
                 ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
-                ava.tela, ava.rol, ava.mensaje, ava.descripcion, ava.link, ava.musica
+                ava.tela, ava.rol, ava.clase, ava.mensaje,
+                ava.descripcion, ava.link, ava.musica
             );
         }
         else {
             objetos.push(new Avatar(
                 ava.id, ava.nombre, ava.genero, ava.piel, ava.emocion,
                 ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
-                ava.tela, ava.rol, ava.mensaje, ava.descripcion,
+                ava.tela, ava.rol, ava.clase, ava.mensaje, ava.descripcion,
                 ava.link, ava.musica, [Math.random() * worldW, Math.random() * worldH]
             ));
         }

@@ -26,9 +26,10 @@ let color = parseInt(document.getElementById("color").value);
 let cadera = parseInt(document.getElementById("cadera").value);
 let tela = parseInt(document.getElementById("tela").value);
 let rol = parseInt(document.getElementById("rol").value);
+let clase = parseInt(document.getElementById("clase").value);
 const avatar = new Avatar(
     avaId, "", genero, piel, emocion, pelo, tinte,
-    torso, color, cadera, tela, rol, "", "", "", "", [64, 186]
+    torso, color, cadera, tela, rol, clase, "", "", "", "", [64, 186]
 );
 
 // el main loop del juego

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-06-2025 a las 02:52:32
+-- Tiempo de generación: 04-06-2025 a las 01:25:23
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -43,6 +43,7 @@ CREATE TABLE `avatar` (
   `cadera` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
   `tela` tinyint(3) UNSIGNED NOT NULL DEFAULT 2,
   `rol` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `clase` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `mensaje` varchar(200) NOT NULL DEFAULT '',
   `descripcion` varchar(600) NOT NULL DEFAULT '',
   `link` varchar(128) NOT NULL DEFAULT '',
@@ -94,7 +95,6 @@ DROP TABLE IF EXISTS `ideologia`;
 CREATE TABLE `ideologia` (
   `id` int(10) UNSIGNED NOT NULL,
   `avatar` int(10) UNSIGNED NOT NULL,
-  `clase` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `nacimiento` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   `zodiaco` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,

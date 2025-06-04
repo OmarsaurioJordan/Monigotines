@@ -4,13 +4,16 @@ body {
     color: white;
 }
 
-input, button {
+input, button, select, option {
     padding: 5px;
     border-radius: 10px;
     text-align: center;
 }
 button:hover {
     background-color: rgb(236, 198, 109);
+}
+option {
+    text-align: left;
 }
 
 textarea {

@@ -1,11 +1,3 @@
-// para prevenir salida por error cuando se edita
-let usr = parseInt(document.getElementById("usr").value);
-function btnCancelar() {
-    if (confirm("❗ Si sales perderás todos los cambios ¿Salir?")) {
-        window.location.href = "perfil.php?id=" + usr;
-    }
-}
-
 // obtener informacion del lienzo
 // 240 x 192 = 32 opc + 128 ava + 64 obj + 16 col
 const canvas = document.getElementById("lienzo");
@@ -16,6 +8,7 @@ newMouseListener();
 resizeCanvasEsc(1.3);
 
 // crear el avatar asignandole datos precargados
+let usr = parseInt(document.getElementById("usr").value);
 let genero = parseInt(document.getElementById("genero").value);
 let piel = parseInt(document.getElementById("piel").value);
 let emocion = parseInt(document.getElementById("emocion").value);
@@ -26,9 +19,10 @@ let color = parseInt(document.getElementById("color").value);
 let cadera = parseInt(document.getElementById("cadera").value);
 let tela = parseInt(document.getElementById("tela").value);
 let rol = parseInt(document.getElementById("rol").value);
+let clase = parseInt(document.getElementById("clase").value);
 const avatar = new Avatar(
     usr, "", genero, piel, emocion, pelo, tinte,
-    torso, color, cadera, tela, rol, "", "", "", "", [96, 186]
+    torso, color, cadera, tela, rol, clase, "", "", "", "", [96, 186]
 );
 
 // variables para interaccion con el canvas y avatar
@@ -131,8 +125,8 @@ function step(dlt) {
                         avatar.rol + sum, sprites.totRol());
                     document.getElementById("rol").value = avatar.rol;
                     break;
-                case 5: // etc
-
+                case 5: // clase
+                    // Tarea clase
                     break;
             }
         }
@@ -210,8 +204,8 @@ function draw() {
                 aux = BarrelSprAva(aux + 1, sprites.totRol());
             }
             break;
-        case 5: // etc
-
+        case 5: // clase
+            // Tarea clase
             break;
     }
     // dibujar scroll vertical

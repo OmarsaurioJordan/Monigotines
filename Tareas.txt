@@ -25,16 +25,12 @@ Avatares:
 .
 Interfaces:
 -C página para editar los mobiliarios
+-M clic cambia ropa agarra grandes zonas, no solo botón.
 -M página de estadísticas globales
--G seleccionar bandos ideológicos
 -E ver todos los mensajes tipo chat en interfaz
 -E ver un chat con sus mensajes en interfaz
 -E responder mensajes tipo chat en interfaz
 -E ver interfaz de bloqueados
-.
-Mantenimiento:
-.
-- 
 .
 HECHO.........................
 .
@@ -68,6 +64,7 @@ Interfacez:
 -M prevención de cierre de sesión o edición accidental
 -E poder reaccionar al avatar seleccionado
 -E ver reacciónes en el avatar seleccionado
+-G seleccionar bandos ideológicos
 .
 EXTRA.........................
 .

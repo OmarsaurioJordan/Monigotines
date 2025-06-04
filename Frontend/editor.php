@@ -4,7 +4,7 @@
     require "../Backend/tool_db.php";
 
     $sql = "SELECT piel, emocion, pelo, tinte, torso,
-        color, cadera, tela, rol, mensaje, descripcion,
+        color, cadera, tela, rol, clase, mensaje, descripcion,
         link, musica FROM avatar WHERE id=?";
     $res = doQuery($sql, [$_SESSION['usr']]);
     $data = [];
@@ -30,7 +30,7 @@
             <label class="camutxt">............</label>
             <h3>Monigotines</h3>
             <label class="camutxt">............</label>
-            <label>✏️ Editar Avatar</label>
+            <label>✏️ Editar</label>
         </div>
         <form class="precaja" action="../Backend/editor.php" method="POST" autocomplete="off">
             <!-- campos que contienen toda la info del avatar -->
@@ -58,6 +58,8 @@
                 "<?php echo $data['tela']; ?>">
             <input type="hidden" name="rol" id="rol" value=
                 "<?php echo $data['rol']; ?>">
+            <input type="hidden" name="clase" id="clase" value=
+                "<?php echo $data['clase']; ?>">
             <!-- dibujado del avatar y sus opciones de personalizacion -->
             <canvas id="lienzo" width="240" height="192"
                 style="border:1px solid black;"></canvas>
