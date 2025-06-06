@@ -6,7 +6,7 @@
     $passwordMail = ""; // clave asignada en hosting al mail
     */
     $usuarioMail = "ojorcio@omwekiatl.xyz";
-    $isDebug = false; // para pruebas sin mail, ej: en XAMPP
+    $isDebug = true; // para pruebas sin mail, ej: en XAMPP
     // dominios validos para crear una cuenta
     $dominios = [
         "gmail.com",

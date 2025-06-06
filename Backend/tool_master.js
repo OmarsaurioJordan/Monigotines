@@ -14,3 +14,12 @@ function btnCancelar() {
         window.location.href = "perfil.php?id=" + usr;
     }
 }
+
+function btnBloquear() {
+    let id = parseInt(document.getElementById("avaId").value);
+    let usr = parseInt(document.getElementById("usr").value);
+    if (confirm("❗ ¿Vas a bloquear o desbloquear a este usuario?")) {
+        window.location.href = "../Backend/bloquear.php?usr=" +
+            usr + "&id=" + id;
+    }
+}

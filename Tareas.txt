@@ -1,5 +1,7 @@
 TAREAS.........................
 .
+se agrego atributo estado y actualiza a tabla bloqueo...
+.
 Mundo:
 -M mostrar minimapa con todos los avatares
 -M cargar mobiliario y baldozas
@@ -7,7 +9,6 @@ Mundo:
 -E ver mensajes en el avatar seleccionado
 -E enviar mensaje al avatar seleccionado
 -E movimiento de camara tras avatar
--E poder bloquear usuarios
 -S desconectar tiempo real si inactividad
 .
 Avatares:
@@ -29,7 +30,6 @@ Interfaces:
 -E ver todos los mensajes tipo chat en interfaz
 -E ver un chat con sus mensajes en interfaz
 -E responder mensajes tipo chat en interfaz
--E ver interfaz de bloqueados
 .
 HECHO.........................
 .
@@ -44,6 +44,7 @@ Mundo:
 -M seleccionar avatar con clic
 -M ver perfil del avatar seleccionado
 -M ir al link del avatar seleccionado
+-E poder bloquear usuarios
 .
 Avatares:
 -M dibujado de los avatares con sus configuraciónes
@@ -64,6 +65,7 @@ Interfacez:
 -E poder reaccionar al avatar seleccionado
 -E ver reacciónes en el avatar seleccionado
 -G seleccionar bandos ideológicos
+-E ver interfaz de bloqueados
 .
 EXTRA.........................
 .

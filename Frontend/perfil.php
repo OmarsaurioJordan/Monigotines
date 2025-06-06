@@ -18,10 +18,12 @@
         i.ang_dem AS ang_dem, i.izq_der AS izq_der, i.pol_lad AS pol_lad,
         i.rel_cie AS rel_cie, i.mon_pol AS mon_pol, i.car_veg AS car_veg,
         i.ext_int AS ext_int, i.azu_roj AS azu_roj, i.pas_fut AS pas_fut,
-        i.urb_cam AS urb_cam, i.art_ing AS art_ing, i.fie_est AS fie_est
+        i.urb_cam AS urb_cam, i.art_ing AS art_ing, i.fie_est AS fie_est,
+        b.estado=1 AS isBlock
         FROM avatar a LEFT JOIN ideologia i ON a.id = i.avatar
+        LEFT JOIN bloqueo b ON a.id = b.bloqueado AND b.bloqueador=?
         WHERE a.id=?";
-    $res = doQuery($sql, [$avaId]);
+    $res = doQuery($sql, [$usr, $avaId]);
     $data = [];
     if ($res[0]) {
         $data = $res[1][0];
@@ -173,7 +175,8 @@
                     <button>🎁<br>Más</button>
                     <button>📦<br>Construir</button>
                     <button>💌<br>Cartas</button>
-                    <button>🚫<br>Bloqueos</button>
+                    <button onclick="window.location.href=
+                        'bloqueados.php'">🚫<br>Bloqueos</button>
                     <button onclick="window.location.href=
                         'ideology.php'">📝<br>Test</button>
                     <button onclick="window.location.href=
@@ -181,7 +184,11 @@
                 </div>
             <?php } else if ($usr != -1) { ?>
                 <div class="botonera">
-                    <button>🚫<br>Bloquear</button>
+                    <button onclick="btnBloquear()"><?php
+                        echo $data['isBlock'] == 1 ?
+                            "🏳️<br>Desbloq" :
+                            "🚫<br>Bloquear";
+                        ?></button>
                     <button>🎲<br>Desafiar</button>
                     <button>💌<br>Escribir</button>
                 </div>

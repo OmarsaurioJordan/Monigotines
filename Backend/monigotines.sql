@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-06-2025 a las 01:25:23
+-- Tiempo de generación: 05-06-2025 a las 22:53:35
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -27,7 +27,6 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `avatar`
 --
 
-DROP TABLE IF EXISTS `avatar`;
 CREATE TABLE `avatar` (
   `id` int(10) UNSIGNED NOT NULL,
   `correo` int(10) UNSIGNED NOT NULL,
@@ -55,14 +54,12 @@ CREATE TABLE `avatar` (
 --
 -- Disparadores `avatar`
 --
-DROP TRIGGER IF EXISTS `actualiza_avatar`;
 DELIMITER $$
 CREATE TRIGGER `actualiza_avatar` AFTER UPDATE ON `avatar` FOR EACH ROW BEGIN
 	UPDATE preregistro SET clave='' WHERE id=NEW.correo;
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `nuevo_avatar`;
 DELIMITER $$
 CREATE TRIGGER `nuevo_avatar` AFTER INSERT ON `avatar` FOR EACH ROW BEGIN
 	INSERT INTO ideologia (avatar) VALUES (NEW.id);
@@ -78,11 +75,12 @@ DELIMITER ;
 -- Estructura de tabla para la tabla `bloqueo`
 --
 
-DROP TABLE IF EXISTS `bloqueo`;
 CREATE TABLE `bloqueo` (
   `id` int(10) UNSIGNED NOT NULL,
   `bloqueador` int(10) UNSIGNED NOT NULL,
-  `bloqueado` int(10) UNSIGNED NOT NULL
+  `bloqueado` int(10) UNSIGNED NOT NULL,
+  `estado` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `actualiza` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -91,7 +89,6 @@ CREATE TABLE `bloqueo` (
 -- Estructura de tabla para la tabla `ideologia`
 --
 
-DROP TABLE IF EXISTS `ideologia`;
 CREATE TABLE `ideologia` (
   `id` int(10) UNSIGNED NOT NULL,
   `avatar` int(10) UNSIGNED NOT NULL,
@@ -119,7 +116,6 @@ CREATE TABLE `ideologia` (
 -- Estructura de tabla para la tabla `mail`
 --
 
-DROP TABLE IF EXISTS `mail`;
 CREATE TABLE `mail` (
   `id` int(10) UNSIGNED NOT NULL,
   `emisor` int(10) UNSIGNED NOT NULL,
@@ -135,7 +131,6 @@ CREATE TABLE `mail` (
 -- Estructura de tabla para la tabla `mobiliario`
 --
 
-DROP TABLE IF EXISTS `mobiliario`;
 CREATE TABLE `mobiliario` (
   `id` int(10) UNSIGNED NOT NULL,
   `creador` int(10) UNSIGNED NOT NULL,
@@ -151,7 +146,6 @@ CREATE TABLE `mobiliario` (
 -- Estructura de tabla para la tabla `mover`
 --
 
-DROP TABLE IF EXISTS `mover`;
 CREATE TABLE `mover` (
   `id` int(10) UNSIGNED NOT NULL,
   `avatar` int(10) UNSIGNED NOT NULL,
@@ -168,7 +162,6 @@ CREATE TABLE `mover` (
 -- Estructura de tabla para la tabla `preregistro`
 --
 
-DROP TABLE IF EXISTS `preregistro`;
 CREATE TABLE `preregistro` (
   `id` int(10) UNSIGNED NOT NULL,
   `correo` varchar(64) NOT NULL,
@@ -182,7 +175,6 @@ CREATE TABLE `preregistro` (
 -- Estructura de tabla para la tabla `reaccion`
 --
 
-DROP TABLE IF EXISTS `reaccion`;
 CREATE TABLE `reaccion` (
   `id` int(10) UNSIGNED NOT NULL,
   `emisor` int(10) UNSIGNED NOT NULL,
