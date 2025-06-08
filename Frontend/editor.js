@@ -22,7 +22,8 @@ let rol = parseInt(document.getElementById("rol").value);
 let clase = parseInt(document.getElementById("clase").value);
 const avatar = new Avatar(
     usr, "", genero, piel, emocion, pelo, tinte,
-    torso, color, cadera, tela, rol, clase, "", "", "", "", [96, 186]
+    torso, color, cadera, tela, rol, clase, "", "", "", "",
+    false, [96, 186]
 );
 
 // variables para interaccion con el canvas y avatar

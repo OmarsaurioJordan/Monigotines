@@ -1,7 +1,5 @@
 TAREAS.........................
 .
-se agrego atributo estado y actualiza a tabla bloqueo...
-.
 Mundo:
 -M mostrar minimapa con todos los avatares
 -M cargar mobiliario y baldozas
@@ -54,6 +52,7 @@ Avatares:
 -M limitar movimiento a bordes de mundo
 -M colisión con avatares y mobiliarios
 -M movimiento azaroso errando
+-M se ve como fantasma si no ha sido editado
 .
 Interfacez:
 -M login con sesion y contraseña

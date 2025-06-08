@@ -19,7 +19,7 @@
         i.rel_cie AS rel_cie, i.mon_pol AS mon_pol, i.car_veg AS car_veg,
         i.ext_int AS ext_int, i.azu_roj AS azu_roj, i.pas_fut AS pas_fut,
         i.urb_cam AS urb_cam, i.art_ing AS art_ing, i.fie_est AS fie_est,
-        b.estado=1 AS isBlock
+        b.estado=1 AS isBlock, a.registro=a.actualiza AS isNew
         FROM avatar a LEFT JOIN ideologia i ON a.id = i.avatar
         LEFT JOIN bloqueo b ON a.id = b.bloqueado AND b.bloqueador=?
         WHERE a.id=?";
@@ -151,6 +151,8 @@
                 "<?php echo $data['rol']; ?>">
             <input type="hidden" id="clase" value=
                 "<?php echo $data['clase']; ?>">
+            <input type="hidden" id="isNew" value=
+                "<?php echo $data['isNew']; ?>">
             <!-- dibujado del avatar y sus ideologias -->
             <div class="cabecera">
                 <?php drawExtra(); ?>

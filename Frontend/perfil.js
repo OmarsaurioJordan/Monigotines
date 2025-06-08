@@ -27,9 +27,11 @@ let cadera = parseInt(document.getElementById("cadera").value);
 let tela = parseInt(document.getElementById("tela").value);
 let rol = parseInt(document.getElementById("rol").value);
 let clase = parseInt(document.getElementById("clase").value);
+let isNew = parseInt(document.getElementById("isNew").value);
 const avatar = new Avatar(
     avaId, "", genero, piel, emocion, pelo, tinte,
-    torso, color, cadera, tela, rol, clase, "", "", "", "", [64, 186]
+    torso, color, cadera, tela, rol, clase, "", "", "", "",
+    isNew, [64, 186]
 );
 
 // el main loop del juego
@@ -62,7 +64,12 @@ function draw() {
     ctx.fillStyle = colorFondo;
     ctx.fillRect(0, 0, width, height);
     // dibujar avatar
-    avatar.drawAvatar(ctx, sprites, false);
+    if (avatar.isNew) {
+        avatar.drawFantasma(ctx, sprites, false);
+    }
+    else {
+        avatar.drawAvatar(ctx, sprites, false);
+    }
 }
 
 // iniciar el loop cuando los sprites carguen

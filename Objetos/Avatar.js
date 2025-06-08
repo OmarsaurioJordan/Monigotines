@@ -4,6 +4,7 @@ class Avatar {
     static mensajeW = 200; // anchura del texto
     static descripcionW = 200; // anchura texto en GUI
     static radio = 16; // para colisiones
+    static altMsj = 120; // altura a la que esta el nombre y mensaje
     // parametros de movimiento
     static velocidad = 100;
     static probContinuarMove = 0.7;
@@ -14,7 +15,7 @@ class Avatar {
 
     constructor(id, nombre, genero, piel, emocion, pelo, tinte,
             torso, color, cadera, tela, rol, clase, mensaje, descripcion,
-            link, musica, posicion) {
+            link, musica, isNew, posicion) {
         // configuracion del avatar como tal
         this.id = id;
         this.pos = posicion;
@@ -37,13 +38,14 @@ class Avatar {
         this.link = link;
         this.musica = musica;
         // configuracion para funcionamiento
-        this.pis = [...this.pos]; // interpolacion
+        this.pis = [...this.pos]; // para interpolacion
         this.relojErrar = Math.random() * (Avatar.relojErrarMinSeg +
             Avatar.relojErrarMaxSeg);
         this.isMove = Math.random() < 0.5;
         this.moveDir = Math.random() * 2 * Math.PI;
         this.isWalk = false;
         // configuracion para animaciones
+        this.isNew = isNew; // true dibuja fantasma
         this.anima = []; // pies, cabeza, tool
         this.relojAnima = [];
         Avatar.timeAnima.forEach(e => {
@@ -65,7 +67,8 @@ class Avatar {
     }
 
     actualizar(nombre, genero, piel, emocion, pelo, tinte, torso,
-            color, cadera, tela, rol, clase, mensaje, descripcion, link, musica) {
+            color, cadera, tela, rol, clase, mensaje, descripcion,
+            link, musica, isNew) {
         this.nombre = nombre;
         this.genero = genero;
         this.piel = piel;
@@ -80,6 +83,7 @@ class Avatar {
         this.clase = clase;
         this.link = link;
         this.musica = musica;
+        this.isNew = isNew;
         this.setMensaje(mensaje);
         this.setDescripcion(descripcion);
     }
@@ -219,6 +223,16 @@ class Avatar {
 
     // dibujado
 
+    drawFantasma(ctx, sprites, conNombre) {
+        sprites.drawFantasma(ctx, this.pis, this.relojAnima[0]);
+        if (conNombre) {
+            let posMsj = [this.pis[0], this.pis[1] - Avatar.altMsj];
+            Sprites.drawMensaje(
+                ctx, this.nombre, posMsj,
+                Sprites.getMsjFont(true), 18, 3);
+        }
+    }
+
     drawAvatar(ctx, sprites, isWalk) {
         let wlk = isWalk ? this.relojAnima[0] : -1;
         sprites.drawCuerpo(ctx, this.pis, this.piel,
@@ -238,7 +252,7 @@ class Avatar {
     }
 
     drawMensaje(ctx, conNombre, texto="") {
-        let posMsj = [this.pis[0], this.pis[1] - 120];
+        let posMsj = [this.pis[0], this.pis[1] - Avatar.altMsj];
         if (conNombre) {
             Sprites.drawMensaje(
                 ctx, this.nombre, posMsj,
@@ -260,8 +274,13 @@ class Avatar {
     draw(ctx, sprites, estado) {
         switch (estado) {
             case 0: // Mundo
-                this.drawAvatar(ctx, sprites, this.isWalk);
-                this.drawMensaje(ctx, true, this.mensaje);
+                if (this.isNew) {
+                    this.drawFantasma(ctx, sprites, true);
+                }
+                else {
+                    this.drawAvatar(ctx, sprites, this.isWalk);
+                    this.drawMensaje(ctx, true, this.mensaje);
+                }
                 break;
             case 1: // Explore
                 this.drawAvatar(ctx, sprites, this.isWalk);

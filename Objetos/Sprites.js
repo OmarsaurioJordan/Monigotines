@@ -17,7 +17,8 @@ class Sprites {
             this.loadImg("d_suelo"), // 8
             this.loadImg("d_monigotin_rol"), // 9
             this.loadImg("d_monigotin_sombra"), // 10
-            this.loadImg("d_monigotin_aro") // 11
+            this.loadImg("d_monigotin_aro"), // 11
+            this.loadImg("d_monigotin_fanta") // 12
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -147,6 +148,12 @@ class Sprites {
     }
 
     // dibujado de piezas de avatar
+
+    drawFantasma(ctx, posicion, anima) {
+        // anima: -1 quieto, 0 a 1 paso
+        let sub = Math.max(0, Math.min(3, Math.floor(anima * 4)));
+        this.drawSprite(ctx, posicion, this.sprite[12], sub);
+    }
 
     drawCabeza(ctx, posicion, piel, genero, anima) {
         // anima: -1 quieto, 0 a 1 paso
