@@ -86,13 +86,6 @@ class Cargador {
         return this.resultados[ind].length;
     }
 
-    getData(ind) {
-        if (this.totData(ind) != 0) {
-            return this.resultados[ind][0];
-        }
-        return null;
-    }
-
     popData(ind) {
         if (this.totData(ind) != 0) {
             return this.resultados[ind].pop();

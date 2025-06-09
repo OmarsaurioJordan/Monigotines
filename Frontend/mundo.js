@@ -44,6 +44,7 @@ const indIdeCrg = cargador.newConsulta("ideologia",
 let estado = 0; // seleccion actual
 let seleccionado = null; // avatar que ha sido clickeado
 let mundoIdea = 0; // modo de guerra
+let auxIdeas = null; // variable auxiliar para cargar ideologias
 
 // obtener ideologias de HTML
 let txtIdeas = document.getElementById("ideologys").value.split("|");
@@ -159,18 +160,21 @@ function step(dlt) {
     }
     // cargar o actualizar ideologias
     cargador.step(dlt / 4, indIdeCrg);
-    ava = cargador.getData(indIdeCrg);
-    if (ava) {
+    if (auxIdeas) {
+        ava = auxIdeas;
         let oldAva = getObjId(ava.id);
         if (oldAva != -1) {
-            ava = cargador.popData(indIdeCrg);
             objetos[oldAva].setIdeas(
                 ava.zodiaco, ava.elemento,
                 [ava.ang_dem, ava.izq_der, ava.pol_lad, ava.rel_cie,
                     ava.mon_pol, ava.car_veg, ava.ext_int, ava.art_ing,
                     ava.urb_cam, ava.fie_est, ava.pas_fut, ava.azu_roj]
             );
+            auxIdeas = null;
         }
+    }
+    else {
+        auxIdeas = cargador.popData(indIdeCrg);
     }
     // ejecutar el loop de los objetos
     objetos.forEach(obj => obj.step(dlt, estado, usuario, mundoIdea));
