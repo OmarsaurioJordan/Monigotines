@@ -73,19 +73,24 @@ class Cargador {
         });
     }
 
-    step(dlt) {
-        for (let i = 0; i < this.consultas.length; i++) {
-            if (this.consultas[i].free) {
-                this.consultas[i].reloj -= dlt;
-                if (this.consultas[i].reloj <= 0) {
-                    this.doConsulta(i);
-                }
+    step(dlt, indCarga) {
+        if (this.consultas[indCarga].free) {
+            this.consultas[indCarga].reloj -= dlt;
+            if (this.consultas[indCarga].reloj <= 0) {
+                this.doConsulta(indCarga);
             }
         }
     }
 
     totData(ind) {
         return this.resultados[ind].length;
+    }
+
+    getData(ind) {
+        if (this.totData(ind) != 0) {
+            return this.resultados[ind][0];
+        }
+        return null;
     }
 
     popData(ind) {

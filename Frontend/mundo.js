@@ -36,6 +36,9 @@ const indAvaCrg = cargador.newConsulta("avatar",
     "id,nombre,genero,piel,emocion,pelo,tinte,torso,color," +
     "cadera,tela,rol,clase,mensaje,descripcion,link,musica," +
     "registro=actualiza AS isNew");
+const indIdeCrg = cargador.newConsulta("ideologia",
+    "avatar AS id,zodiaco,elemento,ang_dem,izq_der,pol_lad,rel_cie," +
+    "mon_pol,car_veg,ext_int,azu_roj,pas_fut,urb_cam,art_ing,fie_est");
 
 // variables para interaccion en el mundo
 let estado = 0; // seleccion actual
@@ -132,11 +135,10 @@ function step(dlt) {
     // ajustar la camara
     stepCamara(dlt);
     // cargar o actualizar avatares
-    cargador.step(dlt);
-    let oldAva = null;
+    cargador.step(dlt, indAvaCrg);
     let ava = cargador.popData(indAvaCrg);
-    while (ava) {
-        oldAva = getObjId(ava.id);
+    if (ava) {
+        let oldAva = getObjId(ava.id);
         if (oldAva != -1) {
             objetos[oldAva].actualizar(
                 ava.nombre, ava.genero, ava.piel, ava.emocion,
@@ -154,7 +156,21 @@ function step(dlt) {
                 [Math.random() * worldW, Math.random() * worldH]
             ));
         }
-        ava = cargador.popData(indAvaCrg);
+    }
+    // cargar o actualizar ideologias
+    cargador.step(dlt / 4, indIdeCrg);
+    ava = cargador.getData(indIdeCrg);
+    if (ava) {
+        let oldAva = getObjId(ava.id);
+        if (oldAva != -1) {
+            ava = cargador.popData(indIdeCrg);
+            objetos[oldAva].setIdeas(
+                ava.zodiaco, ava.elemento,
+                [ava.ang_dem, ava.izq_der, ava.pol_lad, ava.rel_cie,
+                    ava.mon_pol, ava.car_veg, ava.ext_int, ava.art_ing,
+                    ava.urb_cam, ava.fie_est, ava.pas_fut, ava.azu_roj]
+            );
+        }
     }
     // ejecutar el loop de los objetos
     objetos.forEach(obj => obj.step(dlt, estado, usuario, mundoIdea));

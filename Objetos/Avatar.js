@@ -52,6 +52,8 @@ class Avatar {
             this.ideas.push(0);
         }
         this.vida = Avatar.vida;
+        this.zodiaco = 0;
+        this.elemento = 0;
         // configuracion para animaciones
         this.isNew = isNew; // true dibuja fantasma
         this.anima = []; // pies, cabeza, tool
@@ -96,6 +98,14 @@ class Avatar {
         this.setDescripcion(descripcion);
         // para guerra
         this.ideas[0] = genero == 0 ? -1 : 1;
+    }
+
+    setIdeas(zodiaco, elemento, ideologys) {
+        this.zodiaco = zodiaco;
+        this.elemento = elemento;
+        for (let i = 0; i < ideologys.length; i++) {
+            this.ideas[i + 1] = ideologys[i];
+        }
     }
 
     getWarVivo(mundoIdea) {

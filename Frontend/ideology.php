@@ -107,7 +107,7 @@
                 zodiacos();
                 elementos();
                 $ideas = getIdeologias();
-                $ideas.shift();
+                array_shift($ideas);
                 shuffle($ideas);
                 for ($i = 0; $i < count($ideas); $i++) {
                     dualidad($ideas[$i]);
