@@ -12,6 +12,8 @@ class Avatar {
     static medArcoCambioDir = 0.4 * Math.PI;
     static relojErrarMinSeg = 0.5;
     static relojErrarMaxSeg = 3;
+    // parametros modo guerra
+    static vida = 100;
 
     constructor(id, nombre, genero, piel, emocion, pelo, tinte,
             torso, color, cadera, tela, rol, clase, mensaje, descripcion,
@@ -44,6 +46,12 @@ class Avatar {
         this.isMove = Math.random() < 0.5;
         this.moveDir = Math.random() * 2 * Math.PI;
         this.isWalk = false;
+        // configuracion para modo guerra
+        this.ideas = [(genero == 0 ? -1 : 1)]; // 0: genero
+        for (let i = 0; i < 12; i++) {
+            this.ideas.push(0);
+        }
+        this.vida = Avatar.vida;
         // configuracion para animaciones
         this.isNew = isNew; // true dibuja fantasma
         this.anima = []; // pies, cabeza, tool
@@ -86,11 +94,18 @@ class Avatar {
         this.isNew = isNew;
         this.setMensaje(mensaje);
         this.setDescripcion(descripcion);
+        // para guerra
+        this.ideas[0] = genero == 0 ? -1 : 1;
+    }
+
+    getWarVivo(mundoIdea) {
+        // true si no esta como fantasma
+        return this.ideas[mundoIdea] != 0 && !this.isNew && this.vida > 0;
     }
 
     // loop de logica
 
-    step(dlt, estado, usuario) {
+    step(dlt, estado, usuario, mundoIdea) {
         this.stepAnima(dlt);
         this.stepRelojErrar(dlt);
         if (Math.random() < 0.5) {
@@ -248,7 +263,26 @@ class Avatar {
         sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
             this.tinte, ani);
         sprites.drawRol(ctx, this.pis, this.rol, this.anima[2]);
-        // Tarea clase
+    }
+
+    drawWar(ctx, sprites, isWalk, mundoIdea) {
+        if (!this.getWarVivo(mundoIdea)) {
+            this.drawFantasma(ctx, sprites, false);
+        }
+        else {
+            let wlk = isWalk ? this.relojAnima[0] : -1;
+            sprites.drawCuerpo(ctx, this.pis, this.piel,
+                this.genero, wlk, false);
+            sprites.drawIdea(ctx, this.pis, this.genero,
+                mundoIdea, this.ideas[mundoIdea]);
+            let ani = this.anima[1];
+            sprites.drawCabeza(ctx, this.pis, this.piel,
+                this.genero, ani);
+            sprites.drawEmocion(ctx, this.pis, this.emocion, ani);
+            sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
+                this.tinte, ani);
+            // Tarea clase
+        }
     }
 
     drawMensaje(ctx, conNombre, texto="") {
@@ -271,9 +305,10 @@ class Avatar {
         //ctx.fillRect(this.pos[0] - 2, this.pos[1] - 2, 4, 4);
     }
 
-    draw(ctx, sprites, estado) {
+    draw(ctx, sprites, estado, mundoIdea) {
         switch (estado) {
             case 0: // Mundo
+            case 1: // Explore
                 if (this.isNew) {
                     this.drawFantasma(ctx, sprites, true);
                 }
@@ -282,12 +317,9 @@ class Avatar {
                     this.drawMensaje(ctx, true, this.mensaje);
                 }
                 break;
-            case 1: // Explore
-                this.drawAvatar(ctx, sprites, this.isWalk);
-                this.drawMensaje(ctx, true, this.mensaje);
-                break;
             case 2: // Guerra
-
+                this.drawWar(ctx, sprites, this.isWalk, mundoIdea);
+                this.drawMensaje(ctx, true, "");
                 break;
             case 3: // Social
 

@@ -16,6 +16,10 @@ option {
     text-align: left;
 }
 
+canvas {
+    cursor: default;
+}
+
 textarea {
     resize: none;
 }

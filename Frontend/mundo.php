@@ -7,6 +7,14 @@
     if (isset($_SESSION['usr'])) {
         $btnPerfil = str_replace("$$$", $_SESSION['usr'], $btnPerfil);
     }
+
+    // obtener todas las ideologias en formato
+    $ideas = getIdeologias();
+    $txtIdeas = "";
+    for ($i = 0; $i < count($ideas); $i++) {
+        $txtIdeas .= girarEmoji($ideas[$i][1]) ." vs ". $ideas[$i][2] ."|";
+    }
+    $txtIdeas = substr($txtIdeas, 0, -1);
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +27,7 @@
     </head>
     <body>
         <input type="hidden" id="escalaMundo" value="<?php echo $escalaMundo; ?>">
+        <input type="hidden" id="ideologys" value="<?php echo $txtIdeas; ?>">
         <input type="hidden" id="usuario" value=
             "<?php echo (isset($_SESSION['usr']) ? $_SESSION['usr'] : -1); ?>">
         <div class="cabecera">

@@ -18,7 +18,9 @@ class Sprites {
             this.loadImg("d_monigotin_rol"), // 9
             this.loadImg("d_monigotin_sombra"), // 10
             this.loadImg("d_monigotin_aro"), // 11
-            this.loadImg("d_monigotin_fanta") // 12
+            this.loadImg("d_monigotin_fanta"), // 12
+            this.loadImg("d_monigotin_idea1"), // 13
+            this.loadImg("d_monigotin_idea2") // 14
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -220,6 +222,21 @@ class Sprites {
         this.drawSprite(ctx, posicion, this.sprite[9], rol);
     }
 
+    drawIdea(ctx, posicion, genero, indIdea, indPostura) {
+        let spr = null;
+        if (indPostura == -1) {
+            spr = this.sprite[13];
+        }
+        else if (indPostura == 1) {
+            spr = this.sprite[14];
+        }
+        else {
+            return null;
+        }
+        let subImg = 2 * indIdea + genero;
+        this.drawSprite(ctx, posicion, spr, subImg);
+    }
+
     // Tarea clase
 
     // dibujado de cosas de la GUI
@@ -326,6 +343,10 @@ class Sprites {
 
     totRol() {
         return this.sprite[9].width / 128;
+    }
+
+    totIdeas() {
+        return this.sprite[13].width / 128;
     }
 
     // Tarea clase

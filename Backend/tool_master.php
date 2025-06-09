@@ -85,10 +85,11 @@
 
     function getIdeologias() {
         return [
+            ["muj_hom", "🚺 Fem", "🚹 Masc"],
             ["ang_dem", "👽 Ángel", "😈 Demon"],
             ["izq_der", "⚒️ Comun", "💰 Capital"],
             ["pol_lad", "🔰 Poli", "🔪 Lacra"],
-            ["rel_cie", "🔮 Alma", "📊 Materia"],
+            ["rel_cie", "🔮 Alma", "📊 Ciencia"],
             ["mon_pol", "🌞 Dios", "🐍 Magia"],
             ["car_veg", "🍗 Carnív", "🍏 Hervív"],
             ["ext_int", "😁 Extrov", "😶 Introv"],

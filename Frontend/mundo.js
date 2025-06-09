@@ -40,14 +40,20 @@ const indAvaCrg = cargador.newConsulta("avatar",
 // variables para interaccion en el mundo
 let estado = 0; // seleccion actual
 let seleccionado = null; // avatar que ha sido clickeado
+let mundoIdea = 0; // modo de guerra
 
-// posicion 3 botones para ver perfil
+// obtener ideologias de HTML
+let txtIdeas = document.getElementById("ideologys").value.split("|");
+
+// posicion de los botones de la interfaz [x, y, estado]
+let altBtnsPrf1 = height * 0.75 + 35 * 2 - 5;
 const threeBtn = [
-    height * 0.75 + 35 * 2 - 5, // Y
-    5 + Avatar.descripcionW / 6, // 0
-    5 + Avatar.descripcionW / 2, // 1
-    5 + (Avatar.descripcionW / 6) * 5 // 2
+    [5 + Avatar.descripcionW / 6, altBtnsPrf1, -1], // 0 perfil
+    [5 + Avatar.descripcionW / 2, altBtnsPrf1, -1], // 1 link social
+    [5 + (Avatar.descripcionW / 6) * 5, altBtnsPrf1, -1], // 2 link musica
+    [width - 128, 32, 2] // 3 cambio de ideologia en modo war
 ];
+const radioBtn = threeBtn[0][0] / 2;
 
 // cambiar estado con los radio botnes
 document.querySelectorAll("input[name='estado']").forEach(radio => {
@@ -73,32 +79,54 @@ function loop(currentTime) {
 // se calcula la logica
 function step(dlt) {
     // detectar clic sobre interfaz GUI
-    if (mousPos.clic) {
-        if (seleccionado != null) {
-            for (let i = 0; i < 3; i++) {
-                if (pointInCircle(
-                        [mousPos.x, mousPos.y],
-                        [threeBtn[1 + i], threeBtn[0]],
-                        threeBtn[1] / 2)) {
-                    switch (i) {
-                        case 0:
+    canvas.style.cursor = "default";
+    for (let i = 0; i < threeBtn.length; i++) {
+        if (threeBtn[i][2] != -1 && threeBtn[i][2] != estado) {
+            continue;
+        }
+        if (pointInCircle([mousPos.x, mousPos.y], threeBtn[i], radioBtn)) {
+            switch (i) {
+                case 0: // perfil
+                    if (seleccionado != null) {
+                        canvas.style.cursor = "pointer";
+                        if (mousPos.clic) {
                             window.open("perfil.php?id=" + seleccionado.id, "_blank");
                             mousPos.clic = false;
-                            break;
-                        case 1:
-                            if (seleccionado.link == "") { break; }
-                            window.open(seleccionado.link, "_blank");
-                            mousPos.clic = false;
-                            break;
-                        case 2:
-                            if (seleccionado.musica == "") { break; }
-                            window.open(seleccionado.musica, "_blank");
-                            mousPos.clic = false;
-                            break;
+                        }
                     }
                     break;
-                }
+                case 1: // link social
+                    if (seleccionado != null) {
+                        if (seleccionado.link == "") { break; }
+                        canvas.style.cursor = "pointer";
+                        if (mousPos.clic) {
+                            window.open(seleccionado.link, "_blank");
+                            mousPos.clic = false;
+                        }
+                    }
+                    break;
+                case 2: // link musica
+                    if (seleccionado != null) {
+                        if (seleccionado.musica == "") { break; }
+                        canvas.style.cursor = "pointer";
+                        if (mousPos.clic) {
+                            window.open(seleccionado.musica, "_blank");
+                            mousPos.clic = false;
+                        }
+                    }
+                    break;
+                case 3: // cambio de ideologia en modo war
+                    canvas.style.cursor = "pointer";
+                    if (mousPos.clic) {
+                        mundoIdea++;
+                        if (mundoIdea >= txtIdeas.length) {
+                            mundoIdea = 0;
+                        }
+                        mousPos.clic = false;
+                    }
+                    break;
             }
+            break;
         }
     }
     // ajustar la camara
@@ -129,7 +157,7 @@ function step(dlt) {
         ava = cargador.popData(indAvaCrg);
     }
     // ejecutar el loop de los objetos
-    objetos.forEach(obj => obj.step(dlt, estado, usuario));
+    objetos.forEach(obj => obj.step(dlt, estado, usuario, mundoIdea));
     // verificar si mouse dio clic a avatar
     if (mousPos.clic) {
         seleccionado = null;
@@ -168,7 +196,7 @@ function draw() {
         sprites.drawAro(ctx, seleccionado.pis);
     }
     // dibujar todos los objetos
-    objetos.forEach(obj => obj.draw(ctx, sprites, estado));
+    objetos.forEach(obj => obj.draw(ctx, sprites, estado, mundoIdea));
     // dibujar la interfaz GUI, primero se reestablece la transformacion
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     // dibujar datos del avatar seleccionado
@@ -185,11 +213,31 @@ function draw() {
             [5, height * 0.75 + 35 * 2], Sprites.getMsjFont(true), 20, 5,
             Avatar.descripcionW);
         ctx.fillText("👤Perf",
-            threeBtn[1], threeBtn[0]);
+            threeBtn[0][0], threeBtn[0][1]);
         ctx.fillText(seleccionado.link != "" ? "🌐Soci" : "",
-            threeBtn[2], threeBtn[0]);
+            threeBtn[1][0], threeBtn[1][1]);
         ctx.fillText(seleccionado.musica != "" ? "🎵Músi" : "",
-            threeBtn[3], threeBtn[0]);
+            threeBtn[2][0], threeBtn[2][1]);
+    }
+    // dibujar comandos segun estado de la simulacion
+    switch (estado) {
+        // Mundo
+        case 0:
+
+            break;
+        // Explore
+        case 1:
+
+            break;
+        // Guerra
+        case 2:
+            Sprites.drawMensaje(ctx, txtIdeas[mundoIdea],
+                threeBtn[3], Sprites.getMsjFont(false), 20, 5);
+            break;
+        // Social
+        case 3:
+
+            break;
     }
 }
 

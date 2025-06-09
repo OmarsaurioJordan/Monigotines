@@ -68,6 +68,7 @@
         global $data;
         echo "<div class='lateral'>";
         $ideas = getIdeologias();
+        array_shift($ideas);
         for ($i = 0; $i < count($ideas); $i++) {
             $ilg = $data[$ideas[$i][0]];
             if ($ilg != 0) {
