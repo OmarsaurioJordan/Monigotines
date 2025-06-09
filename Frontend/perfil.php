@@ -92,6 +92,8 @@
             $elem = getElementos();
             echo "<label>" .textJump($elem[$data['elemento'] - 1]). "</label>";
         }
+        $clases = getClases();
+        echo "<label>" .textJump($clases[$data['clase']]). "</label>";
         echo "</div>";
     }
 ?>

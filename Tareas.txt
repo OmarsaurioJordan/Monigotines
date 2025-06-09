@@ -1,6 +1,7 @@
 TAREAS.........................
 .
 Mundo:
+-M mostrar puntero mouse en editor canvas
 -M mostrar minimapa con todos los avatares
 -M cargar mobiliario y baldozas
 -M modo todos los mensajes vs visibles con mouse
@@ -10,12 +11,10 @@ Mundo:
 -S desconectar tiempo real si inactividad
 .
 Avatares:
--G asignar clases con sus sprites
 -G movimiento hacia punto pseudo busqueda
+-G buscar avatar enemigo objetivo
 -G perseguir avatar
 -G atacar avatar
--G recibir ataque
--G morir andar como fantasma
 -E moverse con teclado
 -E ver mensajes de cercano
 -S enviar posición en tiempo real
@@ -53,6 +52,9 @@ Avatares:
 -M colisión con avatares y mobiliarios
 -M movimiento azaroso errando
 -M se ve como fantasma si no ha sido editado
+-G asignar clases con sus sprites
+-G recibir ataque
+-G morir andar como fantasma
 .
 Interfacez:
 -M login con sesion y contraseña
@@ -65,6 +67,17 @@ Interfacez:
 -E ver reacciónes en el avatar seleccionado
 -G seleccionar bandos ideológicos
 -E ver interfaz de bloqueados
+.
+CLASES.........................
+.
+- Espada: daño extra crítico (ok)
+- Escudo: probabilidad bloqueo (ok)
+- Palo: golpea a varios a la vez
+- Arco: daño extra a largo alcance
+- Mazo: gana vida al eliminar (ok)
+- Tambor: 
+- Báculo: 
+- Medicina: da vida a aliado no médico
 .
 EXTRA.........................
 .

@@ -101,6 +101,20 @@
         ];
     }
 
+    function getClases() {
+        return [
+            "✊ Peón",
+            "🗡️ Soldado",
+            "🛡️ Guardián",
+            "🦯 Monje",
+            "🏹 Tirador",
+            "⚒️ Demoledor",
+            "🥁 Líder",
+            "💎 Mago",
+            "💊 Médico"
+        ];
+    }
+
     function girarEmoji($texto) {
         $partes = explode(" ", $texto);
         return $partes[1] ." ". $partes[0];

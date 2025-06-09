@@ -1,15 +1,15 @@
 class Cargador {
+    static LIMITE = 30; // bloques de datos
+    static SEG_MINIESPERA = 3; // entre bloques
+    static SEG_MACROESPERA = 15; // actualizaciones
+    static SEG_REINTENTO = 7; // volver a hacer peticion
+    static MILISEG_TIMEOUT = 7000; // esperar al servidor
 
     constructor(apiFile) {
         // apiFile: "../Backend/get_avatares.php"
         this.apiFile = apiFile;
         this.consultas = [];
         this.resultados = [];
-        this.limite = 30; // bloques de datos
-        this.segMiniespera = 3; // entre bloques
-        this.segMacroespera = 15; // actualizaciones
-        this.segReintento = 7; // volver a hacer peticion
-        this.milisegTimeout = 7000; // esperar al servidor
     }
 
     newConsulta(tabla, atributos) {
@@ -30,7 +30,7 @@ class Cargador {
 
     doConsulta(ind) {
         let url = this.apiFile +
-            "?limite=" + this.limite +
+            "?limite=" + Cargador.LIMITE +
             "&tabla=" + this.consultas[ind].tabla +
             "&atributos=" + this.consultas[ind].atributos;
         if (this.consultas[ind].cursor != "") {
@@ -40,7 +40,7 @@ class Cargador {
             url += "&freno='" + this.consultas[ind].antFreno + "'";
         }
         this.consultas[ind].free = false;
-        this.fetchTimeout(url, this.milisegTimeout).
+        this.fetchTimeout(url, Cargador.MILISEG_TIMEOUT).
         then(res => {
             if (!res.ok) {
                 throw new Error("HTTP");
@@ -51,7 +51,7 @@ class Cargador {
             if (data.length == 0) {
                 this.consultas[ind].cursor = ""; // reiniciar cursor
                 this.consultas[ind].antFreno = this.consultas[ind].newFreno;
-                this.consultas[ind].reloj = this.segMacroespera;
+                this.consultas[ind].reloj = Cargador.SEG_MACROESPERA;
             }
             else {
                 this.resultados[ind].push(...data);
@@ -61,14 +61,14 @@ class Cargador {
                 }
                 this.consultas[ind].cursor =
                     data[data.length - 1].actualiza;
-                this.consultas[ind].reloj = this.segMiniespera;
+                this.consultas[ind].reloj = Cargador.SEG_MINIESPERA;
             }
             this.consultas[ind].free = true;
             return true;
         }).
         catch(err => {
             this.consultas[ind].free = true;
-            this.consultas[ind].reloj = this.segReintento;
+            this.consultas[ind].reloj = Cargador.SEG_REINTENTO;
             return false;
         });
     }

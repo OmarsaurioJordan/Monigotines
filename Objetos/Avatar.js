@@ -1,19 +1,34 @@
 class Avatar {
-    
-    static timeAnima = [1.73, 0.61, 0.85]; // pies, cabeza, tool
-    static mensajeW = 200; // anchura del texto
-    static descripcionW = 200; // anchura texto en GUI
-    static radio = 16; // para colisiones
-    static altMsj = 120; // altura a la que esta el nombre y mensaje
+    // parametros basicos
+    static TIME_ANIMA = [1.73, 0.61, 0.85]; // pies, cabeza, tool
+    static MENSAJE_W = 200; // anchura del texto
+    static DESCRIPCION_W = 200; // anchura texto en GUI
+    static RADIO = 16; // para colisiones
+    static ALT_MSJ = 120; // altura a la que esta el nombre y mensaje
     // parametros de movimiento
-    static velocidad = 100;
-    static probContinuarMove = 0.7;
-    static probContinuarQuieto = 0.8;
-    static medArcoCambioDir = 0.4 * Math.PI;
-    static relojErrarMinSeg = 0.5;
-    static relojErrarMaxSeg = 3;
+    static VELOCIDAD = 100;
+    static PROB_CONTI_MOVE = 0.7;
+    static PROB_CONTI_QUIETO = 0.8;
+    static MED_ARCO_CAMB_DIR = 0.4 * Math.PI;
+    static RELOJ_ERRAR_MIN_SEG = 0.5;
+    static RELOJ_ERRAR_MAX_SEG = 3;
     // parametros modo guerra
-    static vida = 100;
+    static VIDA = 100;
+    static VISION = 200; // radio de alcance visual
+    static BLOQUEO_PORC = 0.1; // porcentaje de evadir ataque
+    static BLOQUEO_ESCUDO_PORC = 2; // sera multiplicado al bloqueo base
+    static DAMAGE = 4.5; // damage base, se le sumara 1 aleatorio
+    static DAMAGE_ESPADA_EXT = 2; // extra aleatorio para la espada
+    static GAIN_MAZO_PORC = 0.15; // porcentaje vida ganada al matar
+    static CLS_NORMAL = 0;
+    static CLS_ESPADA = 1;
+    static CLS_ESCUDO = 2;
+    static CLS_PALO = 3;
+    static CLS_ARCO = 4;
+    static CLS_MAZO = 5;
+    static CLS_TAMBOR = 6;
+    static CLS_BACULO = 7;
+    static CLS_MEDICINA = 8;
 
     constructor(id, nombre, genero, piel, emocion, pelo, tinte,
             torso, color, cadera, tela, rol, clase, mensaje, descripcion,
@@ -41,8 +56,8 @@ class Avatar {
         this.musica = musica;
         // configuracion para funcionamiento
         this.pis = [...this.pos]; // para interpolacion
-        this.relojErrar = Math.random() * (Avatar.relojErrarMinSeg +
-            Avatar.relojErrarMaxSeg);
+        this.relojErrar = Math.random() * (Avatar.RELOJ_ERRAR_MIN_SEG +
+            Avatar.RELOJ_ERRAR_MAX_SEG);
         this.isMove = Math.random() < 0.5;
         this.moveDir = Math.random() * 2 * Math.PI;
         this.isWalk = false;
@@ -51,14 +66,14 @@ class Avatar {
         for (let i = 0; i < 12; i++) {
             this.ideas.push(0);
         }
-        this.vida = Avatar.vida;
+        this.vida = Avatar.VIDA;
         this.zodiaco = 0;
         this.elemento = 0;
         // configuracion para animaciones
         this.isNew = isNew; // true dibuja fantasma
         this.anima = []; // pies, cabeza, tool
         this.relojAnima = [];
-        Avatar.timeAnima.forEach(e => {
+        Avatar.TIME_ANIMA.forEach(e => {
             this.relojAnima.push(Math.random());
             this.anima.push(0);
         });
@@ -68,12 +83,12 @@ class Avatar {
 
     setMensaje(mensaje) {
         this.mensaje = Sprites.prepareTextMsj(mensaje,
-            Avatar.mensajeW, 10000, Sprites.getMsjFont(), 20, 40);
+            Avatar.MENSAJE_W, 10000, Sprites.getMsjFont(), 20, 40);
     }
 
     setDescripcion(descripcion) {
         this.descripcion = Sprites.prepareTextMsj(descripcion,
-            Avatar.descripcionW, 10000, Sprites.getMsjFont(), 20, 40);
+            Avatar.DESCRIPCION_W, 10000, Sprites.getMsjFont(), 20, 40);
     }
 
     actualizar(nombre, genero, piel, emocion, pelo, tinte, torso,
@@ -124,7 +139,7 @@ class Avatar {
         switch (estado) {
             case 0: // Mundo
                 this.moverseDir(this.moveDir,
-                    (this.isMove ? Avatar.velocidad * dlt : 0));
+                    (this.isMove ? Avatar.VELOCIDAD * dlt : 0));
                 break;
             case 1: // Explore
 
@@ -144,15 +159,15 @@ class Avatar {
         // reloj para cambio de movimiento
 		this.relojErrar -= dlt;
 		if (this.relojErrar <= 0) {
-		    this.relojErrar = Avatar.relojErrarMinSeg +
-                Math.random() * Avatar.relojErrarMaxSeg;
+		    this.relojErrar = Avatar.RELOJ_ERRAR_MIN_SEG +
+                Math.random() * Avatar.RELOJ_ERRAR_MAX_SEG;
 			if (this.isMove) {
-				this.isMove = Math.random() < Avatar.probContinuarMove;
-				let arc = Avatar.medArcoCambioDir;
+				this.isMove = Math.random() < Avatar.PROB_CONTI_MOVE;
+				let arc = Avatar.MED_ARCO_CAMB_DIR;
 				this.moveDir += -arc + Math.random() * 2 * arc;
 			}
 			else {
-				this.isMove = Math.random() > Avatar.probContinuarQuieto;
+				this.isMove = Math.random() > Avatar.PROB_CONTI_QUIETO;
 				this.moveDir = Math.random() * 2 * Math.PI;
 			}
 		}
@@ -164,7 +179,7 @@ class Avatar {
         for (let i = 0; i < objetos.length; i++) {
             if (!(objetos[i] instanceof Avatar)) {
                 if (pointInCircle(this.pos, objetos[i].pos,
-                        Avatar.radio + Mobiliario.radio)) {
+                        Avatar.RADIO + Mobiliario.radio)) {
                     coli[0] += this.pos[0] - objetos[i].pos[0];
                     coli[1] += this.pos[1] - objetos[i].pos[1];
                 }
@@ -178,7 +193,7 @@ class Avatar {
                         continue;
                     }
                     if (pointInCircle(this.pos, objetos[i].pos,
-                            Avatar.radio * 2)) {
+                            Avatar.RADIO * 2)) {
                         coli[0] += this.pos[0] - objetos[i].pos[0];
                         coli[1] += this.pos[1] - objetos[i].pos[1];
                     }
@@ -190,8 +205,8 @@ class Avatar {
 			let mag = Math.sqrt(
                 Math.pow(coli[0], 2) + Math.pow(coli[1], 2)
             );
-			this.pos[0] += (coli[0] / mag) * Avatar.velocidad * 2 * dlt;
-			this.pos[1] += (coli[1] / mag) * Avatar.velocidad * 2 * dlt;
+			this.pos[0] += (coli[0] / mag) * Avatar.VELOCIDAD * 2 * dlt;
+			this.pos[1] += (coli[1] / mag) * Avatar.VELOCIDAD * 2 * dlt;
 		}
     }
 
@@ -204,8 +219,8 @@ class Avatar {
 
     limites() {
         let ant = [...this.pos];
-        this.pos[0] = Math.max(Avatar.mensajeW * 0.7,
-            Math.min(this.pos[0], worldW - Avatar.mensajeW * 0.7));
+        this.pos[0] = Math.max(Avatar.MENSAJE_W * 0.7,
+            Math.min(this.pos[0], worldW - Avatar.MENSAJE_W * 0.7));
         this.pos[1] = Math.max(250,
             Math.min(this.pos[1], worldH - 16));
         if (this.pos[0] != ant[0] || this.pos[1] != ant[1]) {
@@ -229,11 +244,49 @@ class Avatar {
         this.isWalk = Math.pow(dif[0], 2) + Math.pow(dif[1], 2) > 10;
     }
 
+    getDamage() {
+        let dmg = Avatar.DAMAGE + Math.random();
+        if (Avatar.CLS_ESPADA) {
+            dmg += Math.random() * Avatar.DAMAGE_ESPADA_EXT;
+        }
+        return dmg;
+    }
+
+    doDamage(quien) {
+        let dmg = this.getDamage();
+        let res = quien.receiveDamage(dmg);
+        if (res && this.clase == Avatar.CLS_MAZO) {
+            this.vida = Math.min(Avatar.VIDA,
+                this.vida + Avatar.VIDA * Avatar.GAIN_MAZO_PORC);
+        }
+        return res;
+    }
+
+    getBloqueo() {
+        let blq = Avatar.BLOQUEO_PORC;
+        if (this.clase == Avatar.CLS_ESCUDO) {
+            blq *= Avatar.BLOQUEO_ESCUDO_PORC;
+        }
+        return blq;
+    }
+
+    receiveDamage(damage) {
+        if (this.vida > 0) {
+            let blq = this.getBloqueo();
+            if (Math.random() < blq) {
+                return false;
+            }
+            this.vida = Math.max(0, this.vida - damage);
+            return this.vida == 0;
+        }
+        return false;
+    }
+
     // animaciones
 
     stepAnima(dlt) {
         for (let i = 0; i < this.relojAnima.length; i++) {
-            this.relojAnima[i] += dlt * Avatar.timeAnima[i];
+            this.relojAnima[i] += dlt * Avatar.TIME_ANIMA[i];
             while (this.relojAnima[i] > 1) {
                 this.relojAnima[i] -= 1;
             }
@@ -251,14 +304,14 @@ class Avatar {
     drawFantasma(ctx, sprites, conNombre) {
         sprites.drawFantasma(ctx, this.pis, this.relojAnima[0]);
         if (conNombre) {
-            let posMsj = [this.pis[0], this.pis[1] - Avatar.altMsj];
+            let posMsj = [this.pis[0], this.pis[1] - Avatar.ALT_MSJ];
             Sprites.drawMensaje(
                 ctx, this.nombre, posMsj,
                 Sprites.getMsjFont(true), 18, 3);
         }
     }
 
-    drawAvatar(ctx, sprites, isWalk) {
+    drawAvatar(ctx, sprites, isWalk, isClase=false) {
         let wlk = isWalk ? this.relojAnima[0] : -1;
         sprites.drawCuerpo(ctx, this.pis, this.piel,
             this.genero, wlk, this.cadera == 0);
@@ -272,7 +325,12 @@ class Avatar {
         sprites.drawEmocion(ctx, this.pis, this.emocion, ani);
         sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
             this.tinte, ani);
-        sprites.drawRol(ctx, this.pis, this.rol, this.anima[2]);
+        if (isClase) {
+            sprites.drawClase(ctx, this.pis, this.clase, this.anima[2]);
+        }
+        else {
+            sprites.drawRol(ctx, this.pis, this.rol, this.anima[2]);
+        }
     }
 
     drawWar(ctx, sprites, isWalk, mundoIdea) {
@@ -291,12 +349,12 @@ class Avatar {
             sprites.drawEmocion(ctx, this.pis, this.emocion, ani);
             sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
                 this.tinte, ani);
-            // Tarea clase
+            sprites.drawClase(ctx, this.pis, this.clase, this.anima[2]);
         }
     }
 
     drawMensaje(ctx, conNombre, texto="") {
-        let posMsj = [this.pis[0], this.pis[1] - Avatar.altMsj];
+        let posMsj = [this.pis[0], this.pis[1] - Avatar.ALT_MSJ];
         if (conNombre) {
             Sprites.drawMensaje(
                 ctx, this.nombre, posMsj,

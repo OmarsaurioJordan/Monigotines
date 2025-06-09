@@ -20,7 +20,8 @@ class Sprites {
             this.loadImg("d_monigotin_aro"), // 11
             this.loadImg("d_monigotin_fanta"), // 12
             this.loadImg("d_monigotin_idea1"), // 13
-            this.loadImg("d_monigotin_idea2") // 14
+            this.loadImg("d_monigotin_idea2"), // 14
+            this.loadImg("d_monigotin_clase") // 15
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -222,6 +223,15 @@ class Sprites {
         this.drawSprite(ctx, posicion, this.sprite[9], rol);
     }
 
+    drawClase(ctx, posicion, clase, anima) {
+        // anima: -1 quieto, 0 a 1 paso
+        if (anima != -1) {
+            posicion = [posicion[0],
+                posicion[1] - anima * this.osciCabeza * 2];
+        }
+        this.drawSprite(ctx, posicion, this.sprite[15], clase);
+    }
+
     drawIdea(ctx, posicion, genero, indIdea, indPostura) {
         let spr = null;
         if (indPostura == -1) {
@@ -236,8 +246,6 @@ class Sprites {
         let subImg = 2 * indIdea + genero;
         this.drawSprite(ctx, posicion, spr, subImg);
     }
-
-    // Tarea clase
 
     // dibujado de cosas de la GUI
 
@@ -306,6 +314,11 @@ class Sprites {
             rol, escala);
     }
 
+    drawClasesita(ctx, posicion, clase, escala) {
+        this.drawSpriteEsc(ctx, posicion, this.sprite[15],
+            clase, escala);
+    }
+
     // dibujado de cosas del fondo del mundo
 
     drawSuelo(ctx, ancho, alto) {
@@ -345,11 +358,13 @@ class Sprites {
         return this.sprite[9].width / 128;
     }
 
+    totClase() {
+        return this.sprite[15].width / 128;
+    }
+
     totIdeas() {
         return this.sprite[13].width / 128;
     }
-
-    // Tarea clase
 
     // manipulacion de texto
 

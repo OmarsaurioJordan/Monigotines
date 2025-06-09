@@ -52,9 +52,9 @@ let txtIdeas = document.getElementById("ideologys").value.split("|");
 // posicion de los botones de la interfaz [x, y, estado]
 let altBtnsPrf1 = height * 0.75 + 35 * 2 - 5;
 const threeBtn = [
-    [5 + Avatar.descripcionW / 6, altBtnsPrf1, -1], // 0 perfil
-    [5 + Avatar.descripcionW / 2, altBtnsPrf1, -1], // 1 link social
-    [5 + (Avatar.descripcionW / 6) * 5, altBtnsPrf1, -1], // 2 link musica
+    [5 + Avatar.DESCRIPCION_W / 6, altBtnsPrf1, -1], // 0 perfil
+    [5 + Avatar.DESCRIPCION_W / 2, altBtnsPrf1, -1], // 1 link social
+    [5 + (Avatar.DESCRIPCION_W / 6) * 5, altBtnsPrf1, -1], // 2 link musica
     [width - 128, 32, 2] // 3 cambio de ideologia en modo war
 ];
 const radioBtn = threeBtn[0][0] / 2;
@@ -187,8 +187,8 @@ function step(dlt) {
                 obj = objetos[i];
                 if (pointInRectangle(
                         [mousPos.wX, mousPos.wY],
-                        [obj.pis[0] - Avatar.radio, obj.pis[1] - 120],
-                        [obj.pis[0] + Avatar.radio, obj.pis[1]])) {
+                        [obj.pis[0] - Avatar.RADIO, obj.pis[1] - 120],
+                        [obj.pis[0] + Avatar.RADIO, obj.pis[1]])) {
                     seleccionado = obj;
                     break;
                 }
@@ -224,14 +224,14 @@ function draw() {
         if (seleccionado.descripcion != "") {
             Sprites.drawDescripcion(ctx, seleccionado.descripcion,
                 [5, height * 0.75], Sprites.getMsjFont(), 20, 5,
-                Avatar.descripcionW);
+                Avatar.DESCRIPCION_W);
         }
         Sprites.drawDescripcion(ctx, seleccionado.nombre,
             [5, height * 0.75 + 35], Sprites.getMsjFont(true), 20, 5,
-            Avatar.descripcionW);
+            Avatar.DESCRIPCION_W);
         Sprites.drawDescripcion(ctx, "",
             [5, height * 0.75 + 35 * 2], Sprites.getMsjFont(true), 20, 5,
-            Avatar.descripcionW);
+            Avatar.DESCRIPCION_W);
         ctx.fillText("👤Perf",
             threeBtn[0][0], threeBtn[0][1]);
         ctx.fillText(seleccionado.link != "" ? "🌐Soci" : "",

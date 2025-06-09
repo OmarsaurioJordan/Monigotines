@@ -127,7 +127,9 @@ function step(dlt) {
                     document.getElementById("rol").value = avatar.rol;
                     break;
                 case 5: // clase
-                    // Tarea clase
+                    avatar.clase = BarrelSprAva(
+                        avatar.clase + sum, sprites.totClase());
+                    document.getElementById("clase").value = avatar.clase;
                     break;
             }
         }
@@ -141,7 +143,7 @@ function draw() {
     ctx.fillStyle = colorFondo;
     ctx.fillRect(0, 0, width, height);
     // dibujar avatar
-    avatar.drawAvatar(ctx, sprites, false);
+    avatar.drawAvatar(ctx, sprites, false, estado == 5);
     // dibujar los botones de la izquierda
     for (let i = 0; i < 6; i++) {
         sprites.drawSelect(ctx, [16, 16 + i * 32], i, estado == i);
@@ -206,7 +208,12 @@ function draw() {
             }
             break;
         case 5: // clase
-            // Tarea clase
+            aux = BarrelSprAva(avatar.clase - 2, sprites.totClase());
+            for (let i = 0; i < 5; i++) {
+                sprites.drawClasesita(ctx, [185, 120 - (i - 2) * 32],
+                    aux, 0.5);
+                aux = BarrelSprAva(aux + 1, sprites.totClase());
+            }
             break;
     }
     // dibujar scroll vertical
