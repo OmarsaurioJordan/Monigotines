@@ -19,7 +19,7 @@ resizeCanvas();
 iniCamara();
 
 // estructura que guarda todos los objetos del juego
-let objetos = [];
+const objetos = [];
 function getObjId(id, isAvatar=true) {
     let myClass = isAvatar ? Avatar : Mobiliario;
     for (let i = 0; i < objetos.length; i++) {
@@ -41,16 +41,16 @@ const indIdeCrg = cargador.newConsulta("ideologia",
     "mon_pol,car_veg,ext_int,azu_roj,pas_fut,urb_cam,art_ing,fie_est");
 
 // variables para interaccion en el mundo
-let estado = 0; // seleccion actual
-let seleccionado = null; // avatar que ha sido clickeado
-let mundoIdea = 0; // modo de guerra
-let auxIdeas = null; // variable auxiliar para cargar ideologias
+var estado = 0; // seleccion actual
+var seleccionado = null; // avatar que ha sido clickeado
+var mundoIdea = 0; // modo de guerra
+var auxIdeas = null; // variable auxiliar para cargar ideologias
 
 // obtener ideologias de HTML
-let txtIdeas = document.getElementById("ideologys").value.split("|");
+const txtIdeas = document.getElementById("ideologys").value.split("|");
 
 // posicion de los botones de la interfaz [x, y, estado]
-let altBtnsPrf1 = height * 0.75 + 35 * 2 - 5;
+const altBtnsPrf1 = height * 0.75 + 35 * 2 - 5;
 const threeBtn = [
     [5 + Avatar.DESCRIPCION_W / 6, altBtnsPrf1, -1], // 0 perfil
     [5 + Avatar.DESCRIPCION_W / 2, altBtnsPrf1, -1], // 1 link social
@@ -68,7 +68,7 @@ document.querySelectorAll("input[name='estado']").forEach(radio => {
 });
 
 // el main loop del juego
-let lastTime = 0;
+var lastTime = 0;
 function loop(currentTime) {
     let dlt = (currentTime - lastTime) / 1000;
     lastTime = currentTime;

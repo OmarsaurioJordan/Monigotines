@@ -1,6 +1,6 @@
 // pulsacion de mouse
 
-let mousPos = {
+const mousPos = {
     x: 0, // posicion en el lienzo, sin afectarse por escalamiento ni mov
     y: 0,
     wX: 0, // posicion del mouse en el mundo, independiente de la camara
@@ -116,7 +116,7 @@ function pointInRectangle(pos, rec1, rec2) {
 
 // comandos de teclado
 
-let teclas = {
+const teclas = {
     'ArrowRight': false,
     'ArrowLeft': false,
     'ArrowDown': false,
@@ -139,7 +139,7 @@ window.addEventListener('keyup', e => {
 
 // movimiento de camara
 
-let camara = {
+const camara = {
     x: 0, // centro de la camara
     y: 0,
     zoom: 1, // acercamiento, >1 cerca, <1 lejos

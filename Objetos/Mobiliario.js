@@ -1,6 +1,6 @@
 class Mobiliario {
 
-    static radio = 24; // para colisiones
+    static RADIO = 24; // para colisiones
 
     constructor(id, creador, tipo, posicion) {
         this.id = id;
