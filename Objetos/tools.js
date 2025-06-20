@@ -94,26 +94,6 @@ function BarrelSprAva(valor, valMax) {
     return valor;
 }
 
-function pointDistance(pos1, pos2) {
-    let dif = [
-        Math.pow(pos1[0] - pos2[0], 2),
-        Math.pow(pos1[1] - pos2[1], 2),
-    ];
-    return Math.sqrt(dif[0] + dif[1]);
-}
-
-// true si el punto esta en el circulo
-function pointInCircle(pos1, pos2, radio) {
-    let dist = pointDistance(pos1, pos2);
-    return dist < radio;
-}
-
-// true si el punto esta en el rectangulo
-function pointInRectangle(pos, rec1, rec2) {
-    return pos[0] > rec1[0] && pos[0] < rec2[0] &&
-        pos[1] > rec1[1] && pos[1] < rec2[1];
-}
-
 // comandos de teclado
 
 const teclas = {
@@ -205,4 +185,69 @@ function limitesCamara() {
     let talla = [(width / camara.zoom) / 2, (height / camara.zoom) / 2];
     camara.x = Math.max(talla[0], Math.min(camara.x, worldW - talla[0]));
     camara.y = Math.max(talla[1], Math.min(camara.y, worldH - talla[1]));
+}
+
+// funciones para calculos vectoriales
+
+function angulo(vect) {
+    return Math.atan2(vect.y, vect.x);
+}
+
+function magnitud(vect) {
+    return Math.sqrt(
+        Math.pow(vect.x, 2) + Math.pow(vect.y, 2));
+}
+
+function normalize(vect) {
+    let mag = magnitud(vect);
+    if (mag == 0) return vect;
+    return {
+        x: vect.x / mag,
+        y: vect.y / mag
+    };
+}
+
+function pointDirection(pos1, pos2) {
+    return normalize({
+        x: pos2.x - pos1.x,
+        y: pos2.y - pos1.y
+    });
+}
+
+function pointAngle(pos1, pos2) {
+    return angulo({
+        x: pos2.x - pos1.x,
+        y: pos2.y - pos1.y
+    });
+}
+
+function pointDistance(pos1, pos2) {
+    return magnitud({
+        x: pos2.x - pos1.x,
+        y: pos2.y - pos1.y
+    });
+}
+
+function pointInCircle(pos1, pos2, radio) {
+    let dist = pointDistance(pos1, pos2);
+    return dist < radio;
+}
+
+function pointInRectangle(pos, rec1, rec2) {
+    return pos.x > rec1.x && pos.x < rec2.x &&
+        pos.y > rec1.y && pos.y < rec2.y;
+}
+
+function moveDirVel(pos, dir, vel) {
+    return {
+        x: pos.x + vel * dir.x,
+        y: pos.y + vel * dir.y
+    };
+}
+
+function moveAngVel(pos, angRad, vel) {
+    return {
+        x: pos.x + vel * Math.cos(angRad),
+        y: pos.y + vel * Math.sin(angRad)
+    };
 }

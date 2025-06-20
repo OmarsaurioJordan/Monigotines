@@ -133,21 +133,21 @@ class Sprites {
 
     drawSprite(ctx, posicion, sprite, subimg) {
         ctx.drawImage(sprite, subimg * 128, 0, 128, 192,
-            posicion[0] - 62, posicion[1] - 186, 128, 192);
+            posicion.x - 62, posicion.y - 186, 128, 192);
     }
 
     drawSpriteEsc(ctx, posicion, sprite, subimg, escala) {
         ctx.drawImage(sprite, subimg * 128, 0, 128, 192,
-            posicion[0] - 62 * escala, posicion[1] - 186 * escala,
+            posicion.x - 62 * escala, posicion.y - 186 * escala,
             128 * escala, 192 * escala);
     }
 
     drawSombra(ctx, posicion) {
-        ctx.drawImage(this.sprite[10], posicion[0] - 41, posicion[1] - 23);
+        ctx.drawImage(this.sprite[10], posicion.x - 41, posicion.y - 23);
     }
 
     drawAro(ctx, posicion) {
-        ctx.drawImage(this.sprite[11], posicion[0] - 41, posicion[1] - 23);
+        ctx.drawImage(this.sprite[11], posicion.x - 41, posicion.y - 23);
     }
 
     // dibujado de piezas de avatar
@@ -163,8 +163,8 @@ class Sprites {
         let spr = this.sprite[piel];
         let sub = genero == 0 ? 0 : 6;
         if (anima != -1) {
-            posicion = [posicion[0],
-                posicion[1] - anima * this.osciCabeza];
+            posicion = {x: posicion.x,
+                y: posicion.y - anima * this.osciCabeza};
         }
         this.drawSprite(ctx, posicion, spr, sub);
     }
@@ -185,8 +185,8 @@ class Sprites {
     drawEmocion(ctx, posicion, emocion, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion = [posicion[0],
-                posicion[1] - anima * this.osciCabeza];
+            posicion = {x: posicion.x,
+                y: posicion.y - anima * this.osciCabeza};
         }
         this.drawSprite(ctx, posicion, this.sprite[5], emocion);
     }
@@ -196,8 +196,8 @@ class Sprites {
         let indSpr = (genero == 0 ? this.dataImgCol[0][2] :
             this.dataImgCol[1][2]) + tinte;
         if (anima != -1) {
-            posicion = [posicion[0],
-                posicion[1] - anima * this.osciCabeza];
+            posicion = {x: posicion.x,
+                y: posicion.y - anima * this.osciCabeza};
         }
         this.drawSprite(ctx, posicion, this.sprite[indSpr], pelo);
     }
@@ -217,8 +217,8 @@ class Sprites {
     drawRol(ctx, posicion, rol, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion = [posicion[0],
-                posicion[1] - anima * this.osciCabeza * 2];
+            posicion = [posicion.x,
+                posicion.y - anima * this.osciCabeza * 2];
         }
         this.drawSprite(ctx, posicion, this.sprite[9], rol);
     }
@@ -226,8 +226,8 @@ class Sprites {
     drawClase(ctx, posicion, clase, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion = [posicion[0],
-                posicion[1] - anima * this.osciCabeza * 2];
+            posicion = [posicion.x,
+                posicion.y - anima * this.osciCabeza * 2];
         }
         this.drawSprite(ctx, posicion, this.sprite[15], clase);
     }
@@ -253,26 +253,26 @@ class Sprites {
         let plusOk = isOk ? 0 : 1;
         let subImg = subInd * 2 + plusOk;
         ctx.drawImage(this.sprite[6], subImg * 32, 0, 32, 32,
-            posicion[0] - 16, posicion[1] - 16, 32, 32);
+            posicion.x - 16, posicion.y - 16, 32, 32);
     }
 
     drawColor(ctx, posicion, isPelo, color) {
         let indSpr = (isPelo ? this.dataImgCol[6][2] :
             this.dataImgCol[7][2]) + color;
         ctx.drawImage(this.sprite[indSpr],
-            posicion[0] - 8, posicion[1] - 8);
+            posicion.x - 8, posicion.y - 8);
     }
 
     drawPiel(ctx, posicion, piel) {
         let indSpr = this.dataImgCol[8][2] + piel;
         ctx.drawImage(this.sprite[indSpr],
-            posicion[0] - 8, posicion[1] - 8);
+            posicion.x - 8, posicion.y - 8);
     }
 
     drawScroll(ctx, posicion, isUp) {
         let subImg = isUp ? 0 : 64;
         ctx.drawImage(this.sprite[7], subImg, 0, 64, 16,
-            posicion[0] - 32, posicion[1] - 8, 64, 16);
+            posicion.x - 32, posicion.y - 8, 64, 16);
     }
 
     // dibujado de mini avatares piezas
@@ -384,11 +384,11 @@ class Sprites {
         lineas.forEach(li => {
             ancho = Math.max(ancho, ctx.measureText(li).width);
         });
-        let alto = posicion[1] - (lineas.length - 1) * lineY;
+        let alto = posicion.y - (lineas.length - 1) * lineY;
         // dibujar fondo
         ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
         ctx.fillRect(
-            posicion[0] - ancho / 2 - borde,
+            posicion.x - ancho / 2 - borde,
             alto - lineY - borde,
             ancho + 2 * borde,
             lineas.length * lineY + 2 * borde
@@ -396,7 +396,7 @@ class Sprites {
         // dibujar texto
         ctx.fillStyle = "black";
         lineas.forEach(li => {
-            ctx.fillText(li, posicion[0], alto);
+            ctx.fillText(li, posicion.x, alto);
             alto += lineY;
         });
     }

@@ -31,7 +31,7 @@ var isNew = parseInt(document.getElementById("isNew").value);
 const avatar = new Avatar(
     avaId, "", genero, piel, emocion, pelo, tinte,
     torso, color, cadera, tela, rol, clase, "", "", "", "",
-    isNew, [64, 186]
+    isNew, {x: 64, y: 186}
 );
 
 // el main loop del juego

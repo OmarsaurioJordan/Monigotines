@@ -52,12 +52,12 @@ const txtIdeas = document.getElementById("ideologys").value.split("|");
 // posicion de los botones de la interfaz [x, y, estado]
 const altBtnsPrf1 = height * 0.75 + 35 * 2 - 5;
 const threeBtn = [
-    [5 + Avatar.DESCRIPCION_W / 6, altBtnsPrf1, -1], // 0 perfil
-    [5 + Avatar.DESCRIPCION_W / 2, altBtnsPrf1, -1], // 1 link social
-    [5 + (Avatar.DESCRIPCION_W / 6) * 5, altBtnsPrf1, -1], // 2 link musica
-    [width - 128, 32, 2] // 3 cambio de ideologia en modo war
+    {x: 5 + Avatar.DESCRIPCION_W / 6, y: altBtnsPrf1, est: -1}, // 0 perfil
+    {x: 5 + Avatar.DESCRIPCION_W / 2, y: altBtnsPrf1, est: -1}, // 1 link social
+    {x: 5 + (Avatar.DESCRIPCION_W / 6) * 5, y: altBtnsPrf1, est: -1}, // 2 link musica
+    {x: width - 128, y: 32, est: 2} // 3 cambio de ideologia en modo war
 ];
-const radioBtn = threeBtn[0][0] / 2;
+const radioBtn = threeBtn[0].x / 2;
 
 // cambiar estado con los radio botnes
 document.querySelectorAll("input[name='estado']").forEach(radio => {
@@ -85,10 +85,10 @@ function step(dlt) {
     // detectar clic sobre interfaz GUI
     canvas.style.cursor = "default";
     for (let i = 0; i < threeBtn.length; i++) {
-        if (threeBtn[i][2] != -1 && threeBtn[i][2] != estado) {
+        if (threeBtn[i].est != -1 && threeBtn[i].est != estado) {
             continue;
         }
-        if (pointInCircle([mousPos.x, mousPos.y], threeBtn[i], radioBtn)) {
+        if (pointInCircle(mousPos, threeBtn[i], radioBtn)) {
             switch (i) {
                 case 0: // perfil
                     if (seleccionado != null) {
@@ -154,7 +154,7 @@ function step(dlt) {
                 ava.pelo, ava.tinte, ava.torso, ava.color, ava.cadera,
                 ava.tela, ava.rol, ava.clase, ava.mensaje, ava.descripcion,
                 ava.link, ava.musica, ava.isNew,
-                [Math.random() * worldW, Math.random() * worldH]
+                {x: Math.random() * worldW, y: Math.random() * worldH}
             ));
         }
     }
@@ -186,9 +186,9 @@ function step(dlt) {
             if (objetos[i] instanceof Avatar) {
                 obj = objetos[i];
                 if (pointInRectangle(
-                        [mousPos.wX, mousPos.wY],
-                        [obj.pis[0] - Avatar.RADIO, obj.pis[1] - 120],
-                        [obj.pis[0] + Avatar.RADIO, obj.pis[1]])) {
+                        {x: mousPos.wX, y: mousPos.wY},
+                        {x: obj.pis.x - Avatar.RADIO, y: obj.pis.y - 120},
+                        {x: obj.pis.x + Avatar.RADIO, y: obj.pis.y})) {
                     seleccionado = obj;
                     break;
                 }
@@ -208,7 +208,7 @@ function draw() {
     // dibujar todo el suelo
     sprites.drawSuelo(ctx, worldW, worldH);
     // ordenar en Y todos los objetos
-    objetos.sort((a, b) => a.pis[1] - b.pis[1]);
+    objetos.sort((a, b) => a.pis.y - b.pis.y);
     // dibujar sombras
     objetos.forEach(obj => obj.drawSombra(ctx, sprites));
     // dibujar aro seleccionado
@@ -223,21 +223,21 @@ function draw() {
     if (seleccionado != null) {
         if (seleccionado.descripcion != "") {
             Sprites.drawDescripcion(ctx, seleccionado.descripcion,
-                [5, height * 0.75], Sprites.getMsjFont(), 20, 5,
+                {x: 5, y: height * 0.75}, Sprites.getMsjFont(), 20, 5,
                 Avatar.DESCRIPCION_W);
         }
         Sprites.drawDescripcion(ctx, seleccionado.nombre,
-            [5, height * 0.75 + 35], Sprites.getMsjFont(true), 20, 5,
+            {x: 5, y: height * 0.75 + 35}, Sprites.getMsjFont(true), 20, 5,
             Avatar.DESCRIPCION_W);
         Sprites.drawDescripcion(ctx, "",
-            [5, height * 0.75 + 35 * 2], Sprites.getMsjFont(true), 20, 5,
+            {x: 5, y: height * 0.75 + 35 * 2}, Sprites.getMsjFont(true), 20, 5,
             Avatar.DESCRIPCION_W);
         ctx.fillText("👤Perf",
-            threeBtn[0][0], threeBtn[0][1]);
+            threeBtn[0].x, threeBtn[0].y);
         ctx.fillText(seleccionado.link != "" ? "🌐Soci" : "",
-            threeBtn[1][0], threeBtn[1][1]);
+            threeBtn[1].x, threeBtn[1].y);
         ctx.fillText(seleccionado.musica != "" ? "🎵Músi" : "",
-            threeBtn[2][0], threeBtn[2][1]);
+            threeBtn[2].x, threeBtn[2].y);
     }
     // dibujar comandos segun estado de la simulacion
     switch (estado) {

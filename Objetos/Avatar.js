@@ -55,7 +55,7 @@ class Avatar {
         this.link = link;
         this.musica = musica;
         // configuracion para funcionamiento
-        this.pis = [...this.pos]; // para interpolacion
+        this.pis = {...this.pos}; // para interpolacion
         this.relojErrar = Math.random() * (Avatar.RELOJ_ERRAR_MIN_SEG +
             Avatar.RELOJ_ERRAR_MAX_SEG);
         this.isMove = Math.random() < 0.5;
@@ -138,7 +138,7 @@ class Avatar {
         }
         switch (estado) {
             case 0: // Mundo
-                this.moverseDir(this.moveDir,
+                this.pos = moveAngVel(this.pos, this.moveDir,
                     (this.isMove ? Avatar.VELOCIDAD * dlt : 0));
                 break;
             case 1: // Explore
@@ -174,19 +174,20 @@ class Avatar {
     }
 
     colisionar(dlt) {
-        let coli = [0, 0];
+        let coli = {x: 0, y: 0};
         // hallar colision con mobiliarios
         for (let i = 0; i < objetos.length; i++) {
             if (!(objetos[i] instanceof Avatar)) {
                 if (pointInCircle(this.pos, objetos[i].pos,
                         Avatar.RADIO + Mobiliario.radio)) {
-                    coli[0] += this.pos[0] - objetos[i].pos[0];
-                    coli[1] += this.pos[1] - objetos[i].pos[1];
+                    
+                    coli.x += this.pos.x - objetos[i].pos.x;
+                    coli.y += this.pos.y - objetos[i].pos.y;
                 }
             }
         }
         // hallar colision con avatares
-        if (coli[0] == 0 && coli[1] == 0) {
+        if (coli.x == 0 && coli.y == 0) {
             for (let i = 0; i < objetos.length; i++) {
                 if (objetos[i] instanceof Avatar) {
                     if (objetos[i].id == this.id) {
@@ -194,54 +195,47 @@ class Avatar {
                     }
                     if (pointInCircle(this.pos, objetos[i].pos,
                             Avatar.RADIO * 2)) {
-                        coli[0] += this.pos[0] - objetos[i].pos[0];
-                        coli[1] += this.pos[1] - objetos[i].pos[1];
+                        coli.x += this.pos.x - objetos[i].pos.x;
+                        coli.y += this.pos.y - objetos[i].pos.y;
                     }
                 }
             }
         }
 		// ejecutar movimiento de colision
-		if (coli[0] != 0 || coli[1] != 0) {
+		if (coli.x != 0 || coli.y != 0) {
 			let mag = Math.sqrt(
-                Math.pow(coli[0], 2) + Math.pow(coli[1], 2)
+                Math.pow(coli.x, 2) + Math.pow(coli.y, 2)
             );
-			this.pos[0] += (coli[0] / mag) * Avatar.VELOCIDAD * 2 * dlt;
-			this.pos[1] += (coli[1] / mag) * Avatar.VELOCIDAD * 2 * dlt;
-		}
-    }
-
-    moverseDir(direccion, velocidad) {
-        if (velocidad != 0) {
-			this.pos[0] += velocidad * Math.cos(direccion);
-            this.pos[1] += velocidad * Math.sin(direccion);
+			this.pos.x += (coli.x / mag) * Avatar.VELOCIDAD * 2 * dlt;
+			this.pos.y += (coli.y / mag) * Avatar.VELOCIDAD * 2 * dlt;
 		}
     }
 
     limites() {
-        let ant = [...this.pos];
-        this.pos[0] = Math.max(Avatar.MENSAJE_W * 0.7,
-            Math.min(this.pos[0], worldW - Avatar.MENSAJE_W * 0.7));
-        this.pos[1] = Math.max(250,
-            Math.min(this.pos[1], worldH - 16));
-        if (this.pos[0] != ant[0] || this.pos[1] != ant[1]) {
+        let ant = {...this.pos};
+        this.pos.x = Math.max(Avatar.MENSAJE_W * 0.7,
+            Math.min(this.pos.x, worldW - Avatar.MENSAJE_W * 0.7));
+        this.pos.y = Math.max(250,
+            Math.min(this.pos.y, worldH - 16));
+        if (this.pos.x != ant.x || this.pos.y != ant.y) {
             this.moveDir = Math.random() * 2 * Math.PI;
         }
     }
 
     interpola(dlt) {
         if (pointDistance(this.pos, this.pis) > 30) {
-            this.pis[0] = this.pos[0];
-            this.pis[1] = this.pos[1];
+            this.pis.x = this.pos.x;
+            this.pis.y = this.pos.y;
             this.isWalk = false;
             return null;
         }
-        let dif = [
-            this.pos[0] - this.pis[0],
-            this.pos[1] - this.pis[1]
-        ];
-        this.pis[0] += dif[0] * dlt * 6;
-        this.pis[1] += dif[1] * dlt * 6;
-        this.isWalk = Math.pow(dif[0], 2) + Math.pow(dif[1], 2) > 10;
+        let dif = {
+            x: this.pos.x - this.pis.x,
+            y: this.pos.y - this.pis.y
+        };
+        this.pis.x += dif.x * dlt * 6;
+        this.pis.y += dif.y * dlt * 6;
+        this.isWalk = Math.pow(dif.x, 2) + Math.pow(dif.y, 2) > 10;
     }
 
     getDamage() {
@@ -282,6 +276,19 @@ class Avatar {
         return false;
     }
 
+    // movimientos autonomos
+
+    ruticaAzar(ini, fin, tramos=3) {
+        let ant = ini;
+        let res = [];
+        let pnt = {x: 0, y: 0};
+        /*do {
+            pnt = // Tarea
+        }
+        while ();*/
+        return res;
+    }
+
     // animaciones
 
     stepAnima(dlt) {
@@ -304,7 +311,7 @@ class Avatar {
     drawFantasma(ctx, sprites, conNombre) {
         sprites.drawFantasma(ctx, this.pis, this.relojAnima[0]);
         if (conNombre) {
-            let posMsj = [this.pis[0], this.pis[1] - Avatar.ALT_MSJ];
+            let posMsj = {x: this.pis.x, y: this.pis.y - Avatar.ALT_MSJ};
             Sprites.drawMensaje(
                 ctx, this.nombre, posMsj,
                 Sprites.getMsjFont(true), 18, 3);
@@ -354,12 +361,12 @@ class Avatar {
     }
 
     drawMensaje(ctx, conNombre, texto="") {
-        let posMsj = [this.pis[0], this.pis[1] - Avatar.ALT_MSJ];
+        let posMsj = {x: this.pis.x, y: this.pis.y - Avatar.ALT_MSJ};
         if (conNombre) {
             Sprites.drawMensaje(
                 ctx, this.nombre, posMsj,
                 Sprites.getMsjFont(true), 18, 3);
-            posMsj[1] -= 26;
+            posMsj.y -= 26;
         }
         if (texto != "") {
             Sprites.drawMensaje(
@@ -370,7 +377,7 @@ class Avatar {
     drawSombra(ctx, sprites) {
         sprites.drawSombra(ctx, this.pis);
         // debug para ver donde esta el punto real
-        //ctx.fillRect(this.pos[0] - 2, this.pos[1] - 2, 4, 4);
+        //ctx.fillRect(this.pos.x - 2, this.pos.y - 2, 4, 4);
     }
 
     draw(ctx, sprites, estado, mundoIdea) {
