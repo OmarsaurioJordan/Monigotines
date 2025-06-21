@@ -5,16 +5,13 @@ Mundo:
 -M mostrar minimapa con todos los avatares
 -M cargar mobiliario y baldozas
 -M modo todos los mensajes vs visibles con mouse
+-G mostrar mensaje en avatar seleccionado
 -E ver mensajes en el avatar seleccionado
 -E enviar mensaje al avatar seleccionado
 -E movimiento de camara tras avatar
 -S desconectar tiempo real si inactividad
 .
 Avatares:
--G movimiento hacia punto pseudo busqueda
--G buscar avatar enemigo objetivo
--G perseguir avatar
--G atacar avatar
 -E moverse con teclado
 -E ver mensajes de cercano
 -S enviar posición en tiempo real
@@ -42,6 +39,7 @@ Mundo:
 -M ver perfil del avatar seleccionado
 -M ir al link del avatar seleccionado
 -E poder bloquear usuarios
+-G resetear modo guerra
 .
 Avatares:
 -M dibujado de los avatares con sus configuraciónes
@@ -55,6 +53,12 @@ Avatares:
 -G asignar clases con sus sprites
 -G recibir ataque
 -G morir andar como fantasma
+-G colisión de línea
+-G movimiento hacia punto pseudo busqueda
+-G buscar avatar enemigo objetivo
+-G perseguir avatar
+-G seguir aliado
+-G atacar avatar
 .
 Interfacez:
 -M login con sesion y contraseña

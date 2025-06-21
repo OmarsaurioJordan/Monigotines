@@ -49,7 +49,7 @@ function step(dlt) {
     // verificar pulsacion de mouse
     if (mousPos.pulsado) {
         mousPos.pulsado = false;
-        let mPos = [mousPos.x, mousPos.y];
+        let mPos = {x: mousPos.x, y: mousPos.y};
         // verificar si selecciono un estado
         for (let i = 0; i < 6; i++) {
             if (pointInCircle(mPos, {x: 16, y: 16 + i * 32}, 14)) {
@@ -148,22 +148,22 @@ function draw() {
     avatar.drawAvatar(ctx, sprites, false, estado == 5);
     // dibujar los botones de la izquierda
     for (let i = 0; i < 6; i++) {
-        sprites.drawSelect(ctx, [16, 16 + i * 32], i, estado == i);
+        sprites.drawSelect(ctx, {x: 16, y: 16 + i * 32}, i, estado == i);
     }
     // dibujar los colores
     if (estado == 0) {
         for (let i = 0; i < 12; i++) {
-            sprites.drawColor(ctx, [232, 8 + i * 16], true, i);
+            sprites.drawColor(ctx, {x: 232, y: 8 + i * 16}, true, i);
         }
     }
     else if (estado == 1) {
         for (let i = 0; i < 5; i++) {
-            sprites.drawPiel(ctx, [232, 8 + i * 16], i);
+            sprites.drawPiel(ctx, {x: 232, y: 8 + i * 16}, i);
         }
     }
     else if (estado == 2 || estado == 3) {
         for (let i = 0; i < 12; i++) {
-            sprites.drawColor(ctx, [232, 8 + i * 16], false, i);
+            sprites.drawColor(ctx, {x: 232, y: 8 + i * 16}, false, i);
         }
     }
     // dibujar las cosas seleccionables
@@ -172,7 +172,7 @@ function draw() {
         case 0: // pelo
             aux = BarrelSprAva(avatar.pelo - 2, sprites.totPelo());
             for (let i = 0; i < 5; i++) {
-                sprites.drawPelambre(ctx, [192, 142 - (i - 2) * 32],
+                sprites.drawPelambre(ctx, {x: 192, y: 142 - (i - 2) * 32},
                     avatar.genero, aux, avatar.tinte, 0.5);
                 aux = BarrelSprAva(aux + 1, sprites.totPelo());
             }
@@ -180,7 +180,7 @@ function draw() {
         case 1: // emocion
             aux = BarrelSprAva(avatar.emocion - 2, sprites.totEmocion());
             for (let i = 0; i < 5; i++) {
-                sprites.drawCarita(ctx, [192, 142 - (i - 2) * 32],
+                sprites.drawCarita(ctx, {x: 192, y: 142 - (i - 2) * 32},
                     avatar.genero, avatar.piel, aux, 0.5);
                 aux = BarrelSprAva(aux + 1, sprites.totEmocion());
             }
@@ -188,7 +188,7 @@ function draw() {
         case 2: // torso
             aux = BarrelSprAva(avatar.torso - 2, sprites.totTorso());
             for (let i = 0; i < 5; i++) {
-                sprites.drawTorsito(ctx, [192, 124 - (i - 2) * 32],
+                sprites.drawTorsito(ctx, {x: 192, y: 124 - (i - 2) * 32},
                     avatar.genero, aux, avatar.color, 0.5);
                 aux = BarrelSprAva(aux + 1, sprites.totTorso());
             }
@@ -196,7 +196,7 @@ function draw() {
         case 3: // cadera
             aux = BarrelSprAva(avatar.cadera - 2, sprites.totCadera());
             for (let i = 0; i < 5; i++) {
-                sprites.drawCaderita(ctx, [192, 110 - (i - 2) * 32],
+                sprites.drawCaderita(ctx, {x: 192, y: 110 - (i - 2) * 32},
                     avatar.genero, aux, avatar.tela, 0.5);
                 aux = BarrelSprAva(aux + 1, sprites.totCadera());
             }
@@ -204,7 +204,7 @@ function draw() {
         case 4: // rol
             aux = BarrelSprAva(avatar.rol - 2, sprites.totRol());
             for (let i = 0; i < 5; i++) {
-                sprites.drawRolsito(ctx, [185, 120 - (i - 2) * 32],
+                sprites.drawRolsito(ctx, {x: 185, y: 120 - (i - 2) * 32},
                     aux, 0.5);
                 aux = BarrelSprAva(aux + 1, sprites.totRol());
             }
@@ -212,7 +212,7 @@ function draw() {
         case 5: // clase
             aux = BarrelSprAva(avatar.clase - 2, sprites.totClase());
             for (let i = 0; i < 5; i++) {
-                sprites.drawClasesita(ctx, [185, 120 - (i - 2) * 32],
+                sprites.drawClasesita(ctx, {x: 185, y: 120 - (i - 2) * 32},
                     aux, 0.5);
                 aux = BarrelSprAva(aux + 1, sprites.totClase());
             }
@@ -222,8 +222,8 @@ function draw() {
     ctx.fillStyle = colorFondo;
     ctx.fillRect(160, 176, 64, 16);
     ctx.fillRect(160, 0, 64, 16);
-    sprites.drawScroll(ctx, [192, 8], true);
-    sprites.drawScroll(ctx, [192, 184], false);
+    sprites.drawScroll(ctx, {x: 192, y: 8}, true);
+    sprites.drawScroll(ctx, {x: 192, y: 184}, false);
 }
 
 // iniciar el loop cuando los sprites carguen

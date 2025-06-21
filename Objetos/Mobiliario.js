@@ -14,6 +14,8 @@ class Mobiliario {
 
     drawSombra(ctx, sprites) {} // vacio, evita error en mundo.js
 
+    restart() {} // vacio, evita error en mundo.js
+
     draw(ctx, sprites, estado) {
 
     }

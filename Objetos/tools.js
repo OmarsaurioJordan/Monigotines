@@ -230,12 +230,41 @@ function pointDistance(pos1, pos2) {
 
 function pointInCircle(pos1, pos2, radio) {
     let dist = pointDistance(pos1, pos2);
-    return dist < radio;
+    return dist <= radio;
 }
 
 function pointInRectangle(pos, rec1, rec2) {
-    return pos.x > rec1.x && pos.x < rec2.x &&
-        pos.y > rec1.y && pos.y < rec2.y;
+    return pos.x >= rec1.x && pos.x <= rec2.x &&
+        pos.y >= rec1.y && pos.y <= rec2.y;
+}
+
+function pointInLine(pos, line1, line2, ext=1) {
+    let d1 = pointDistance(pos, line1);
+    let d2 = pointDistance(pos, line2);
+    let dist = pointDistance(line1, line2);
+    return d1 + d2 >= dist - ext && d1 + d2 <= dist + ext;
+}
+
+function circleInLine(pos, line1, line2, radio) {
+    let dist = pointDistance(line1, line2);
+    if (dist == 0) {
+        return pointInCircle(pos, line1, radio);
+    }
+    if (pointInCircle(pos, line1, radio) || pointInCircle(pos, line2, radio)) {
+        return true;
+    }
+    let dot = (
+        ((pos.x - line1.x) * (line2.x - line1.x)) +
+        ((pos.y - line1.y) * (line2.y - line1.y))
+    ) / Math.pow(dist, 2);
+    let near = {
+        x: line1.x + (dot * (line2.x - line1.x)),
+        y: line1.y + (dot * (line2.y - line1.y))
+    };
+    if (!pointInLine(near, line1, line2)) {
+        return false;
+    }
+    return pointDistance(pos, near) <= radio;
 }
 
 function moveDirVel(pos, dir, vel) {

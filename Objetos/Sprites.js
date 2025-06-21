@@ -21,7 +21,8 @@ class Sprites {
             this.loadImg("d_monigotin_fanta"), // 12
             this.loadImg("d_monigotin_idea1"), // 13
             this.loadImg("d_monigotin_idea2"), // 14
-            this.loadImg("d_monigotin_clase") // 15
+            this.loadImg("d_monigotin_clase"), // 15
+            this.loadImg("d_monigotin_hit") // 16
         ];
         // cargar imagenes con color
         this.colorPelo = [
@@ -150,6 +151,14 @@ class Sprites {
         ctx.drawImage(this.sprite[11], posicion.x - 41, posicion.y - 23);
     }
 
+    drawCircle(ctx, posicion, radio) {
+        ctx.beginPath();
+        ctx.arc(posicion.x, posicion.y, radio, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
     // dibujado de piezas de avatar
 
     drawFantasma(ctx, posicion, anima) {
@@ -182,13 +191,18 @@ class Sprites {
         }
     }
 
-    drawEmocion(ctx, posicion, emocion, anima) {
+    drawEmocion(ctx, posicion, emocion, anima, isHit=false) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
             posicion = {x: posicion.x,
                 y: posicion.y - anima * this.osciCabeza};
         }
-        this.drawSprite(ctx, posicion, this.sprite[5], emocion);
+        if (isHit) {
+            this.drawSprite(ctx, posicion, this.sprite[16], 0);
+        }
+        else {
+            this.drawSprite(ctx, posicion, this.sprite[5], emocion);
+        }
     }
 
     drawPelo(ctx, posicion, genero, pelo, tinte, anima) {
@@ -217,8 +231,8 @@ class Sprites {
     drawRol(ctx, posicion, rol, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion = [posicion.x,
-                posicion.y - anima * this.osciCabeza * 2];
+            posicion = {x: posicion.x,
+                y: posicion.y - anima * this.osciCabeza * 2};
         }
         this.drawSprite(ctx, posicion, this.sprite[9], rol);
     }
@@ -226,8 +240,8 @@ class Sprites {
     drawClase(ctx, posicion, clase, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
-            posicion = [posicion.x,
-                posicion.y - anima * this.osciCabeza * 2];
+            posicion = {x: posicion.x,
+                y: posicion.y - anima * this.osciCabeza * 2};
         }
         this.drawSprite(ctx, posicion, this.sprite[15], clase);
     }
@@ -408,19 +422,19 @@ class Sprites {
         ctx.textBaseline = "bottom";
         let lineas = texto.split("\n");
         // obtener informacion general
-        let alto = posicion[1] - (lineas.length - 1) * lineY - borde;
+        let alto = posicion.y - (lineas.length - 1) * lineY - borde;
         // dibujar fondo
         ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
         ctx.fillRect(
-            posicion[0],
+            posicion.x,
             alto - lineY - borde,
-            posicion[0] + ancho + 2 * borde,
+            posicion.x + ancho + 2 * borde,
             lineas.length * lineY + 2 * borde
         );
         // dibujar texto
         ctx.fillStyle = "black";
         lineas.forEach(li => {
-            ctx.fillText(li, posicion[0] + borde + ancho / 2, alto);
+            ctx.fillText(li, posicion.x + borde + ancho / 2, alto);
             alto += lineY;
         });
     }

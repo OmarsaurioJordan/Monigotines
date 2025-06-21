@@ -44,6 +44,7 @@ const indIdeCrg = cargador.newConsulta("ideologia",
 var estado = 0; // seleccion actual
 var seleccionado = null; // avatar que ha sido clickeado
 var mundoIdea = 0; // modo de guerra
+var mundoClases = true; // si activar la war por clases o no
 var auxIdeas = null; // variable auxiliar para cargar ideologias
 
 // obtener ideologias de HTML
@@ -55,7 +56,9 @@ const threeBtn = [
     {x: 5 + Avatar.DESCRIPCION_W / 6, y: altBtnsPrf1, est: -1}, // 0 perfil
     {x: 5 + Avatar.DESCRIPCION_W / 2, y: altBtnsPrf1, est: -1}, // 1 link social
     {x: 5 + (Avatar.DESCRIPCION_W / 6) * 5, y: altBtnsPrf1, est: -1}, // 2 link musica
-    {x: width - 128, y: 32, est: 2} // 3 cambio de ideologia en modo war
+    {x: width - 128, y: 32, est: 2}, // 3 cambio de ideologia en modo war
+    {x: width - 128 * 2.5, y: 32, est: 2}, // 4 reiniciar la guerra en war
+    {x: width - 128 * 3.5, y: 32, est: 2} // 5 cambio modo clases en war
 ];
 const radioBtn = threeBtn[0].x / 2;
 
@@ -129,6 +132,20 @@ function step(dlt) {
                         mousPos.clic = false;
                     }
                     break;
+                case 4: // reiniciar la guerra en war
+                    canvas.style.cursor = "pointer";
+                    if (mousPos.clic) {
+                        objetos.forEach(obj => obj.restart());
+                        mousPos.clic = false;
+                    }
+                    break;
+                case 5: // cambio modo clases en war
+                    canvas.style.cursor = "pointer";
+                    if (mousPos.clic) {
+                        mundoClases = !mundoClases;
+                        mousPos.clic = false;
+                    }
+                    break;
             }
             break;
         }
@@ -177,7 +194,7 @@ function step(dlt) {
         auxIdeas = cargador.popData(indIdeCrg);
     }
     // ejecutar el loop de los objetos
-    objetos.forEach(obj => obj.step(dlt, estado, usuario, mundoIdea));
+    objetos.forEach(obj => obj.step(dlt, estado));
     // verificar si mouse dio clic a avatar
     if (mousPos.clic) {
         seleccionado = null;
@@ -211,12 +228,14 @@ function draw() {
     objetos.sort((a, b) => a.pis.y - b.pis.y);
     // dibujar sombras
     objetos.forEach(obj => obj.drawSombra(ctx, sprites));
+    // dibujar circulos de vision
+    //objetos.forEach(obj => sprites.drawCircle(ctx, obj.pis, Avatar.VISION));
     // dibujar aro seleccionado
     if (seleccionado != null) {
         sprites.drawAro(ctx, seleccionado.pis);
     }
     // dibujar todos los objetos
-    objetos.forEach(obj => obj.draw(ctx, sprites, estado, mundoIdea));
+    objetos.forEach(obj => obj.draw(ctx, sprites, estado));
     // dibujar la interfaz GUI, primero se reestablece la transformacion
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     // dibujar datos del avatar seleccionado
@@ -251,6 +270,10 @@ function draw() {
             break;
         // Guerra
         case 2:
+            Sprites.drawMensaje(ctx, (mundoClases ? "🏴 Clases" : "🏳️ Equal"),
+                threeBtn[5], Sprites.getMsjFont(false), 20, 5);
+            Sprites.drawMensaje(ctx, "♻️ Reiniciar",
+                threeBtn[4], Sprites.getMsjFont(false), 20, 5);
             Sprites.drawMensaje(ctx, txtIdeas[mundoIdea],
                 threeBtn[3], Sprites.getMsjFont(false), 20, 5);
             break;
