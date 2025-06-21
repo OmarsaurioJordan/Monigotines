@@ -76,12 +76,12 @@ CLASES.........................
 .
 - Espada: daño extra crítico (ok)
 - Escudo: probabilidad bloqueo (ok)
-- Palo: golpea a varios a la vez
-- Arco: daño extra a largo alcance
-- Mazo: gana vida al eliminar (ok)
-- Tambor: 
-- Báculo: 
-- Medicina: da vida a aliado no médico
+- Palo: golpea a dos a la vez (ok)
+- Arco: daño menor a distancia (ok)
+- Mazo: ralentiza ataque del oponente (ok)
+- Tambor: acelera hasta 3 aliados no músicos (ok)
+- Báculo: absorve vida a larga distancia (ok)
+- Medicina: transfiere vida a aliado no médico (ok)
 .
 EXTRA.........................
 .

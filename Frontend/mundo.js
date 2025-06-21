@@ -270,7 +270,7 @@ function draw() {
             break;
         // Guerra
         case 2:
-            Sprites.drawMensaje(ctx, (mundoClases ? "🏴 Clases" : "🏳️ Equal"),
+            Sprites.drawMensaje(ctx, (mundoClases ? "🗡️ Clases" : "✊ Equal"),
                 threeBtn[5], Sprites.getMsjFont(false), 20, 5);
             Sprites.drawMensaje(ctx, "♻️ Reiniciar",
                 threeBtn[4], Sprites.getMsjFont(false), 20, 5);

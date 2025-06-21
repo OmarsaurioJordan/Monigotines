@@ -19,13 +19,19 @@ class Avatar {
     static RAD_ATACK_MIN = 100; // distancia de ataque minima
     static BLOQUEO_PORC = 0.1; // porcentaje de evadir ataque
     static BLOQUEO_ESCUDO_PORC = 2; // sera multiplicado al bloqueo base
+    static BACULO_DRENAR_PORC = 0.03; // puntos de vida que drenara
     static DAMAGE = 4.5; // damage base, se le sumara 1 aleatorio
     static DAMAGE_ESPADA_EXT = 2; // extra aleatorio para la espada
-    static GAIN_MAZO_PORC = 0.15; // porcentaje vida ganada al matar
+    static DAMAGE_PALO_EXT = 0.2; // porcentaje extra total de damage vs dos
+    static MAZO_EXT_RELOJ_DAMAGE = 0.333; // porc de reloj_damage sum por mazo
+    static PORC_VIDA_TO_MEDI = 0.333; // damage hecho convertido en medicina
+    static PORC_VIDA_CURAR = 0.05; // cuanta vida puede devolver de una medico
     static RELOJ_EST_ERRAR = 5; // tiempo minimo en modo errar
     static RELOJ_EST_EXPLORA = 60; // tiempo maximo en modo explora
     static RELOJ_EST_ALIADO = 20; // tiempo minimo en modo seguir aliado
     static RELOJ_DAMAGE = 3; // tiempo para golpear
+    static MUSICALIZADOS = 3; // cuantos aliados seran acelerados tambor
+    static PORC_ACEL_DMG = 0.9; // porcentaje que se reduce el reloj_dmg tambor
     static CLS_NORMAL = 0;
     static CLS_ESPADA = 1;
     static CLS_ESCUDO = 2;
@@ -85,6 +91,7 @@ class Avatar {
         this.objetivo = null; // avatar para seguir
         this.ultimoVisto = {x:0, y:0}; // ultima vez visto objetivo
         this.relojDamage = 5; // para golpear
+        this.medicina = 0; // guarda puntos de vida para dar
         // configuracion para animaciones
         this.relojHit = 0; // para mostrar cara golpeada
         this.isNew = isNew; // true dibuja fantasma
@@ -138,10 +145,18 @@ class Avatar {
             x: worldW * Math.random(),
             y: worldH * Math.random()
         }
+        if (this.ideas[mundoIdea] == -1) {
+            this.pos.y = worldH * Math.random() * 0.333;
+        }
+        else if (this.ideas[mundoIdea] == 1) {
+            this.pos.y = worldH * Math.random() * 0.333 +
+                worldH * 0.666;
+        }
         this.pis = {...this.pos};
         this.subEstado = 0;
         this.relojSubEst = 1;
         this.relojDamage = 5;
+        this.medicina = 0;
     }
 
     setIdeas(zodiaco, elemento, ideologys) {
@@ -291,41 +306,40 @@ class Avatar {
 
     getDamage() {
         let dmg = Avatar.DAMAGE + Math.random();
-        if (this.clase == Avatar.CLS_ESPADA) {
+        if (this.clase == Avatar.CLS_ESPADA && mundoClases) {
             dmg += Math.random() * Avatar.DAMAGE_ESPADA_EXT;
         }
         return dmg;
     }
 
-    doDamage(quien) {
-        let dmg = this.getDamage();
-        let res = quien.receiveDamage(dmg);
-        if (res && this.clase == Avatar.CLS_MAZO) {
-            this.vida = Math.min(Avatar.VIDA,
-                this.vida + Avatar.VIDA * Avatar.GAIN_MAZO_PORC);
-        }
-        return res;
+    doDamage(quien, propDamage=1) {
+        let dmg = this.getDamage() * propDamage;
+        return quien.receiveDamage(dmg);
     }
 
     getBloqueo() {
         let blq = Avatar.BLOQUEO_PORC;
-        if (this.clase == Avatar.CLS_ESCUDO) {
+        if (this.clase == Avatar.CLS_ESCUDO && mundoClases) {
             blq *= Avatar.BLOQUEO_ESCUDO_PORC;
         }
         return blq;
     }
 
-    receiveDamage(damage) {
+    receiveDamage(damage, isForce=false) {
+        // retorna [is_dead, num_damage_real_hecho]
         if (this.vida > 0) {
-            let blq = this.getBloqueo();
-            if (Math.random() < blq) {
-                return false;
+            if (!isForce) {
+                let blq = this.getBloqueo();
+                if (Math.random() < blq) {
+                    return [false, 0];
+                }
             }
+            let antVida = this.vida;
             this.vida = Math.max(0, this.vida - damage);
             this.relojHit = 0.333;
-            return this.vida == 0;
+            return [this.vida == 0, antVida - this.vida];
         }
-        return false;
+        return [false, 0];
     }
 
     stepDamage(dlt) {
@@ -333,11 +347,85 @@ class Avatar {
         if (this.relojDamage <= 0) {
             this.relojDamage += Avatar.RELOJ_DAMAGE + Math.random();
             if (this.subEstado == 3 && this.objetivo !== null) {
-                if (this.isObjetivoOk(this.objetivo, false) &&
-                        this.isObjetivoEnlinea(this.objetivo)) {
-                    this.doDamage(this.objetivo);
+                let enmira = (this.clase == Avatar.CLS_ARCO && mundoClases) ?
+                    this.isObjetivoEnlinea(this.objetivo) :
+                    this.isObjetivoEnMele(this.objetivo);
+                if (this.isObjetivoOk(this.objetivo, false) && enmira) {
+                    if (mundoClases) {
+                        this.doClaseDamage();
+                    }
+                    else {
+                        this.doDamage(this.objetivo);
+                    }
                 }
             }
+            if (mundoClases) {
+                switch (this.clase) {
+                    case Avatar.CLS_MEDICINA: // curar
+                        let cura = Avatar.VIDA * Avatar.PORC_VIDA_CURAR;
+                        if (this.medicina >= cura) {
+                            let aliss = this.buscarAliaditos(
+                                1, Avatar.CLS_MEDICINA);
+                            if (aliss.length != 0) {
+                                aliss[0].vida += cura;
+                                this.medicina -= cura;
+                            }
+                        }
+                        break;
+                    case Avatar.CLS_BACULO: // drenar vida
+                        let dren = Avatar.VIDA * Avatar.BACULO_DRENAR_PORC;
+                        if (this.vida <= Avatar.VIDA - dren) {
+                            let dona = this.buscarEnemigoDona();
+                            if (dona !== null) {
+                                let res = dona.receiveDamage(dren, true);
+                                this.vida = Math.min(Avatar.VIDA,
+                                    this.vida + res[1]);
+                            }
+                        }
+                        break;
+                    case Avatar.CLS_TAMBOR: // acelerar
+                        let alis = this.buscarAliaditos(
+                            Avatar.MUSICALIZADOS, Avatar.CLS_TAMBOR);
+                        for (let i = 0; i < alis.length; i++) {
+                            alis[i].relojDamage *= Avatar.PORC_ACEL_DMG;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    doClaseDamage() {
+        switch (this.clase) {
+            case Avatar.CLS_PALO: // ataca a dos
+                let two = this.buscarEnemigoCercano(
+                    Avatar.RAD_ATACK_MIN * 2, this.objetivo);
+                if (two !== null) {
+                    let prctwo = 0.5 + Avatar.DAMAGE_PALO_EXT / 2;
+                    this.doDamage(this.objetivo, prctwo);
+                    this.doDamage(two, prctwo);
+                }
+                else {
+                    this.doDamage(this.objetivo);
+                }
+                break;
+            case Avatar.CLS_ARCO: // ataque menor
+                this.doDamage(this.objetivo, 0.5);
+                break;
+            case Avatar.CLS_MAZO: // ralentiza
+                let ress = this.doDamage(this.objetivo);
+                if (ress[1] != 0) {
+                    this.objetivo.relojDamage += Avatar.RELOJ_DAMAGE *
+                        Avatar.MAZO_EXT_RELOJ_DAMAGE;
+                }
+                break;
+            case Avatar.CLS_MEDICINA: // toma vida
+                let res = this.doDamage(this.objetivo);
+                this.medicina += res[1] * Avatar.PORC_VIDA_TO_MEDI;
+                break;
+            default:
+                this.doDamage(this.objetivo);
+                break;
         }
     }
 
@@ -448,14 +536,16 @@ class Avatar {
                     }
                     // ir hacia donde lo ha visto
                     let dist = pointDistance(this.pos, this.ultimoVisto);
-                    if (dist < Avatar.RAD_ATACK_MIN) {
+                    let extRad = (this.clase == Avatar.CLS_ARCO && mundoClases) ?
+                        Avatar.RAD_ATACK_MIN : 0;
+                    if (dist < Avatar.RAD_ATACK_MIN + extRad) {
                         // alejarse
                         this.pos = moveAngVel(this.pos,
                             pointAngle(this.ultimoVisto, this.pos) +
                             this.dirTambaleo, Avatar.VELOCIDAD * dlt);
                         this.moveDir = Math.random() * 2 * Math.PI;
                     }
-                    else if (dist > Avatar.RAD_ATACK_MIN * 2) {
+                    else if (dist > Avatar.RAD_ATACK_MIN * 2 + extRad) {
                         // acercarce
                         this.pos = moveAngVel(this.pos,
                             pointAngle(this.pos, this.ultimoVisto) +
@@ -551,6 +641,13 @@ class Avatar {
         return false;
     }
 
+    isObjetivoEnMele(obj) {
+        if (pointDistance(this.pos, obj.pos) <= Avatar.RAD_ATACK_MIN * 2) {
+            return !this.coliLinea(this.pos, obj.pos, true);
+        }
+        return false;
+    }
+
     buscaAvatar(isAliado, isExtBusq) {
         let obj = this.buscaAvatarId(isAliado, isExtBusq);
         if (obj === null) {
@@ -598,6 +695,93 @@ class Avatar {
             return candis[0][0];
         }
         return null;
+    }
+
+    buscarEnemigoCercano(radio, exepcion=null) {
+        let ok = false;
+        let dist = 0;
+        let candis = []; // [avatar, distancia]
+        for (let i = 0; i < objetos.length; i++) {
+            if (objetos[i] instanceof Avatar && objetos[i] != this &&
+                    objetos[i] != exepcion) {
+                if (!objetos[i].getWarVivo()) {
+                    continue;
+                }
+                ok = this.ideas[mundoIdea] == objetos[i].ideas[mundoIdea];
+                dist = pointDistance(this.pos, objetos[i].pos);
+                if (!ok && dist <= radio) {
+                    if (!this.coliLinea(this.pos, objetos[i].pos, true)) {
+                        candis.push([objetos[i], dist]);
+                    }
+                }
+            }
+        }
+        if (candis.length != 0) {
+            candis.sort((a, b) => a[1] - b[1]);
+            return candis[0][0];
+        }
+        return null;
+    }
+
+    buscarEnemigoDona() {
+        let ok = false;
+        let dist = 0;
+        let candis = [];
+        for (let i = 0; i < objetos.length; i++) {
+            if (objetos[i] instanceof Avatar && objetos[i] != this) {
+                if (!objetos[i].getWarVivo() ||
+                        objetos[i].clase == Avatar.CLS_BACULO) {
+                    continue;
+                }
+                ok = this.ideas[mundoIdea] == objetos[i].ideas[mundoIdea];
+                dist = pointDistance(this.pos, objetos[i].pos);
+                if (!ok && dist > Avatar.VISION) {
+                    candis.push(objetos[i]);
+                }
+            }
+        }
+        if (candis.length != 0) {
+            let ind = Math.floor(Math.random() * candis.length);
+            return candis[Math.min(ind, candis.length - 1)];
+        }
+        return null;
+    }
+
+    buscarAliaditos(cuantos, claseExept=-1) {
+        let ok = false;
+        let dist = 0;
+        let candis = [];
+        for (let i = 0; i < objetos.length; i++) {
+            if (objetos[i] instanceof Avatar && objetos[i] != this) {
+                if (!objetos[i].getWarVivo() ||
+                        objetos[i].clase == claseExept) {
+                    continue;
+                }
+                if (claseExept == Avatar.CLS_MEDICINA &&
+                        objetos[i].vida > Avatar.VIDA *
+                        (1 - Avatar.PORC_VIDA_CURAR)) {
+                    continue;
+                }
+                if (claseExept == Avatar.CLS_TAMBOR &&
+                        (objetos[i].subEstado != 3 || objetos[i].objetivo === null)) {
+                    continue;
+                }
+                ok = this.ideas[mundoIdea] == objetos[i].ideas[mundoIdea];
+                dist = pointDistance(this.pos, objetos[i].pos);
+                if (ok && dist <= Avatar.VISION) {
+                    candis.push(objetos[i]);
+                }
+            }
+        }
+        let res = [];
+        let ind = -1;
+        while (res.length < cuantos && candis.length != 0) {
+            ind = Math.min(candis.length - 1,
+                Math.floor(Math.random() * candis.length));
+            res.push(candis[ind]);
+            candis.splice(ind, 1);
+        }
+        return res;
     }
 
     // movimientos autonomos
@@ -728,10 +912,14 @@ class Avatar {
             let ani = this.anima[1];
             sprites.drawCabeza(ctx, this.pis, this.piel,
                 this.genero, ani);
-            sprites.drawEmocion(ctx, this.pis, this.emocion, ani,
-                this.relojHit != 0);
+            if (this.relojHit == 0) {
+                sprites.drawEmocion(ctx, this.pis, this.emocion, ani);
+            }
             sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
                 this.tinte, ani);
+            if (this.relojHit != 0) {
+                sprites.drawEmocion(ctx, this.pis, this.emocion, ani, true);
+            }
             sprites.drawClase(ctx, this.pis, this.clase, this.anima[2]);
         }
     }
