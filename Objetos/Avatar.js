@@ -18,20 +18,21 @@ class Avatar {
     static VISION = 400; // radio de alcance visual
     static RAD_ATACK_MIN = 100; // distancia de ataque minima
     static BLOQUEO_PORC = 0.1; // porcentaje de evadir ataque
-    static BLOQUEO_ESCUDO_PORC = 2; // sera multiplicado al bloqueo base
-    static BACULO_DRENAR_PORC = 0.03; // puntos de vida que drenara
+    static BLOQUEO_ESCUDO_PORC = 3; // sera multiplicado al bloqueo base
     static DAMAGE = 4.5; // damage base, se le sumara 1 aleatorio
-    static DAMAGE_ESPADA_EXT = 2; // extra aleatorio para la espada
-    static DAMAGE_PALO_EXT = 0.2; // porcentaje extra total de damage vs dos
-    static MAZO_EXT_RELOJ_DAMAGE = 0.333; // porc de reloj_damage sum por mazo
-    static PORC_VIDA_TO_MEDI = 0.333; // damage hecho convertido en medicina
-    static PORC_VIDA_CURAR = 0.05; // cuanta vida puede devolver de una medico
+    static DAMAGE_ESPADA_EXT = 2.5; // extra aleatorio para la espada
+    static DAMAGE_PALO_EXT_PORC = 0.2; // porcentaje extra total de damage vs dos
+    static MAZO_EXT_RELOJ_DAMAGE = 0.3; // porc de reloj_damage sum por mazo
+    static PORC_VIDA_TO_MEDI = 0.3; // damage hecho convertido en medicina
+    static PORC_VIDA_CURAR = 0.05; // cuanta vida puede devolver de una, medico
+    static BACULO_DRENAR_PORC = 0.025; // puntos de vida que drenara el mago
+    static MUSICALIZADOS = 3; // cuantos aliados seran acelerados tambor
+    static PORC_ACEL_DMG = 0.85; // porcentaje que se reduce el reloj_dmg tambor
     static RELOJ_EST_ERRAR = 5; // tiempo minimo en modo errar
     static RELOJ_EST_EXPLORA = 60; // tiempo maximo en modo explora
     static RELOJ_EST_ALIADO = 20; // tiempo minimo en modo seguir aliado
     static RELOJ_DAMAGE = 3; // tiempo para golpear
-    static MUSICALIZADOS = 3; // cuantos aliados seran acelerados tambor
-    static PORC_ACEL_DMG = 0.9; // porcentaje que se reduce el reloj_dmg tambor
+    static RELOJ_HIT = 0.333; // destello de efectos
     static CLS_NORMAL = 0;
     static CLS_ESPADA = 1;
     static CLS_ESCUDO = 2;
@@ -93,7 +94,7 @@ class Avatar {
         this.relojDamage = 5; // para golpear
         this.medicina = 0; // guarda puntos de vida para dar
         // configuracion para animaciones
-        this.relojHit = 0; // para mostrar cara golpeada
+        this.relojHit = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // para mostrar efectos
         this.isNew = isNew; // true dibuja fantasma
         this.anima = []; // pies, cabeza, tool
         this.relojAnima = [];
@@ -190,7 +191,9 @@ class Avatar {
                 break;
             case 2: // Guerra
                 //this.nombreToDebug();
-                this.relojHit = Math.max(0, this.relojHit - dlt);
+                for (let i = 0; i < this.relojHit.length; i++) {
+                    this.relojHit[i] = Math.max(0, this.relojHit[i] - dlt);
+                }
                 if (!this.getWarVivo()) {
                     break;
                 }
@@ -307,14 +310,19 @@ class Avatar {
     getDamage() {
         let dmg = Avatar.DAMAGE + Math.random();
         if (this.clase == Avatar.CLS_ESPADA && mundoClases) {
-            dmg += Math.random() * Avatar.DAMAGE_ESPADA_EXT;
+            let r = Math.random();
+            dmg += r * Avatar.DAMAGE_ESPADA_EXT;
+            if (r > 0.5) {
+                this.relojHit[6] = Avatar.RELOJ_HIT * 2;
+            }
         }
         return dmg;
     }
 
-    doDamage(quien, propDamage=1) {
+    doDamage(quien, propDamage=1, isFlecha=false) {
+        // retorna [is_dead, num_damage_real_hecho]
         let dmg = this.getDamage() * propDamage;
-        return quien.receiveDamage(dmg);
+        return quien.receiveDamage(dmg, false, isFlecha);
     }
 
     getBloqueo() {
@@ -325,18 +333,26 @@ class Avatar {
         return blq;
     }
 
-    receiveDamage(damage, isForce=false) {
+    receiveDamage(damage, isForce=false, isFlecha=false) {
         // retorna [is_dead, num_damage_real_hecho]
         if (this.vida > 0) {
             if (!isForce) {
                 let blq = this.getBloqueo();
                 if (Math.random() < blq) {
+                    if (this.clase == Avatar.CLS_ESCUDO) {
+                        this.relojHit[5] = Avatar.RELOJ_HIT * 2;
+                    }
                     return [false, 0];
                 }
             }
             let antVida = this.vida;
             this.vida = Math.max(0, this.vida - damage);
-            this.relojHit = 0.333;
+            if (isFlecha) {
+                this.relojHit[8] = Avatar.RELOJ_HIT;
+            }
+            else {
+                this.relojHit[0] = Avatar.RELOJ_HIT;
+            }
             return [this.vida == 0, antVida - this.vida];
         }
         return [false, 0];
@@ -369,10 +385,14 @@ class Avatar {
                             if (aliss.length != 0) {
                                 aliss[0].vida += cura;
                                 this.medicina -= cura;
+                                aliss[0].relojHit[3] = Avatar.RELOJ_HIT * 2;
                             }
                         }
                         break;
                     case Avatar.CLS_BACULO: // drenar vida
+                        if (Math.random() < 0.5) {
+                            break;
+                        }
                         let dren = Avatar.VIDA * Avatar.BACULO_DRENAR_PORC;
                         if (this.vida <= Avatar.VIDA - dren) {
                             let dona = this.buscarEnemigoDona();
@@ -380,6 +400,7 @@ class Avatar {
                                 let res = dona.receiveDamage(dren, true);
                                 this.vida = Math.min(Avatar.VIDA,
                                     this.vida + res[1]);
+                                this.relojHit[4] = Avatar.RELOJ_HIT * 2;
                             }
                         }
                         break;
@@ -388,6 +409,7 @@ class Avatar {
                             Avatar.MUSICALIZADOS, Avatar.CLS_TAMBOR);
                         for (let i = 0; i < alis.length; i++) {
                             alis[i].relojDamage *= Avatar.PORC_ACEL_DMG;
+                            alis[i].relojHit[2] = Avatar.RELOJ_HIT * 2;
                         }
                         break;
                 }
@@ -401,22 +423,26 @@ class Avatar {
                 let two = this.buscarEnemigoCercano(
                     Avatar.RAD_ATACK_MIN * 2, this.objetivo);
                 if (two !== null) {
-                    let prctwo = 0.5 + Avatar.DAMAGE_PALO_EXT / 2;
-                    this.doDamage(this.objetivo, prctwo);
-                    this.doDamage(two, prctwo);
+                    let prctwo = 0.5 + Avatar.DAMAGE_PALO_EXT_PORC / 2;
+                    let d1 = this.doDamage(this.objetivo, prctwo);
+                    let d2 = this.doDamage(two, prctwo);
+                    if (d1[1] != 0 && d2[1] != 0) {
+                        this.relojHit[7] = Avatar.RELOJ_HIT * 2;
+                    }
                 }
                 else {
                     this.doDamage(this.objetivo);
                 }
                 break;
             case Avatar.CLS_ARCO: // ataque menor
-                this.doDamage(this.objetivo, 0.5);
+                this.doDamage(this.objetivo, 0.5, true);
                 break;
             case Avatar.CLS_MAZO: // ralentiza
                 let ress = this.doDamage(this.objetivo);
-                if (ress[1] != 0) {
+                if (ress[1] != 0 && Math.random() < 0.5) {
                     this.objetivo.relojDamage += Avatar.RELOJ_DAMAGE *
                         Avatar.MAZO_EXT_RELOJ_DAMAGE;
+                    this.objetivo.relojHit[1] = Avatar.RELOJ_HIT;
                 }
                 break;
             case Avatar.CLS_MEDICINA: // toma vida
@@ -459,7 +485,7 @@ class Avatar {
         if (this.relojBusqueda <= 0) {
             this.relojBusqueda += 1 + Math.random();
             if ((this.objetivo === null || this.subEstado != 3) ||
-                    Math.random() < 0.01) {
+                    Math.random() < 0.1) {
                 if (this.buscaAvatar(false, false)) {
                     this.subEstado = 3; // enemigo
                     this.relojSubEst = Avatar.RELOJ_EST_EXPLORA;
@@ -912,15 +938,17 @@ class Avatar {
             let ani = this.anima[1];
             sprites.drawCabeza(ctx, this.pis, this.piel,
                 this.genero, ani);
-            if (this.relojHit == 0) {
+            if (this.relojHit[0] == 0 && this.relojHit[8] == 0) {
                 sprites.drawEmocion(ctx, this.pis, this.emocion, ani);
             }
             sprites.drawPelo(ctx, this.pis, this.genero, this.pelo,
                 this.tinte, ani);
-            if (this.relojHit != 0) {
-                sprites.drawEmocion(ctx, this.pis, this.emocion, ani, true);
-            }
             sprites.drawClase(ctx, this.pis, this.clase, this.anima[2]);
+            for (let i = 0; i < this.relojHit.length; i++) {
+                if (this.relojHit[i] != 0) {
+                    sprites.drawHit(ctx, this.pis, ani, i);
+                }
+            }
         }
     }
 

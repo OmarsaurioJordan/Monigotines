@@ -191,18 +191,30 @@ class Sprites {
         }
     }
 
-    drawEmocion(ctx, posicion, emocion, anima, isHit=false) {
+    drawEmocion(ctx, posicion, emocion, anima) {
         // anima: -1 quieto, 0 a 1 paso
         if (anima != -1) {
             posicion = {x: posicion.x,
                 y: posicion.y - anima * this.osciCabeza};
         }
-        if (isHit) {
-            this.drawSprite(ctx, posicion, this.sprite[16], 0);
+        this.drawSprite(ctx, posicion, this.sprite[5], emocion);
+    }
+
+    drawHit(ctx, posicion, anima, tipo) {
+        // tipo: 0:hit, 1:mareo, 2:musica, 3:cura, 4:magia, 5:chispas,
+        //       6:espadazo, 7:palazo, 8:flechazo
+        // anima: -1 quieto, 0 a 1 paso
+        if (anima != -1) {
+            if (tipo <= 3 || tipo == 8) {
+                posicion = {x: posicion.x,
+                    y: posicion.y - anima * this.osciCabeza};
+            }
+            else {
+                posicion = {x: posicion.x,
+                    y: posicion.y - anima * this.osciCabeza * 2};
+            }
         }
-        else {
-            this.drawSprite(ctx, posicion, this.sprite[5], emocion);
-        }
+        this.drawSprite(ctx, posicion, this.sprite[16], tipo);
     }
 
     drawPelo(ctx, posicion, genero, pelo, tinte, anima) {

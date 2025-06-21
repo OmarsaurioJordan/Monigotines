@@ -59,6 +59,7 @@ Avatares:
 -G perseguir avatar
 -G seguir aliado
 -G atacar avatar
+-G efectos de ataques como sangre o curación
 .
 Interfacez:
 -M login con sesion y contraseña
@@ -78,7 +79,7 @@ CLASES.........................
 - Escudo: probabilidad bloqueo (ok)
 - Palo: golpea a dos a la vez (ok)
 - Arco: daño menor a distancia (ok)
-- Mazo: ralentiza ataque del oponente (ok)
+- Mazo: ralentiza ataque del oponente ()
 - Tambor: acelera hasta 3 aliados no músicos (ok)
 - Báculo: absorve vida a larga distancia (ok)
 - Medicina: transfiere vida a aliado no médico (ok)
